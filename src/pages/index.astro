@@ -1,4 +1,6 @@
 ---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
@@ -7,6 +9,9 @@ import { SITE } from '../config/site';
 const latestPosts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 3);
+
+/** 代表写真は public/ にファイルがある時だけ表示する */
+const hasPhoto = existsSync(join(process.cwd(), 'public', SITE.representative.photo));
 
 const formatDate = (d: Date) =>
   d.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Tokyo' });
@@ -211,6 +216,40 @@ const steps = [
     </section>
   )}
 
+  <!-- COMPANY -->
+  <section class="company-section" id="company">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">Company</span>
+        <h2 class="section-title">会社情報</h2>
+      </div>
+      <div class="company-inner">
+        <div class="rep-card reveal" id="representative">
+          {hasPhoto && (
+            <img class="rep-photo" src={SITE.representative.photo} alt={SITE.representative.photoAlt} width="480" height="480" loading="lazy" />
+          )}
+          <div class="rep-body">
+            <p class="rep-title">{SITE.representative.title}</p>
+            <p class="rep-name">{SITE.representative.name}</p>
+            <p class="rep-bio">{SITE.representative.bio}</p>
+            <a class="rep-youtube" href={SITE.representative.youtube.url} target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+              YouTube「{SITE.representative.youtube.name}」（登録者数{SITE.representative.youtube.subscribers}）
+            </a>
+          </div>
+        </div>
+        <dl class="company-table reveal">
+          <dt>会社名</dt><dd>{SITE.name}</dd>
+          <dt>代表社員</dt><dd>{SITE.representatives.join('・')}</dd>
+          <dt>免許</dt><dd>{SITE.license}</dd>
+          <dt>所在地</dt><dd>{SITE.address.full}</dd>
+          <dt>対応エリア</dt><dd>{SITE.areaServed.join('・')}（{SITE.primaryArea}が主戦場）</dd>
+          <dt>対応方法</dt><dd>来店不要。フォーム・LINEでオンライン完結</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
   <!-- CONTACT -->
   <section class="contact-section" id="contact">
     <div class="container">
@@ -224,11 +263,6 @@ const steps = [
           {SITE.lineUrl && (
             <a class="line-btn" href={SITE.lineUrl} target="_blank" rel="noopener">LINEで相談する</a>
           )}
-          <dl class="contact-company" id="company">
-            <dt>会社名</dt><dd>{SITE.name}</dd>
-            <dt>免許</dt><dd>{SITE.license}</dd>
-            <dt>所在地</dt><dd>{SITE.address.full}</dd>
-          </dl>
         </div>
         <form class="contact-form reveal" method="POST" action="/api/contact">
           <div class="form-row">
@@ -800,19 +834,104 @@ const steps = [
     color: var(--ink);
   }
 
-  .contact-company {
-    margin-top: 2.5rem;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.4rem 1.2rem;
-    font-size: 0.78rem;
-    line-height: 1.8;
-    color: rgba(250, 248, 243, 0.55);
+  /* ── COMPANY ── */
+  .company-section {
+    background: var(--cream);
   }
 
-  .contact-company dt {
+  .company-inner {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 3rem;
+    margin-top: 2.5rem;
+    align-items: start;
+  }
+
+  .rep-card {
+    display: flex;
+    gap: 1.8rem;
+    align-items: flex-start;
+    padding: 2rem;
+    background: white;
+    border: 1px solid var(--border);
+  }
+
+  .rep-photo {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    flex-shrink: 0;
+  }
+
+  .rep-title {
+    font-family: var(--font-accent);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    margin-bottom: 0.2rem;
+  }
+
+  .rep-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 0.8rem;
+  }
+
+  .rep-bio {
+    font-size: 0.85rem;
+    line-height: 1.9;
+    color: var(--charcoal);
+    margin-bottom: 1.2rem;
+  }
+
+  .rep-youtube {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    text-decoration: none;
+    border: 1px solid var(--ink);
+    padding: 0.5rem 1rem;
+    transition: all 0.25s;
+  }
+
+  .rep-youtube svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  .rep-youtube:hover {
+    background: var(--ink);
+    color: var(--gold-light);
+  }
+
+  .company-table {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.9rem 1.5rem;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--charcoal);
+    padding: 2rem;
+    background: white;
+    border: 1px solid var(--border);
+  }
+
+  .company-table dt {
     color: var(--gold);
     letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .company-table dd {
+    margin: 0;
   }
 
   .contact-form {
@@ -920,6 +1039,23 @@ const steps = [
 
     .blog-grid {
       grid-template-columns: 1fr;
+    }
+
+    .company-inner {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .rep-card {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    .company-table {
+      padding: 1.5rem;
+      gap: 0.6rem 1rem;
     }
 
     .flow-steps {

@@ -28,10 +28,22 @@ export const SITE = {
   /** 電話番号はサイトに掲載しない（CLAUDE.md 作業ルール）。以下は未設定なら非表示 */
   /** LINE 公式アカウントの URL */
   lineUrl: '' as string,
-  /** YouTube チャンネル URL */
-  youtubeUrl: '' as string,
-  /** 代表者（代表社員）。宅建業免許上の代表者とは異なる点は CLAUDE.md 参照 */
-  representative: { name: '' as string, title: '代表社員', bio: '' as string },
+  /** 代表社員（宅建業免許上の代表者は加藤良枝）。会社概要に併記する */
+  representatives: ['加藤良枝', '加藤隆寛'],
+  /** 紹介欄に顔出しで載せる代表（代表の一人） */
+  representative: {
+    name: '加藤隆寛',
+    title: '代表社員',
+    bio: '旅行系 YouTube チャンネル「加藤トラベル」（登録者数35万人）を運営。川崎市在住。武蔵小杉を中心に、地元の目線で物件探し・売却のご相談に対応します。',
+    /** public/ 配下のパス。ファイルが無い間は表示しない */
+    photo: '/images/representative.jpg',
+    photoAlt: '代表社員 加藤隆寛',
+    youtube: {
+      name: '加藤トラベル',
+      url: 'https://www.youtube.com/@katohtravel',
+      subscribers: '35万人',
+    },
+  },
 } as const;
 
 /** ナビは最小限（CLAUDE.md サイト構成方針）。会社情報は /company/ 作成後に差し替える */
