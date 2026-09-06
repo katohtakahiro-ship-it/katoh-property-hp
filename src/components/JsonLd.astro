@@ -1,0 +1,13 @@
+---
+/**
+ * JSON-LD を <script type="application/ld+json"> として出力する。
+ * `</script>` などの文字列を含んでも壊れないようにエスケープする。
+ */
+interface Props {
+  data: Record<string, unknown> | Record<string, unknown>[];
+}
+const { data } = Astro.props;
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+---
+
+<script is:inline type="application/ld+json" set:html={json} />

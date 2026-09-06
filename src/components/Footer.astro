@@ -1,0 +1,66 @@
+---
+import { SITE } from '../config/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo"><span>加藤</span>プロパティマネジメント</div>
+        <p class="footer-license">{SITE.license}</p>
+      </div>
+      <address class="footer-meta">
+        {SITE.address.full}<br />
+        {SITE.name}<br />
+        © {year} {SITE.name}
+      </address>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: #111120;
+    padding: 3rem 0;
+    border-top: 1px solid rgba(201, 168, 76, 0.15);
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--cream);
+  }
+
+  .footer-logo span {
+    color: var(--gold);
+  }
+
+  .footer-license {
+    font-size: 0.75rem;
+    color: rgba(250, 248, 243, 0.35);
+    margin-top: 0.5rem;
+  }
+
+  .footer-meta {
+    font-style: normal;
+    font-size: 0.75rem;
+    color: rgba(250, 248, 243, 0.35);
+    line-height: 1.8;
+    text-align: right;
+  }
+
+  @media (max-width: 600px) {
+    .footer-meta {
+      text-align: left;
+    }
+  }
+</style>

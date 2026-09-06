@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>合同会社加藤プロパティマネジメント | 仲介手数料半額・一都3県対応</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Shippori+Mincho:wght@400;600;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --charcoal: #2d2d3a;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --cream: #faf8f3;
+    --warm-white: #fffef9;
+    --muted: #7a7a8a;
+    --border: rgba(201,168,76,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Serif JP', serif;
+    background: var(--warm-white);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(250,248,243,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow .3s;
+  }
+
+  .nav-logo {
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: .08em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav-logo span {
+    color: var(--gold);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: .82rem;
+    letter-spacing: .12em;
+    color: var(--charcoal);
+    text-decoration: none;
+    transition: color .2s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width .3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    background: var(--ink);
+    color: var(--gold-light) !important;
+    padding: .55rem 1.4rem;
+    border: 1px solid var(--ink);
+    transition: all .25s !important;
+  }
+
+  .nav-cta::after { display: none !important; }
+  .nav-cta:hover { background: var(--gold) !important; border-color: var(--gold) !important; color: var(--ink) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10rem 5rem 6rem 8rem;
+    position: relative;
+  }
+
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    top: 0; right: -1px;
+    width: 80px; height: 100%;
+    background: linear-gradient(to right, var(--ink), transparent);
+    z-index: 1;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: .2em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp .8s .3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 800;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    line-height: 1.15;
+    color: var(--cream);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp .8s .5s forwards;
+  }
+
+  .hero-title em {
+    display: block;
+    font-style: normal;
+    color: var(--gold);
+    font-size: 1.1em;
+  }
+
+  .hero-sub {
+    font-size: .92rem;
+    line-height: 2;
+    color: rgba(250,248,243,.65);
+    max-width: 360px;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp .8s .7s forwards;
+  }
+
+  .hero-badges {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp .8s .9s forwards;
+  }
+
+  .badge {
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    padding: .45rem 1.1rem;
+    font-size: .78rem;
+    letter-spacing: .1em;
+  }
+
+  .hero-right {
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-right-inner {
+    width: 100%; height: 100%;
+    background:
+      linear-gradient(135deg, rgba(201,168,76,.06) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+  }
+
+  .hero-card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 3rem 2.5rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 60px rgba(26,26,46,.08);
+    opacity: 0;
+    animation: fadeUp .9s 1s forwards;
+  }
+
+  .hero-card h3 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--charcoal);
+  }
+
+  .card-feature {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .card-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .card-icon svg { width: 16px; height: 16px; fill: var(--gold); }
+
+  .card-feature p {
+    font-size: .85rem;
+    line-height: 1.6;
+    color: var(--charcoal);
+  }
+
+  .card-feature strong {
+    display: block;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .05em;
+    color: var(--muted);
+    margin-bottom: .15rem;
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  .hero-cta-btn {
+    display: block;
+    width: 100%;
+    margin-top: 2rem;
+    padding: 1rem;
+    background: var(--gold);
+    color: var(--ink);
+    text-align: center;
+    text-decoration: none;
+    font-size: .88rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    transition: all .25s;
+  }
+
+  .hero-cta-btn:hover {
+    background: var(--ink);
+    color: var(--gold-light);
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 7rem 0; }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--gold);
+    font-size: .95rem;
+    letter-spacing: .25em;
+    display: block;
+    margin-bottom: .8rem;
+  }
+
+  .section-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-body {
+    font-size: .92rem;
+    line-height: 2.1;
+    color: var(--muted);
+    max-width: 540px;
+  }
+
+  /* ── FREE FEE SECTION ── */
+  .fee-section {
+    background: var(--ink);
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .fee-section::before {
+    content: '½';
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18rem;
+    font-weight: 300;
+    color: rgba(201,168,76,.07);
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .fee-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .fee-left .section-title { color: var(--cream); }
+  .fee-left .section-body { color: rgba(250,248,243,.6); max-width: 100%; }
+
+  .fee-highlight {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+    margin: 1.5rem 0;
+  }
+
+  .fee-highlight small {
+    font-size: .35em;
+    vertical-align: middle;
+    color: var(--gold-light);
+  }
+
+  .fee-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .fee-item {
+    padding: 1.5rem 2rem;
+    border: 1px solid rgba(201,168,76,.2);
+    position: relative;
+    transition: border-color .3s;
+  }
+
+  .fee-item:hover { border-color: var(--gold); }
+
+  .fee-item-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: .8rem;
+    color: var(--gold);
+    letter-spacing: .15em;
+    margin-bottom: .5rem;
+    display: block;
+  }
+
+  .fee-item h4 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1rem;
+    color: var(--cream);
+    margin-bottom: .4rem;
+  }
+
+  .fee-item p {
+    font-size: .82rem;
+    line-height: 1.8;
+    color: rgba(250,248,243,.55);
+  }
+
+  /* ── AREAS ── */
+  .areas-section { background: var(--cream); }
+
+  .areas-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+
+  .area-card {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    border: 1px solid var(--border);
+    background: white;
+    transition: all .3s;
+    cursor: default;
+  }
+
+  .area-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(26,26,46,.1);
+  }
+
+  .area-kanji {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: .5rem;
+  }
+
+  .area-name {
+    font-size: .82rem;
+    color: var(--muted);
+    letter-spacing: .1em;
+  }
+
+  .area-detail {
+    font-size: .75rem;
+    color: var(--gold);
+    margin-top: .5rem;
+    letter-spacing: .05em;
+  }
+
+  /* ── FLOW ── */
+  .flow-section { background: white; }
+
+  .flow-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    margin-top: 3.5rem;
+    position: relative;
+  }
+
+  .flow-steps::before {
+    content: '';
+    position: absolute;
+    top: 28px; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+
+  .flow-step {
+    text-align: center;
+    padding: 0 1rem;
+    position: relative;
+  }
+
+  .flow-num {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.2rem;
+    border: 2px solid var(--gold);
+    position: relative;
+    z-index: 1;
+  }
+
+  .flow-step h4 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: .95rem;
+    margin-bottom: .5rem;
+    color: var(--ink);
+  }
+
+  .flow-step p {
+    font-size: .78rem;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  /* ── FAQ ── */
+  .faq-section { background: var(--cream); }
+
+  .faq-list {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    max-width: 760px;
+  }
+
+  .faq-item {
+    border: 1px solid var(--border);
+    background: white;
+    overflow: hidden;
+  }
+
+  .faq-q {
+    width: 100%;
+    padding: 1.3rem 1.8rem;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: 'Noto Serif JP', serif;
+    font-size: .9rem;
+    color: var(--ink);
+    transition: background .2s;
+  }
+
+  .faq-q:hover { background: var(--cream); }
+
+  .faq-q-label {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--ink);
+    font-size: .8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .faq-q-arrow {
+    margin-left: auto;
+    font-size: 1rem;
+    transition: transform .3s;
+    color: var(--gold);
+  }
+
+  .faq-item.open .faq-q-arrow { transform: rotate(180deg); }
+
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s ease, padding .3s;
+    padding: 0 1.8rem 0 calc(1.8rem + 28px + 1rem);
+    font-size: .87rem;
+    line-height: 2;
+    color: var(--muted);
+    border-top: 0 solid var(--border);
+  }
+
+  .faq-item.open .faq-a {
+    max-height: 200px;
+    padding-bottom: 1.3rem;
+    padding-top: .5rem;
+    border-top-width: 1px;
+  }
+
+  /* ── CONTACT ── */
+  .contact-section { background: var(--ink); }
+
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .contact-left .section-title { color: var(--cream); }
+  .contact-left .section-body { color: rgba(250,248,243,.6); }
+
+  .contact-tel {
+    margin-top: 2rem;
+  }
+
+  .contact-tel small {
+    display: block;
+    font-size: .75rem;
+    letter-spacing: .12em;
+    color: var(--gold);
+    margin-bottom: .3rem;
+  }
+
+  .tel-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    color: var(--cream);
+    letter-spacing: .05em;
+  }
+
+  .contact-hours {
+    font-size: .78rem;
+    color: rgba(250,248,243,.45);
+    margin-top: .3rem;
+  }
+
+  .contact-form {
+    background: rgba(250,248,243,.04);
+    border: 1px solid rgba(201,168,76,.2);
+    padding: 2.5rem;
+  }
+
+  .form-row {
+    margin-bottom: 1.4rem;
+  }
+
+  .form-row label {
+    display: block;
+    font-size: .75rem;
+    letter-spacing: .1em;
+    color: rgba(250,248,243,.6);
+    margin-bottom: .5rem;
+  }
+
+  .form-row input,
+  .form-row select,
+  .form-row textarea {
+    width: 100%;
+    padding: .8rem 1rem;
+    background: rgba(250,248,243,.06);
+    border: 1px solid rgba(201,168,76,.2);
+    color: var(--cream);
+    font-family: 'Noto Serif JP', serif;
+    font-size: .85rem;
+    outline: none;
+    transition: border-color .2s;
+  }
+
+  .form-row input:focus,
+  .form-row select:focus,
+  .form-row textarea:focus {
+    border-color: var(--gold);
+  }
+
+  .form-row select option { background: var(--ink); }
+
+  .form-row textarea { height: 100px; resize: vertical; }
+
+  .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    font-family: 'Shippori Mincho', serif;
+    font-size: .95rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    cursor: pointer;
+    transition: all .25s;
+    margin-top: .5rem;
+  }
+
+  .submit-btn:hover { background: var(--gold-light); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #111120;
+    padding: 3rem 0;
+    border-top: 1px solid rgba(201,168,76,.15);
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.1rem;
+    color: var(--cream);
+  }
+
+  .footer-logo span { color: var(--gold); }
+
+  .footer-meta {
+    font-size: .75rem;
+    color: rgba(250,248,243,.35);
+    line-height: 1.8;
+    text-align: right;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 8rem 2rem 4rem; }
+    .hero-left::after { display: none; }
+    .hero-right { min-height: 60vh; }
+    .hero-right-inner { padding: 3rem 1.5rem; }
+
+    .fee-inner,
+    .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+
+    .areas-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .flow-steps { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .flow-steps::before { display: none; }
+
+    section { padding: 4rem 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo"><span>加藤</span>プロパティマネジメント</a>
+  <ul class="nav-links">
+    <li><a href="#fee">仲介手数料半額</a></li>
+    <li><a href="#areas">対応エリア</a></li>
+    <li><a href="#flow">ご利用の流れ</a></li>
+    <li><a href="#faq">よくある質問</a></li>
+    <li><a href="#contact" class="nav-cta">お問い合わせ</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <span class="hero-eyebrow">Half-Price Commission Real Estate</span>
+    <h1 class="hero-title">
+      仲介手数料<em>半額でOK</em>
+    </h1>
+    <p class="hero-sub">
+      東京・神奈川・千葉・埼玉の一都3県を対応エリアとして、お客様の理想のお部屋探しをサポートいたします。仲介手数料は通常の半額。初期費用を大幅に節約できます。
+    </p>
+    <div class="hero-badges">
+      <span class="badge">仲介手数料 半額</span>
+      <span class="badge">一都3県対応</span>
+      <span class="badge">宅地建物取引業者</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-inner">
+      <div class="hero-card">
+        <h3>加藤プロパティマネジメントが選ばれる理由</h3>
+        <div class="card-feature">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+          </div>
+          <p><strong>仲介手数料 半額</strong>賃貸・売買を問わず、手数料は通常の半額でご対応いたします</p>
+        </div>
+        <div class="card-feature">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+          </div>
+          <p><strong>一都3県すべて対応</strong>東京・神奈川・千葉・埼玉のどこでもご相談ください</p>
+        </div>
+        <div class="card-feature">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+          </div>
+          <p><strong>丁寧なサポート</strong>ご内見から契約まで、担当者が一貫してご対応いたします</p>
+        </div>
+        <a href="#contact" class="hero-cta-btn">半額手数料でお部屋を探す</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEE -->
+<section class="fee-section" id="fee">
+  <div class="container">
+    <div class="fee-inner">
+      <div class="fee-left reveal">
+        <span class="section-label">Half Commission</span>
+        <h2 class="section-title">仲介手数料は<br>通常の半額です</h2>
+        <div class="fee-highlight">1/2<small>額</small></div>
+        <p class="section-body">
+          一般的な不動産会社では、賃貸契約の際に「家賃1ヶ月分＋消費税」の仲介手数料が発生します。当社では、その手数料を半額でご提供。初期費用を大幅に節約していただけます。
+        </p>
+      </div>
+      <div class="fee-right reveal">
+        <div class="fee-item">
+          <span class="fee-item-num">01</span>
+          <h4>賃貸仲介</h4>
+          <p>お部屋探しから内見のご案内、賃貸契約のお手伝いまで、仲介手数料は通常の半額です。</p>
+        </div>
+        <div class="fee-item">
+          <span class="fee-item-num">02</span>
+          <h4>売買仲介</h4>
+          <p>土地・マンション・一戸建ての購入・売却も仲介手数料半額でサポートいたします。</p>
+        </div>
+        <div class="fee-item">
+          <span class="fee-item-num">03</span>
+          <h4>相談・見積り</h4>
+          <p>初回のご相談・お見積りはもちろん無料です。お気軽にお問い合わせください。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AREAS -->
+<section class="areas-section" id="areas">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Service Area</span>
+      <h2 class="section-title">一都3県、全域対応</h2>
+      <p class="section-body">首都圏全域でお客様のお部屋探しをサポートいたします。</p>
+    </div>
+    <div class="areas-grid reveal">
+      <div class="area-card">
+        <div class="area-kanji">東</div>
+        <div class="area-name">東京都</div>
+        <div class="area-detail">全23区・多摩地区</div>
+      </div>
+      <div class="area-card">
+        <div class="area-kanji">神</div>
+        <div class="area-name">神奈川県</div>
+        <div class="area-detail">横浜・川崎・相模原 他</div>
+      </div>
+      <div class="area-card">
+        <div class="area-kanji">千</div>
+        <div class="area-name">千葉県</div>
+        <div class="area-detail">千葉市・船橋・松戸 他</div>
+      </div>
+      <div class="area-card">
+        <div class="area-kanji">埼</div>
+        <div class="area-name">埼玉県</div>
+        <div class="area-detail">さいたま・川口・越谷 他</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="flow-section" id="flow">
+  <div class="container">
+    <div class="reveal" style="text-align:center; margin-bottom:1rem;">
+      <span class="section-label">How It Works</span>
+      <h2 class="section-title">ご利用の流れ</h2>
+    </div>
+    <div class="flow-steps reveal">
+      <div class="flow-step">
+        <div class="flow-num">01</div>
+        <h4>お問い合わせ</h4>
+        <p>フォームまたはお電話でご連絡ください。</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">02</div>
+        <h4>ご要望のヒアリング</h4>
+        <p>希望エリア・予算・条件をお聞きします。</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">03</div>
+        <h4>物件のご提案</h4>
+        <p>条件にマッチした物件を複数ご紹介します。</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">04</div>
+        <h4>内見・現地確認</h4>
+        <p>実際に物件をご確認いただきます。</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">05</div>
+        <h4>契約・お引渡し</h4>
+        <p>手数料半額で契約手続きを完了します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">FAQ</span>
+      <h2 class="section-title">よくある質問</h2>
+    </div>
+    <div class="faq-list reveal">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-label">Q</span>
+          本当に仲介手数料は半額ですか？
+          <span class="faq-q-arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          はい、賃貸・売買ともに仲介手数料は通常の半額でご対応しております。一般的には家賃1ヶ月分＋消費税がかかるところ、当社では0.5ヶ月分＋消費税となります。初期費用を大幅に節約していただけます。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-label">Q</span>
+          対応しているエリアはどこですか？
+          <span class="faq-q-arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          東京都・神奈川県・千葉県・埼玉県の一都3県全域に対応しております。具体的なエリアについてはお気軽にご相談ください。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-label">Q</span>
+          相談だけでも大丈夫ですか？
+          <span class="faq-q-arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          もちろん大丈夫です。「まだ迷っている」「なんとなく探している」という段階でも、お気軽にご連絡ください。ご相談・お見積りはすべて無料です。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-label">Q</span>
+          売買の仲介も手数料無料ですか？
+          <span class="faq-q-arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          はい、売買仲介においても手数料半額でご対応しております。土地・マンション・一戸建ての購入・売却、どちらのお立場でもご相談ください。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-label">Q</span>
+          宅地建物取引業の免許はありますか？
+          <span class="faq-q-arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          はい、神奈川県知事（2）第30531号の宅地建物取引業免許を取得しております。安心してお取引いただける体制を整えております。
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="contact-left reveal">
+        <span class="section-label">Contact</span>
+        <h2 class="section-title" style="color:var(--cream)">お問い合わせ</h2>
+        <p class="section-body">
+          物件探しのご相談から、現在のお住まいの売却まで、何でもお気軽にご相談ください。専任担当者が丁寧にご対応いたします。
+        </p>
+        <div class="contact-tel">
+          <small>お電話でのお問い合わせ</small>
+          <div class="tel-num">0120-000-000</div>
+          <p class="contact-hours">受付時間：10:00〜19:00（定休日：水曜日）</p>
+        </div>
+      </div>
+      <div class="contact-form reveal">
+        <div class="form-row">
+          <label>お名前 *</label>
+          <input type="text" placeholder="山田 太郎">
+        </div>
+        <div class="form-row">
+          <label>メールアドレス *</label>
+          <input type="email" placeholder="example@email.com">
+        </div>
+        <div class="form-row">
+          <label>電話番号</label>
+          <input type="tel" placeholder="090-0000-0000">
+        </div>
+        <div class="form-row">
+          <label>ご相談内容</label>
+          <select>
+            <option>賃貸物件を探したい</option>
+            <option>物件を購入したい</option>
+            <option>物件を売却したい</option>
+            <option>その他</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>ご要望・メッセージ</label>
+          <textarea placeholder="ご希望のエリアや条件などをご記入ください"></textarea>
+        </div>
+        <button class="submit-btn">相談する（手数料半額） →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo"><span>加藤</span>プロパティマネジメント</div>
+        <p style="font-size:.75rem; color:rgba(250,248,243,.35); margin-top:.5rem;">
+          宅地建物取引業者 神奈川県知事（2）第30531号
+        </p>
+      </div>
+      <div class="footer-meta">
+        〒211-0025 神奈川県川崎市中原区木月4-51-1<br>
+        合同会社加藤プロパティマネジメント<br>
+        © 2025 合同会社加藤プロパティマネジメント
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // FAQ toggle
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Nav shadow on scroll
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.boxShadow =
+      window.scrollY > 20 ? '0 4px 24px rgba(26,26,46,.1)' : '';
+  });
+</script>
+</body>
+</html>

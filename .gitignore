@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# local dev launcher (machine-specific paths)
+.claude/launch.json

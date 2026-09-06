@@ -1,17 +1,871 @@
 ---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import { SITE } from '../config/site';
 
+const faqItems = [
+  {
+    q: '仲介手数料はいくらですか？',
+    a: `賃貸は${SITE.fees.rent}、売買は${SITE.fees.sale}です。一般的な賃貸仲介は家賃1ヶ月分＋税、売買仲介の${SITE.fees.saleNote}のため、いずれも大きく抑えられます。`,
+  },
+  {
+    q: '対応しているエリアはどこですか？',
+    a: `${SITE.primaryArea}を主戦場とし、東京都・神奈川県・千葉県・埼玉県の一都3県全域に対応しています。具体的なエリアはお気軽にご相談ください。`,
+  },
+  {
+    q: '来店は必要ですか？',
+    a: '来店は不要です。事務所は自宅兼用のため店舗での対応は行わず、お電話・フォーム・LINEでオンライン完結でご対応します。内見は現地でお待ち合わせします。',
+  },
+  {
+    q: '相談だけでも大丈夫ですか？',
+    a: 'はい、大丈夫です。「まだ迷っている」「なんとなく探している」という段階でもご連絡ください。費用が発生するのは成約時のみで、ご相談・お見積りの段階で費用はいただきません。',
+  },
+  {
+    q: '宅地建物取引業の免許はありますか？',
+    a: `はい、${SITE.licenseNumber}の宅地建物取引業免許を取得しています。安心してお取引いただける体制を整えています。`,
+  },
+];
+
+const areas = [
+  { kanji: '神', name: '神奈川県', detail: '武蔵小杉・川崎・横浜（主戦場）' },
+  { kanji: '東', name: '東京都', detail: '全23区・多摩地区' },
+  { kanji: '千', name: '千葉県', detail: '千葉市・船橋・松戸 他' },
+  { kanji: '埼', name: '埼玉県', detail: 'さいたま・川口・越谷 他' },
+];
+
+const steps = [
+  { title: 'お問い合わせ', body: 'フォーム・お電話・LINEでご連絡ください。来店は不要です。' },
+  { title: 'ご要望のヒアリング', body: '希望エリア・予算・条件をオンラインでお聞きします。' },
+  { title: '物件のご提案', body: '条件にマッチした物件を複数ご紹介します。' },
+  { title: '内見・現地確認', body: '現地でお待ち合わせし、実際に物件をご確認いただきます。' },
+  { title: '契約・お引渡し', body: '仲介手数料は賃貸半額・売買1%。契約手続きを完了します。' },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <span class="hero-eyebrow">Clear &amp; Honest Real Estate Brokerage</span>
+      <h1 class="hero-title">
+        仲介手数料<em>賃貸は半額</em><em>売買は1%</em>
+      </h1>
+      <p class="hero-sub">
+        {SITE.primaryArea}、そして一都3県（東京・神奈川・千葉・埼玉）に対応。賃貸の仲介手数料は{SITE.fees.rent}、売買は{SITE.fees.sale}。来店不要、電話・フォーム・LINEでオンライン完結です。
+      </p>
+      <div class="hero-badges">
+        <span class="badge">賃貸仲介 半額</span>
+        <span class="badge">売買仲介 1%</span>
+        <span class="badge">一都3県対応</span>
+        <span class="badge">宅地建物取引業者</span>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-right-inner">
+        <div class="hero-card">
+          <h2>加藤プロパティマネジメントが選ばれる理由</h2>
+          <div class="card-feature">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            </div>
+            <p><strong>明快な仲介手数料</strong>賃貸は{SITE.fees.rent}、売買は{SITE.fees.sale}。サイト全体で同じ料金です</p>
+          </div>
+          <div class="card-feature">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+            </div>
+            <p><strong>武蔵小杉・川崎・横浜に強い</strong>地元を主戦場に、一都3県のどこでもご相談いただけます</p>
+          </div>
+          <div class="card-feature">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+            </div>
+            <p><strong>来店不要・オンライン完結</strong>電話・フォーム・LINEでご相談から契約まで、担当者が一貫して対応します</p>
+          </div>
+          <a href="#contact" class="hero-cta-btn">手数料を確認して相談する</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEE -->
+  <section class="fee-section" id="fee">
+    <div class="container">
+      <div class="fee-inner">
+        <div class="fee-left reveal">
+          <span class="section-label">Commission</span>
+          <h2 class="section-title">仲介手数料は<br />賃貸半額・売買1%</h2>
+          <div class="fee-highlights">
+            <div class="fee-highlight"><small>賃貸</small>半額</div>
+            <div class="fee-highlight"><small>売買</small>1<span class="unit">%</span></div>
+          </div>
+          <p class="section-body">
+            賃貸仲介は一般に「家賃1ヶ月分＋消費税」の仲介手数料がかかるところ、当社は{SITE.fees.rent}です。売買仲介は{SITE.fees.saleNote}のところ、{SITE.fees.sale}でご対応します。数字はサイト全体で統一しています。
+          </p>
+        </div>
+        <div class="fee-right reveal">
+          <div class="fee-item">
+            <span class="fee-item-num">01</span>
+            <h3>賃貸仲介</h3>
+            <p class="fee-value">{SITE.fees.rent}</p>
+            <p>お部屋探しから内見のご案内、賃貸契約のお手伝いまで。一般的な1ヶ月分＋税の半額です。</p>
+          </div>
+          <div class="fee-item">
+            <span class="fee-item-num">02</span>
+            <h3>売買仲介</h3>
+            <p class="fee-value">{SITE.fees.sale}</p>
+            <p>土地・マンション・一戸建ての購入・売却をサポート。※{SITE.fees.saleNote}</p>
+          </div>
+          <div class="fee-item">
+            <span class="fee-item-num">03</span>
+            <h3>費用が発生するのは成約時のみ</h3>
+            <p>ご相談・お見積りの段階で費用はいただきません。まずはお気軽にお問い合わせください。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AREAS -->
+  <section class="areas-section" id="areas">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">Service Area</span>
+        <h2 class="section-title">武蔵小杉を中心に、一都3県</h2>
+        <p class="section-body">主戦場は武蔵小杉を中心とした川崎市・横浜市。東京・神奈川・千葉・埼玉の一都3県全域でお部屋探し・売買のご相談に対応します。</p>
+      </div>
+      <div class="areas-grid reveal">
+        {areas.map((area) => (
+          <div class="area-card">
+            <div class="area-kanji" aria-hidden="true">{area.kanji}</div>
+            <div class="area-name">{area.name}</div>
+            <div class="area-detail">{area.detail}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOW -->
+  <section class="flow-section" id="flow">
+    <div class="container">
+      <div class="reveal flow-head">
+        <span class="section-label">How It Works</span>
+        <h2 class="section-title">ご利用の流れ</h2>
+      </div>
+      <ol class="flow-steps reveal">
+        {steps.map((step, i) => (
+          <li class="flow-step">
+            <div class="flow-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</div>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">FAQ</span>
+        <h2 class="section-title">よくある質問</h2>
+      </div>
+      <div class="reveal faq-wrap">
+        <Faq items={faqItems} />
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-left reveal">
+          <span class="section-label">Contact</span>
+          <h2 class="section-title">お問い合わせ</h2>
+          <p class="section-body">
+            物件探しのご相談から、現在のお住まいの売却まで、何でもお気軽にご相談ください。来店は不要です。電話・フォーム・LINEで、担当者が丁寧にご対応します。
+          </p>
+          {SITE.tel && (
+            <div class="contact-tel">
+              <small>お電話でのお問い合わせ</small>
+              <a class="tel-num" href={`tel:${SITE.tel.replace(/-/g, '')}`}>{SITE.tel}</a>
+              {SITE.hours && <p class="contact-hours">受付時間：{SITE.hours}</p>}
+            </div>
+          )}
+          {SITE.lineUrl && (
+            <a class="line-btn" href={SITE.lineUrl} target="_blank" rel="noopener">LINEで相談する</a>
+          )}
+          <dl class="contact-company">
+            <dt>会社名</dt><dd>{SITE.name}</dd>
+            <dt>免許</dt><dd>{SITE.license}</dd>
+            <dt>所在地</dt><dd>{SITE.address.full}</dd>
+          </dl>
+        </div>
+        <form class="contact-form reveal" method="POST" action="/api/contact">
+          <div class="form-row">
+            <label for="f-name">お名前 <span aria-hidden="true">*</span></label>
+            <input id="f-name" name="name" type="text" placeholder="山田 太郎" required autocomplete="name" />
+          </div>
+          <div class="form-row">
+            <label for="f-email">メールアドレス <span aria-hidden="true">*</span></label>
+            <input id="f-email" name="email" type="email" placeholder="example@email.com" required autocomplete="email" />
+          </div>
+          <div class="form-row">
+            <label for="f-tel">電話番号</label>
+            <input id="f-tel" name="tel" type="tel" placeholder="090-0000-0000" autocomplete="tel" />
+          </div>
+          <div class="form-row">
+            <label for="f-type">ご相談内容</label>
+            <select id="f-type" name="type">
+              <option>賃貸物件を探したい</option>
+              <option>物件を購入したい</option>
+              <option>物件を売却したい</option>
+              <option>その他</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="f-message">ご要望・メッセージ</label>
+            <textarea id="f-message" name="message" placeholder="ご希望のエリアや条件などをご記入ください"></textarea>
+          </div>
+          <button class="submit-btn" type="submit">相談する →</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10rem 5rem 6rem 8rem;
+    position: relative;
+  }
+
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -1px;
+    width: 80px;
+    height: 100%;
+    background: linear-gradient(to right, var(--ink), transparent);
+    z-index: 1;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+    line-height: 1.2;
+    color: var(--cream);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+
+  .hero-title em {
+    display: block;
+    font-style: normal;
+    color: var(--gold);
+    font-size: 1.05em;
+  }
+
+  .hero-sub {
+    font-size: 0.92rem;
+    line-height: 2;
+    color: rgba(250, 248, 243, 0.65);
+    max-width: 400px;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.7s forwards;
+  }
+
+  .hero-badges {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.9s forwards;
+  }
+
+  .badge {
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    padding: 0.45rem 1.1rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+  }
+
+  .hero-right {
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-right-inner {
+    width: 100%;
+    height: 100%;
+    background:
+      linear-gradient(135deg, rgba(201, 168, 76, 0.06) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+  }
+
+  .hero-card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 3rem 2.5rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 60px rgba(26, 26, 46, 0.08);
+    opacity: 0;
+    animation: fadeUp 0.9s 1s forwards;
+  }
+
+  .hero-card h2 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--charcoal);
+  }
+
+  .card-feature {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .card-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--gold);
+  }
+
+  .card-feature p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--charcoal);
+  }
+
+  .card-feature strong {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 0.15rem;
+  }
+
+  .hero-cta-btn {
+    display: block;
+    width: 100%;
+    margin-top: 2rem;
+    padding: 1rem;
+    background: var(--gold);
+    color: var(--ink);
+    text-align: center;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    transition: all 0.25s;
+  }
+
+  .hero-cta-btn:hover {
+    background: var(--ink);
+    color: var(--gold-light);
+  }
+
+  /* ── FEE ── */
+  .fee-section {
+    background: var(--ink);
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .fee-section::before {
+    content: '1%';
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-accent);
+    font-size: 16rem;
+    font-weight: 300;
+    color: rgba(201, 168, 76, 0.07);
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .fee-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .fee-left .section-title {
+    color: var(--cream);
+  }
+  .fee-left .section-body {
+    color: rgba(250, 248, 243, 0.6);
+    max-width: 100%;
+  }
+
+  .fee-highlights {
+    display: flex;
+    gap: 2.5rem;
+    align-items: baseline;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+  }
+
+  .fee-highlight {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 5.5vw, 5rem);
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .fee-highlight small {
+    display: block;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-light);
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+
+  .fee-highlight .unit {
+    font-size: 0.55em;
+  }
+
+  .fee-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .fee-item {
+    padding: 1.5rem 2rem;
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    position: relative;
+    transition: border-color 0.3s;
+  }
+
+  .fee-item:hover {
+    border-color: var(--gold);
+  }
+
+  .fee-item-num {
+    font-family: var(--font-accent);
+    font-size: 0.8rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .fee-item h3 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 0.4rem;
+  }
+
+  .fee-item p {
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: rgba(250, 248, 243, 0.55);
+  }
+
+  .fee-item .fee-value {
+    color: var(--gold-light);
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+
+  /* ── AREAS ── */
+  .areas-section {
+    background: var(--cream);
+  }
+
+  .areas-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+
+  .area-card {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    border: 1px solid var(--border);
+    background: white;
+    transition: all 0.3s;
+  }
+
+  .area-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(26, 26, 46, 0.1);
+  }
+
+  .area-kanji {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .area-name {
+    font-size: 0.82rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .area-detail {
+    font-size: 0.75rem;
+    color: var(--gold);
+    margin-top: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── FLOW ── */
+  .flow-section {
+    background: white;
+  }
+
+  .flow-head {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .flow-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    margin-top: 3.5rem;
+    position: relative;
+    list-style: none;
+  }
+
+  .flow-steps::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+
+  .flow-step {
+    text-align: center;
+    padding: 0 1rem;
+    position: relative;
+  }
+
+  .flow-num {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--gold);
+    font-family: var(--font-accent);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.2rem;
+    border: 2px solid var(--gold);
+    position: relative;
+    z-index: 1;
+  }
+
+  .flow-step h3 {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+
+  .flow-step p {
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  /* ── FAQ ── */
+  .faq-section {
+    background: var(--cream);
+  }
+
+  .faq-wrap {
+    margin-top: 3rem;
+  }
+
+  /* ── CONTACT ── */
+  .contact-section {
+    background: var(--ink);
+  }
+
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .contact-left .section-title {
+    color: var(--cream);
+  }
+  .contact-left .section-body {
+    color: rgba(250, 248, 243, 0.6);
+  }
+
+  .contact-tel {
+    margin-top: 2rem;
+  }
+
+  .contact-tel small {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+
+  .tel-num {
+    font-family: var(--font-accent);
+    font-size: 2.8rem;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+
+  .contact-hours {
+    font-size: 0.78rem;
+    color: rgba(250, 248, 243, 0.45);
+    margin-top: 0.3rem;
+  }
+
+  .line-btn {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.7rem 1.6rem;
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    transition: all 0.25s;
+  }
+
+  .line-btn:hover {
+    background: var(--gold);
+    color: var(--ink);
+  }
+
+  .contact-company {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.4rem 1.2rem;
+    font-size: 0.78rem;
+    line-height: 1.8;
+    color: rgba(250, 248, 243, 0.55);
+  }
+
+  .contact-company dt {
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+
+  .contact-form {
+    background: rgba(250, 248, 243, 0.04);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    padding: 2.5rem;
+  }
+
+  .form-row {
+    margin-bottom: 1.4rem;
+  }
+
+  .form-row label {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: rgba(250, 248, 243, 0.6);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-row input,
+  .form-row select,
+  .form-row textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: rgba(250, 248, 243, 0.06);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    color: var(--cream);
+    font-family: var(--font-body);
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-row input:focus,
+  .form-row select:focus,
+  .form-row textarea:focus {
+    border-color: var(--gold);
+  }
+
+  .form-row select option {
+    background: var(--ink);
+  }
+
+  .form-row textarea {
+    height: 100px;
+    resize: vertical;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-top: 0.5rem;
+  }
+
+  .submit-btn:hover {
+    background: var(--gold-light);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .hero-left {
+      padding: 7rem 1.5rem 3.5rem;
+    }
+    .hero-left::after {
+      display: none;
+    }
+    .hero-right {
+      min-height: auto;
+    }
+    .hero-right-inner {
+      padding: 3rem 1.5rem;
+    }
+    .hero-card {
+      padding: 2rem 1.5rem;
+    }
+
+    .fee-inner,
+    .contact-inner {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .fee-section::before {
+      font-size: 10rem;
+    }
+
+    .areas-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .flow-steps {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .flow-steps::before {
+      display: none;
+    }
+
+    .contact-form {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  const reveals = document.querySelectorAll<HTMLElement>('.reveal');
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => entry.target.classList.add('visible'), i * 80);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 },
+    );
+    reveals.forEach((el) => observer.observe(el));
+  } else {
+    reveals.forEach((el) => el.classList.add('visible'));
+  }
+</script>

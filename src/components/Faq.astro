@@ -1,0 +1,172 @@
+---
+/**
+ * FAQ アコーディオン。items を渡すと表示し、schema=true で FAQPage の JSON-LD も出力する。
+ * トップページと記事ページ（frontmatter の faq）で共用する。
+ */
+import JsonLd from './JsonLd.astro';
+
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+
+interface Props {
+  items: readonly FaqItem[];
+  schema?: boolean;
+  class?: string;
+}
+
+const { items, schema = true, class: className } = Astro.props;
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+---
+
+{schema && items.length > 0 && <JsonLd data={faqSchema} />}
+
+<div class:list={['faq-list', className]}>
+  {items.map((item, i) => (
+    <div class="faq-item">
+      <h3 class="faq-h">
+        <button class="faq-q" type="button" aria-expanded="false" aria-controls={`faq-a-${i}`}>
+          <span class="faq-q-label" aria-hidden="true">Q</span>
+          <span class="faq-q-text">{item.q}</span>
+          <span class="faq-q-arrow" aria-hidden="true">▼</span>
+        </button>
+      </h3>
+      <div class="faq-a" id={`faq-a-${i}`}>
+        <div class="faq-a-inner">{item.a}</div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 760px;
+  }
+
+  .faq-item {
+    border: 1px solid var(--border);
+    background: white;
+    overflow: hidden;
+  }
+
+  .faq-h {
+    margin: 0;
+    font-size: inherit;
+    font-weight: normal;
+  }
+
+  .faq-q {
+    width: 100%;
+    padding: 1.3rem 1.8rem;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--ink);
+    transition: background 0.2s;
+  }
+
+  .faq-q:hover {
+    background: var(--cream);
+  }
+
+  .faq-q-label {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--ink);
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .faq-q-text {
+    flex: 1;
+    line-height: 1.6;
+  }
+
+  .faq-q-arrow {
+    margin-left: auto;
+    font-size: 1rem;
+    transition: transform 0.3s;
+    color: var(--gold);
+  }
+
+  .faq-item.open .faq-q-arrow {
+    transform: rotate(180deg);
+  }
+
+  .faq-a {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s ease;
+    font-size: 0.87rem;
+    line-height: 2;
+    color: var(--muted);
+  }
+
+  .faq-a-inner {
+    overflow: hidden;
+    padding: 0 1.8rem 0 calc(1.8rem + 28px + 1rem);
+  }
+
+  .faq-item.open .faq-a {
+    grid-template-rows: 1fr;
+  }
+
+  .faq-item.open .faq-a-inner {
+    padding-top: 0.5rem;
+    padding-bottom: 1.3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 600px) {
+    .faq-q {
+      padding: 1.1rem 1.2rem;
+    }
+    .faq-a-inner {
+      padding-left: 1.2rem;
+      padding-right: 1.2rem;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.faq-q').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      if (!item) return;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach((i) => {
+        i.classList.remove('open');
+        i.querySelector('.faq-q')?.setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+</script>
