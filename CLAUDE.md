@@ -37,7 +37,9 @@
 - ナビは最小限（渋井不動産型）：ブログ / 仲介手数料 / 会社情報 / お問い合わせ
 - 予定サイトマップ：/ 、/blog/ 、/blog/[slug]/ 、/buy/ /sell/ /rent/ 、/area/musashikosugi/ 等 、/company/ 、/contact/
 - トップに最新記事枠を置く。料金セクションには法定上限との比較・試算を置く
-- 参考：東京R不動産 https://www.realtokyoestate.co.jp/ 、渋井不動産 https://shibui.estate/ 、REDS https://www.reds.co.jp/
+- 参考：東京R不動産 https://www.realtokyoestate.co.jp/ 、渋井不動産 https://shibui.estate/ 、REDS https://www.reds.co.jp/ 、Blackship Realty / Tokyo Portfolio（英語版の構成・分かりやすさの参考。YouTube 集客型）
+- 英語版：/en/ 配下に日本語と対になるページを置く。ブログは日英で同じスラッグ、hreflang で相互リンク。契約書・重説は日本語が正本で英語は参考訳（要確認事項として明記）
+- ドメイン：katohpm.com（Cloudflare Registrar で取得）。メールは Google Workspace（Meet 録画のため Business Standard を検討。IT重説の録画は義務ではない見込みだが要確認）
 
 ## ディレクトリ構成（予定）
 - /design/ … 参考デザイン（index.html）。トップページの見た目の基準
