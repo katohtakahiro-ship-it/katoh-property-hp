@@ -1,0 +1,135 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { SITE } from '../../config/site';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Tokyo' });
+
+const description = `武蔵小杉・川崎・横浜の不動産、仲介手数料、タワーマンションの成約価格などについて、${SITE.shortName}がQ&A形式で解説する記事一覧です。`;
+---
+
+<Base title="ブログ" description={description}>
+  <section class="blog-index">
+    <div class="container">
+      <span class="section-label">Blog</span>
+      <h1 class="section-title">記事一覧</h1>
+      <p class="section-body">{description}</p>
+
+      {posts.length === 0 ? (
+        <p class="blog-empty">記事は準備中です。</p>
+      ) : (
+        <ul class="post-list">
+          {posts.map((post) => (
+            <li class="post-card">
+              <a href={`/blog/${post.id}/`}>
+                <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+                <h2>{post.data.title}</h2>
+                <p>{post.data.description}</p>
+                {post.data.tags.length > 0 && (
+                  <ul class="post-card-tags">
+                    {post.data.tags.map((tag) => (
+                      <li>{tag}</li>
+                    ))}
+                  </ul>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .blog-index {
+    padding-top: 9rem;
+    background: var(--cream);
+    min-height: 70vh;
+  }
+
+  .blog-index .container {
+    max-width: 860px;
+  }
+
+  .blog-empty {
+    margin-top: 3rem;
+    color: var(--muted);
+  }
+
+  .post-list {
+    list-style: none;
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .post-card a {
+    display: block;
+    padding: 1.8rem 2rem;
+    background: white;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s;
+  }
+
+  .post-card a:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(26, 26, 46, 0.08);
+  }
+
+  .post-card time {
+    font-family: var(--font-accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+
+  .post-card h2 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.5;
+    margin: 0.5rem 0 0.7rem;
+    color: var(--ink);
+  }
+
+  .post-card p {
+    font-size: 0.88rem;
+    line-height: 1.9;
+    color: var(--muted);
+  }
+
+  .post-card-tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+  }
+
+  .post-card-tags li {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--charcoal);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.6rem;
+  }
+
+  @media (max-width: 600px) {
+    .blog-index {
+      padding-top: 7rem;
+    }
+    .post-card a {
+      padding: 1.3rem 1.2rem;
+    }
+  }
+</style>

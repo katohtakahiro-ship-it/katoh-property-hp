@@ -1,0 +1,341 @@
+---
+/**
+ * ブログ記事レイアウト。
+ * - 記事ヘッダー（日付・タグ・タイトル・description）
+ * - 本文（slot）
+ * - frontmatter.faq から FAQ ブロック + FAQPage JSON-LD（Faq コンポーネントが生成）
+ * - BlogPosting JSON-LD
+ * - 末尾 CTA
+ */
+import Base from './Base.astro';
+import Faq from '../components/Faq.astro';
+import type { FaqItem } from '../components/Faq.astro';
+import { SITE } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  updated?: Date;
+  tags: readonly string[];
+  faq: readonly FaqItem[];
+}
+
+const { title, description, date, updated, tags, faq } = Astro.props;
+
+const siteUrl = Astro.site ?? new URL(SITE.url);
+const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
+const orgId = new URL('/#organization', siteUrl).href;
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Tokyo' });
+
+const blogPostingSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  '@id': `${pageUrl}#article`,
+  mainEntityOfPage: pageUrl,
+  headline: title,
+  description,
+  datePublished: date.toISOString(),
+  dateModified: (updated ?? date).toISOString(),
+  inLanguage: 'ja',
+  keywords: tags.join(', '),
+  author: { '@id': orgId },
+  publisher: { '@id': orgId },
+};
+---
+
+<Base title={title} description={description} ogType="article" jsonLd={blogPostingSchema}>
+  <article class="post">
+    <header class="post-header">
+      <div class="container">
+        <p class="post-meta">
+          <time datetime={date.toISOString()}>{formatDate(date)}</time>
+          {updated && <span class="post-updated">（更新：{formatDate(updated)}）</span>}
+        </p>
+        <h1 class="post-title">{title}</h1>
+        <p class="post-lead">{description}</p>
+        {tags.length > 0 && (
+          <ul class="post-tags">
+            {tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="post-body">
+        <slot />
+      </div>
+
+      {faq.length > 0 && (
+        <section class="post-faq" aria-labelledby="post-faq-title">
+          <span class="section-label">FAQ</span>
+          <h2 id="post-faq-title" class="section-title">この記事のよくある質問</h2>
+          <Faq items={faq} />
+        </section>
+      )}
+
+      <aside class="post-cta">
+        <p class="post-cta-label">{SITE.shortName}</p>
+        <p class="post-cta-title">仲介手数料は賃貸・売買とも半額</p>
+        <p class="post-cta-body">
+          {SITE.primaryArea}、一都3県に対応。来店不要、フォーム・LINEでオンライン完結です。
+        </p>
+        <a class="post-cta-btn" href="/#contact">相談する</a>
+      </aside>
+
+      <p class="post-back"><a href="/blog/">← 記事一覧へ</a></p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .post {
+    padding-top: 5.5rem;
+    padding-bottom: 5rem;
+  }
+
+  .post .container {
+    max-width: 780px;
+  }
+
+  .post-header {
+    padding: 3rem 0 2.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+
+  .post-meta {
+    font-family: var(--font-accent);
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .post-updated {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-left: 0.5rem;
+  }
+
+  .post-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 1.2rem;
+  }
+
+  .post-lead {
+    font-size: 0.95rem;
+    line-height: 2;
+    color: var(--muted);
+  }
+
+  .post-tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .post-tags li {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--charcoal);
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.8rem;
+  }
+
+  /* ── 本文（Markdown 出力） ── */
+  .post-body {
+    font-size: 1rem;
+    line-height: 2.1;
+    color: var(--charcoal);
+  }
+
+  .post-body :global(h2) {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.5;
+    margin: 3.5rem 0 1.2rem;
+    padding-left: 1rem;
+    border-left: 3px solid var(--gold);
+    color: var(--ink);
+  }
+
+  .post-body :global(h3) {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 2.5rem 0 0.8rem;
+    color: var(--ink);
+  }
+
+  .post-body :global(p) {
+    margin-bottom: 1.4rem;
+  }
+
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    margin: 0 0 1.4rem 1.5rem;
+  }
+
+  .post-body :global(li) {
+    margin-bottom: 0.4rem;
+  }
+
+  .post-body :global(strong) {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .post-body :global(a) {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--gold);
+    text-underline-offset: 3px;
+  }
+
+  .post-body :global(blockquote) {
+    margin: 2rem 0;
+    padding: 1.2rem 1.5rem;
+    background: var(--cream);
+    border-left: 3px solid var(--gold);
+    color: var(--charcoal);
+  }
+
+  .post-body :global(blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .post-body :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 0.9rem;
+    display: block;
+    overflow-x: auto;
+  }
+
+  .post-body :global(th),
+  .post-body :global(td) {
+    border: 1px solid var(--border);
+    padding: 0.7rem 1rem;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .post-body :global(th) {
+    background: var(--cream);
+    font-weight: 600;
+  }
+
+  .post-body :global(hr) {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 3rem 0;
+  }
+
+  .post-body :global(img) {
+    display: block;
+    margin: 2rem auto;
+  }
+
+  .post-body :global(code) {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.85em;
+    background: var(--cream);
+    padding: 0.1em 0.4em;
+  }
+
+  /* ── FAQ ── */
+  .post-faq {
+    margin-top: 4rem;
+    padding: 3rem 0 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .post-faq .section-title {
+    font-size: 1.45rem;
+    margin-bottom: 2rem;
+  }
+
+  /* ── CTA ── */
+  .post-cta {
+    margin-top: 4rem;
+    padding: 2.5rem;
+    background: var(--ink);
+    color: var(--cream);
+    text-align: center;
+  }
+
+  .post-cta-label {
+    font-family: var(--font-accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+  }
+
+  .post-cta-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+  }
+
+  .post-cta-body {
+    font-size: 0.88rem;
+    line-height: 1.9;
+    color: rgba(250, 248, 243, 0.65);
+    margin-bottom: 1.5rem;
+  }
+
+  .post-cta-btn {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    background: var(--gold);
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    transition: all 0.25s;
+  }
+
+  .post-cta-btn:hover {
+    background: var(--gold-light);
+  }
+
+  .post-back {
+    margin-top: 3rem;
+    font-size: 0.85rem;
+  }
+
+  .post-back a {
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+  }
+
+  .post-back a:hover {
+    color: var(--gold);
+  }
+
+  @media (max-width: 600px) {
+    .post-header {
+      padding: 2rem 0 1.5rem;
+    }
+    .post-cta {
+      padding: 2rem 1.5rem;
+    }
+  }
+</style>

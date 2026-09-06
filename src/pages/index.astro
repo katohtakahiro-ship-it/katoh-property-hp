@@ -1,7 +1,15 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
 import { SITE } from '../config/site';
+
+const latestPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Tokyo' });
 
 const faqItems = [
   {
@@ -14,7 +22,7 @@ const faqItems = [
   },
   {
     q: '来店は必要ですか？',
-    a: '来店は不要です。事務所は自宅兼用のため店舗での対応は行わず、お電話・フォーム・LINEでオンライン完結でご対応します。内見は現地でお待ち合わせします。',
+    a: '来店は不要です。事務所は自宅兼用のため店舗での対応は行わず、フォーム・LINEでオンライン完結でご対応します。内見は現地でお待ち合わせします。',
   },
   {
     q: '相談だけでも大丈夫ですか？',
@@ -34,7 +42,7 @@ const areas = [
 ];
 
 const steps = [
-  { title: 'お問い合わせ', body: 'フォーム・お電話・LINEでご連絡ください。来店は不要です。' },
+  { title: 'お問い合わせ', body: 'フォームまたはLINEでご連絡ください。来店は不要です。' },
   { title: 'ご要望のヒアリング', body: '希望エリア・予算・条件をオンラインでお聞きします。' },
   { title: '物件のご提案', body: '条件にマッチした物件を複数ご紹介します。' },
   { title: '内見・現地確認', body: '現地でお待ち合わせし、実際に物件をご確認いただきます。' },
@@ -51,7 +59,7 @@ const steps = [
         仲介手数料<em>賃貸も売買も</em><em>半額</em>
       </h1>
       <p class="hero-sub">
-        {SITE.primaryArea}、そして一都3県（東京・神奈川・千葉・埼玉）に対応。賃貸の仲介手数料は{SITE.fees.rent}、売買は{SITE.fees.sale}。来店不要、電話・フォーム・LINEでオンライン完結です。
+        {SITE.primaryArea}、そして一都3県（東京・神奈川・千葉・埼玉）に対応。賃貸の仲介手数料は{SITE.fees.rent}、売買は{SITE.fees.sale}。来店不要、フォーム・LINEでオンライン完結です。
       </p>
       <div class="hero-badges">
         <span class="badge">賃貸仲介 半額</span>
@@ -80,7 +88,7 @@ const steps = [
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
             </div>
-            <p><strong>来店不要・オンライン完結</strong>電話・フォーム・LINEでご相談から契約まで、担当者が一貫して対応します</p>
+            <p><strong>来店不要・オンライン完結</strong>フォーム・LINEでご相談から契約まで、担当者が一貫して対応します</p>
           </div>
           <a href="#contact" class="hero-cta-btn">手数料を確認して相談する</a>
         </div>
@@ -99,7 +107,7 @@ const steps = [
             <div class="fee-highlight"><small>賃貸・売買とも</small>半額</div>
           </div>
           <p class="section-body">
-            賃貸仲介は一般に「家賃1ヶ月分＋消費税」の仲介手数料がかかるところ、当社は{SITE.fees.rent}です。売買仲介は{SITE.fees.saleNote}のところ、{SITE.fees.sale}でご対応します。数字はサイト全体で統一しています。
+            賃貸仲介は一般に「家賃1ヶ月分＋消費税」の仲介手数料がかかるところ、当社は{SITE.fees.rent}です。売買仲介の{SITE.fees.saleNote}。当社は{SITE.fees.sale}でご対応します。数字はサイト全体で統一しています。
           </p>
         </div>
         <div class="fee-right reveal">
@@ -177,6 +185,32 @@ const steps = [
     </div>
   </section>
 
+  <!-- BLOG -->
+  {latestPosts.length > 0 && (
+    <section class="blog-section" id="blog">
+      <div class="container">
+        <div class="reveal blog-head">
+          <div>
+            <span class="section-label">Blog</span>
+            <h2 class="section-title">最新の記事</h2>
+          </div>
+          <a class="blog-more" href="/blog/">記事一覧 →</a>
+        </div>
+        <ul class="blog-grid reveal">
+          {latestPosts.map((post) => (
+            <li class="blog-card">
+              <a href={`/blog/${post.id}/`}>
+                <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+                <h3>{post.data.title}</h3>
+                <p>{post.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
   <!-- CONTACT -->
   <section class="contact-section" id="contact">
     <div class="container">
@@ -185,19 +219,12 @@ const steps = [
           <span class="section-label">Contact</span>
           <h2 class="section-title">お問い合わせ</h2>
           <p class="section-body">
-            物件探しのご相談から、現在のお住まいの売却まで、何でもお気軽にご相談ください。来店は不要です。電話・フォーム・LINEで、担当者が丁寧にご対応します。
+            物件探しのご相談から、現在のお住まいの売却まで、何でもお気軽にご相談ください。来店は不要です。フォームまたはLINEで、担当者が丁寧にご対応します。
           </p>
-          {SITE.tel && (
-            <div class="contact-tel">
-              <small>お電話でのお問い合わせ</small>
-              <a class="tel-num" href={`tel:${SITE.tel.replace(/-/g, '')}`}>{SITE.tel}</a>
-              {SITE.hours && <p class="contact-hours">受付時間：{SITE.hours}</p>}
-            </div>
-          )}
           {SITE.lineUrl && (
             <a class="line-btn" href={SITE.lineUrl} target="_blank" rel="noopener">LINEで相談する</a>
           )}
-          <dl class="contact-company">
+          <dl class="contact-company" id="company">
             <dt>会社名</dt><dd>{SITE.name}</dd>
             <dt>免許</dt><dd>{SITE.license}</dd>
             <dt>所在地</dt><dd>{SITE.address.full}</dd>
@@ -655,6 +682,88 @@ const steps = [
     margin-top: 3rem;
   }
 
+  /* ── BLOG ── */
+  .blog-section {
+    background: white;
+  }
+
+  .blog-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .blog-head .section-title {
+    margin-bottom: 0;
+  }
+
+  .blog-more {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 0.2rem;
+    transition: color 0.2s;
+  }
+
+  .blog-more:hover {
+    color: var(--gold);
+  }
+
+  .blog-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .blog-card a {
+    display: block;
+    height: 100%;
+    padding: 1.8rem;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s;
+  }
+
+  .blog-card a:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(26, 26, 46, 0.1);
+  }
+
+  .blog-card time {
+    font-family: var(--font-accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+
+  .blog-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.5;
+    margin: 0.5rem 0 0.7rem;
+    color: var(--ink);
+  }
+
+  .blog-card p {
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: var(--muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   /* ── CONTACT ── */
   .contact-section {
     background: var(--ink);
@@ -672,32 +781,6 @@ const steps = [
   }
   .contact-left .section-body {
     color: rgba(250, 248, 243, 0.6);
-  }
-
-  .contact-tel {
-    margin-top: 2rem;
-  }
-
-  .contact-tel small {
-    display: block;
-    font-size: 0.75rem;
-    letter-spacing: 0.12em;
-    color: var(--gold);
-    margin-bottom: 0.3rem;
-  }
-
-  .tel-num {
-    font-family: var(--font-accent);
-    font-size: 2.8rem;
-    color: var(--cream);
-    letter-spacing: 0.05em;
-    text-decoration: none;
-  }
-
-  .contact-hours {
-    font-size: 0.78rem;
-    color: rgba(250, 248, 243, 0.45);
-    margin-top: 0.3rem;
   }
 
   .line-btn {
@@ -833,6 +916,10 @@ const steps = [
     .areas-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
+    }
+
+    .blog-grid {
+      grid-template-columns: 1fr;
     }
 
     .flow-steps {

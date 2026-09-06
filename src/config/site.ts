@@ -8,7 +8,7 @@ export const SITE = {
   /** TODO: 独自ドメイン取得後に変更（Cloudflare Pages の既定ドメインを仮置き） */
   url: 'https://katoh-property-hp.pages.dev',
   description:
-    '武蔵小杉を中心に川崎市・横浜市、一都3県（東京・神奈川・千葉・埼玉）に対応する宅地建物取引業者。仲介手数料は売買・賃貸とも半額。売買は法定上限（成約価格の3%＋6万円）の半額、賃貸は家賃の半額（0.5ヶ月分＋税）。来店不要、電話・フォーム・LINEでオンライン完結。',
+    '武蔵小杉を中心に川崎市・横浜市、一都3県（東京・神奈川・千葉・埼玉）に対応する宅地建物取引業者。仲介手数料は売買・賃貸とも半額。売買は法定上限（成約価格の3%＋6万円）の半額、賃貸は家賃の半額（0.5ヶ月分＋税）。来店不要、フォーム・LINEでオンライン完結。',
   license: '宅地建物取引業 神奈川県知事（2）第30531号',
   licenseNumber: '神奈川県知事（2）第30531号',
   address: {
@@ -25,16 +25,18 @@ export const SITE = {
     saleNote: '法定上限は成約価格の3%＋6万円（税別）',
     rent: '家賃の半額（0.5ヶ月分＋税）',
   },
-  /** 電話番号・受付時間は未確定のため空。設定すると Contact セクションに表示される */
-  tel: '' as string,
-  hours: '' as string,
-  /** LINE 公式アカウントの URL。未設定なら非表示 */
+  /** 電話番号はサイトに掲載しない（CLAUDE.md 作業ルール）。以下は未設定なら非表示 */
+  /** LINE 公式アカウントの URL */
   lineUrl: '' as string,
+  /** YouTube チャンネル URL */
+  youtubeUrl: '' as string,
+  /** 代表者（代表社員）。宅建業免許上の代表者とは異なる点は CLAUDE.md 参照 */
+  representative: { name: '' as string, title: '代表社員', bio: '' as string },
 } as const;
 
+/** ナビは最小限（CLAUDE.md サイト構成方針）。会社情報は /company/ 作成後に差し替える */
 export const NAV_LINKS = [
+  { href: '/blog/', label: 'ブログ' },
   { href: '/#fee', label: '仲介手数料' },
-  { href: '/#areas', label: '対応エリア' },
-  { href: '/#flow', label: 'ご利用の流れ' },
-  { href: '/#faq', label: 'よくある質問' },
+  { href: '/#company', label: '会社情報' },
 ] as const;
