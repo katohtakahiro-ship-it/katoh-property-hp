@@ -22,7 +22,7 @@ const {
   jsonLd,
 } = Astro.props;
 
-const fullTitle = title ? `${title} | ${SITE.shortName}` : `${SITE.name} | 仲介手数料 売買1%・賃貸半額｜武蔵小杉・川崎・横浜`;
+const fullTitle = title ? `${title} | ${SITE.shortName}` : `${SITE.name} | 仲介手数料 賃貸・売買とも半額｜武蔵小杉・川崎・横浜`;
 const siteUrl = Astro.site ?? new URL(SITE.url);
 const canonical = new URL(Astro.url.pathname, siteUrl).href;
 const orgId = new URL('/#organization', siteUrl).href;

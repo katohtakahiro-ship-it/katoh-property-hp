@@ -38,7 +38,7 @@ const steps = [
   { title: 'ご要望のヒアリング', body: '希望エリア・予算・条件をオンラインでお聞きします。' },
   { title: '物件のご提案', body: '条件にマッチした物件を複数ご紹介します。' },
   { title: '内見・現地確認', body: '現地でお待ち合わせし、実際に物件をご確認いただきます。' },
-  { title: '契約・お引渡し', body: '仲介手数料は賃貸半額・売買1%。契約手続きを完了します。' },
+  { title: '契約・お引渡し', body: '仲介手数料は賃貸・売買とも半額。契約手続きを完了します。' },
 ];
 ---
 
@@ -48,14 +48,14 @@ const steps = [
     <div class="hero-left">
       <span class="hero-eyebrow">Clear &amp; Honest Real Estate Brokerage</span>
       <h1 class="hero-title">
-        仲介手数料<em>賃貸は半額</em><em>売買は1%</em>
+        仲介手数料<em>賃貸も売買も</em><em>半額</em>
       </h1>
       <p class="hero-sub">
         {SITE.primaryArea}、そして一都3県（東京・神奈川・千葉・埼玉）に対応。賃貸の仲介手数料は{SITE.fees.rent}、売買は{SITE.fees.sale}。来店不要、電話・フォーム・LINEでオンライン完結です。
       </p>
       <div class="hero-badges">
         <span class="badge">賃貸仲介 半額</span>
-        <span class="badge">売買仲介 1%</span>
+        <span class="badge">売買仲介 半額</span>
         <span class="badge">一都3県対応</span>
         <span class="badge">宅地建物取引業者</span>
       </div>
@@ -94,10 +94,9 @@ const steps = [
       <div class="fee-inner">
         <div class="fee-left reveal">
           <span class="section-label">Commission</span>
-          <h2 class="section-title">仲介手数料は<br />賃貸半額・売買1%</h2>
+          <h2 class="section-title">仲介手数料は<br />賃貸・売買とも半額</h2>
           <div class="fee-highlights">
-            <div class="fee-highlight"><small>賃貸</small>半額</div>
-            <div class="fee-highlight"><small>売買</small>1<span class="unit">%</span></div>
+            <div class="fee-highlight"><small>賃貸・売買とも</small>半額</div>
           </div>
           <p class="section-body">
             賃貸仲介は一般に「家賃1ヶ月分＋消費税」の仲介手数料がかかるところ、当社は{SITE.fees.rent}です。売買仲介は{SITE.fees.saleNote}のところ、{SITE.fees.sale}でご対応します。数字はサイト全体で統一しています。
@@ -430,7 +429,7 @@ const steps = [
   }
 
   .fee-section::before {
-    content: '1%';
+    content: '½';
     position: absolute;
     right: -2rem;
     top: 50%;
