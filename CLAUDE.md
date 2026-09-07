@@ -28,7 +28,7 @@
 - 記事編集：Claude Code が主。ウェブ編集用に Sveltia CMS を /admin/ に設置（GitHub OAuth）
 - 問い合わせ：Cloudflare Pages Functions + Resend（またはFormspree）でメール送信
 - 分析：Google Analytics 4 / Search Console
-- ドメイン：未定（Cloudflare Registrar で取得予定）
+- ドメイン：katohpm.com（Cloudflare Registrar で取得済み、2026-09-08）
 - Googleビジネスプロフィールは使わない（自宅事務所のため）
 - WordPress / AFFINGER は使わない
 

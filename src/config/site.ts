@@ -5,8 +5,8 @@
 export const SITE = {
   name: '合同会社加藤プロパティマネジメント',
   shortName: '加藤プロパティマネジメント',
-  /** TODO: 独自ドメイン取得後に変更（Cloudflare Pages の既定ドメインを仮置き） */
-  url: 'https://katoh-property-hp.pages.dev',
+  /** 独自ドメイン（astro.config.mjs の site と揃える） */
+  url: 'https://katohpm.com',
   description:
     '武蔵小杉を中心に川崎市・横浜市、一都3県（東京・神奈川・千葉・埼玉）に対応する宅地建物取引業者。仲介手数料は売買・賃貸とも半額。売買は法定上限（成約価格の3%＋6万円）の半額、賃貸は家賃の半額（0.5ヶ月分＋税）。来店不要、フォーム・LINEでオンライン完結。',
   license: '宅地建物取引業 神奈川県知事（2）第30531号',
