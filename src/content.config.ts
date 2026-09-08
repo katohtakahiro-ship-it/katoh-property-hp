@@ -24,8 +24,8 @@ const blog = defineCollection({
         }),
       )
       .default([]),
-    /** 更新日（任意）。JSON-LD の dateModified に使う */
-    updated: z.coerce.date().optional(),
+    /** 更新日（任意）。JSON-LD の dateModified に使う。Sveltia CMS は未入力時に '' を書くので空文字は未設定扱い */
+    updated: z.preprocess((v) => (v === '' || v == null ? undefined : v), z.coerce.date().optional()),
     /** true なら一覧・ビルドから除外 */
     draft: z.boolean().default(false),
   }),
