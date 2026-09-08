@@ -10,6 +10,8 @@ import { glob } from 'astro/loaders';
 const blog = defineCollection({
   loader: glob({ pattern: '**/[^_]*.md', base: './src/content/blog' }),
   schema: z.object({
+    /** URL 用スラッグ。ファイル名と一致させる（Sveltia CMS が {{fields.page_slug}} でファイル名を決める。frontmatter の slug は Astro が ID に使うので使わない） */
+    page_slug: z.string().optional(),
     title: z.string(),
     date: z.coerce.date(),
     description: z.string(),

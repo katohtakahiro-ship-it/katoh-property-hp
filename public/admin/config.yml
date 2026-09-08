@@ -1,0 +1,107 @@
+# Sveltia CMS 設定（/admin/ で読み込まれる）
+# 記事は src/content/blog/{ja,en}/<slug>.md に日英で対にして保存する（Astro の Content Collection と同じ構造）。
+# GitHub OAuth の設定手順は README.md を参照。
+
+backend:
+  name: github
+  repo: katohtakahiro-ship-it/katoh-property-hp
+  branch: main
+  # Sveltia CMS Authenticator（Cloudflare Worker）の URL。README の手順でデプロイ後に差し替える
+  base_url: https://sveltia-cms-auth.REPLACE-ME.workers.dev
+  auth_endpoint: auth
+  # GitHub のコミット者として記録される名前。実際のコミットは OAuth でログインしたユーザー名義になる
+  commit_messages:
+    create: '記事を追加: {{slug}}'
+    update: '記事を更新: {{slug}}'
+    delete: '記事を削除: {{slug}}'
+    uploadMedia: '画像を追加: {{path}}'
+    deleteMedia: '画像を削除: {{path}}'
+
+site_url: https://katohpm.com
+display_url: https://katohpm.com
+logo_url: /favicon.svg
+locale: ja
+
+media_folder: public/images/blog
+public_folder: /images/blog
+
+# 多言語: src/content/blog/ja/<slug>.md と src/content/blog/en/<slug>.md
+i18n:
+  structure: multiple_folders
+  locales: [ja, en]
+  default_locale: ja
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: '-'
+
+collections:
+  - name: blog
+    label: ブログ記事
+    label_singular: 記事
+    description: 見出し（H2）は必ず質問文にし、直後に結論を1〜2文で書く。記事末尾の FAQ は frontmatter の faq から自動生成される。
+    folder: src/content/blog
+    create: true
+    delete: false
+    extension: md
+    format: yaml-frontmatter
+    # ファイル名（URL）はローマ字の slug フィールドから作る。日本語タイトルからは自動生成しない
+    slug: '{{fields.page_slug}}'
+    preview_path: 'blog/{{fields.page_slug}}/'
+    i18n: true
+    sortable_fields: [date, title]
+    summary: '{{title}}（{{date}}）'
+    fields:
+      - label: URL スラッグ（半角英数とハイフン）
+        name: page_slug
+        widget: string
+        i18n: duplicate
+        pattern: ['^[a-z0-9-]+$', '半角小文字の英数字とハイフンのみ']
+        hint: '例: musashikosugi-chukai-tesuryo。日英で同じ値にする（自動で複製されます）'
+      - label: タイトル（質問文にする）
+        name: title
+        widget: string
+        i18n: true
+      - label: 公開日
+        name: date
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: YYYY-MM-DD
+        time_format: false
+        i18n: duplicate
+      - label: 説明（検索結果と一覧に表示。結論を含める）
+        name: description
+        widget: text
+        i18n: true
+      - label: タグ
+        name: tags
+        widget: list
+        i18n: true
+        default: []
+      - label: 下書き（オンのままだと公開されない）
+        name: draft
+        widget: boolean
+        default: true
+        i18n: duplicate
+      - label: 更新日（任意）
+        name: updated
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: YYYY-MM-DD
+        time_format: false
+        required: false
+        i18n: duplicate
+      - label: FAQ（記事末尾と FAQPage JSON-LD に使われる）
+        name: faq
+        widget: list
+        i18n: true
+        default: []
+        summary: '{{fields.q}}'
+        fields:
+          - { label: 質問, name: q, widget: string }
+          - { label: 回答（結論を先に）, name: a, widget: text }
+      - label: 本文
+        name: body
+        widget: markdown
+        i18n: true
