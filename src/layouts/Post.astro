@@ -1,6 +1,6 @@
 ---
 /**
- * ブログ記事レイアウト。
+ * ブログ記事レイアウト（日英共用）。
  * - 記事ヘッダー（日付・タグ・タイトル・description）
  * - 本文（slot）
  * - frontmatter.faq から FAQ ブロック + FAQPage JSON-LD（Faq コンポーネントが生成）
@@ -10,7 +10,8 @@
 import Base from './Base.astro';
 import Faq from '../components/Faq.astro';
 import type { FaqItem } from '../components/Faq.astro';
-import { SITE } from '../config/site';
+import { SITE, siteFor } from '../config/site';
+import { UI, HTML_LANG, formatDate, localePath, type Locale } from '../i18n';
 
 interface Props {
   title: string;
@@ -19,16 +20,18 @@ interface Props {
   updated?: Date;
   tags: readonly string[];
   faq: readonly FaqItem[];
+  locale?: Locale;
+  /** 対訳記事のパス（無ければ null） */
+  alternate?: string | null;
 }
 
-const { title, description, date, updated, tags, faq } = Astro.props;
+const { title, description, date, updated, tags, faq, locale = 'ja', alternate = null } = Astro.props;
+const site = siteFor(locale);
+const ui = UI[locale];
 
 const siteUrl = Astro.site ?? new URL(SITE.url);
 const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
 const orgId = new URL('/#organization', siteUrl).href;
-
-const formatDate = (d: Date) =>
-  d.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Tokyo' });
 
 const blogPostingSchema = {
   '@context': 'https://schema.org',
@@ -39,20 +42,20 @@ const blogPostingSchema = {
   description,
   datePublished: date.toISOString(),
   dateModified: (updated ?? date).toISOString(),
-  inLanguage: 'ja',
+  inLanguage: HTML_LANG[locale],
   keywords: tags.join(', '),
   author: { '@id': orgId },
   publisher: { '@id': orgId },
 };
 ---
 
-<Base title={title} description={description} ogType="article" jsonLd={blogPostingSchema}>
+<Base title={title} description={description} ogType="article" jsonLd={blogPostingSchema} locale={locale} alternate={alternate}>
   <article class="post">
     <header class="post-header">
       <div class="container">
         <p class="post-meta">
-          <time datetime={date.toISOString()}>{formatDate(date)}</time>
-          {updated && <span class="post-updated">（更新：{formatDate(updated)}）</span>}
+          <time datetime={date.toISOString()}>{formatDate(date, locale)}</time>
+          {updated && <span class="post-updated">（{ui.blog.updated}: {formatDate(updated, locale)}）</span>}
         </p>
         <h1 class="post-title">{title}</h1>
         <p class="post-lead">{description}</p>
@@ -62,6 +65,9 @@ const blogPostingSchema = {
               <li>{tag}</li>
             ))}
           </ul>
+        )}
+        {alternate && (
+          <p class="post-alternate"><a href={alternate}>{ui.blog.readInOther}</a></p>
         )}
       </div>
     </header>
@@ -74,21 +80,19 @@ const blogPostingSchema = {
       {faq.length > 0 && (
         <section class="post-faq" aria-labelledby="post-faq-title">
           <span class="section-label">FAQ</span>
-          <h2 id="post-faq-title" class="section-title">この記事のよくある質問</h2>
+          <h2 id="post-faq-title" class="section-title">{ui.blog.faqHeading}</h2>
           <Faq items={faq} />
         </section>
       )}
 
       <aside class="post-cta">
-        <p class="post-cta-label">{SITE.shortName}</p>
-        <p class="post-cta-title">仲介手数料は賃貸・売買とも半額</p>
-        <p class="post-cta-body">
-          {SITE.primaryArea}、一都3県に対応。来店不要、フォーム・LINEでオンライン完結です。
-        </p>
-        <a class="post-cta-btn" href="/#contact">相談する</a>
+        <p class="post-cta-label">{site.shortName}</p>
+        <p class="post-cta-title">{ui.blog.ctaTitle}</p>
+        <p class="post-cta-body">{ui.blog.ctaBody}</p>
+        <a class="post-cta-btn" href={localePath(locale, '/#contact')}>{ui.blog.ctaButton}</a>
       </aside>
 
-      <p class="post-back"><a href="/blog/">← 記事一覧へ</a></p>
+      <p class="post-back"><a href={localePath(locale, '/blog/')}>{ui.blog.back}</a></p>
     </div>
   </article>
 </Base>
@@ -152,6 +156,22 @@ const blogPostingSchema = {
     color: var(--charcoal);
     border: 1px solid var(--border);
     padding: 0.3rem 0.8rem;
+  }
+
+  .post-alternate {
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+  }
+
+  .post-alternate a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 0.15rem;
+  }
+
+  .post-alternate a:hover {
+    color: var(--gold);
   }
 
   /* ── 本文（Markdown 出力） ── */

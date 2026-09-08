@@ -1,17 +1,33 @@
 ---
-import { SITE, NAV_LINKS } from '../config/site';
+import { siteFor } from '../config/site';
+import { NAV_ITEMS, UI, localePath, otherLocale, type Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+  /** 対になる言語のページ。無ければ相手言語のトップへ */
+  alternate?: string | null;
+}
+
+const { locale = 'ja', alternate = null } = Astro.props;
+const site = siteFor(locale);
+const ui = UI[locale];
+const other = otherLocale(locale);
+const switchHref = alternate ?? localePath(other, '/');
 ---
 
-<nav class="site-nav" aria-label="メインナビゲーション">
-  <a href="/" class="nav-logo" aria-label={SITE.name}><span>加藤</span>プロパティマネジメント</a>
-  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="メニューを開く">
+<nav class="site-nav" aria-label={ui.navAria}>
+  <a href={localePath(locale, '/')} class="nav-logo" aria-label={site.name}
+    ><span>{site.logo.accent}</span>{site.logo.rest}</a
+  >
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label={ui.menuOpen} data-label-open={ui.menuOpen} data-label-close={ui.menuClose}>
     <span></span><span></span><span></span>
   </button>
   <ul class="nav-links" id="nav-menu">
-    {NAV_LINKS.map((link) => (
-      <li><a href={link.href}>{link.label}</a></li>
+    {NAV_ITEMS.map((item) => (
+      <li><a href={localePath(locale, item.path)}>{ui.nav[item.key]}</a></li>
     ))}
-    <li><a href="/#contact" class="nav-cta">お問い合わせ</a></li>
+    <li><a href={localePath(locale, '/#contact')} class="nav-cta">{ui.nav.contact}</a></li>
+    <li><a href={switchHref} class="nav-lang" lang={other} hreflang={other} aria-label={ui.switchAria}>{ui.switchLabel}</a></li>
   </ul>
 </nav>
 
@@ -102,6 +118,24 @@ import { SITE, NAV_LINKS } from '../config/site';
     color: var(--ink) !important;
   }
 
+  .nav-lang {
+    font-family: var(--font-accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    color: var(--muted) !important;
+    border: 1px solid var(--border);
+    padding: 0.4rem 0.8rem;
+  }
+
+  .nav-lang::after {
+    display: none !important;
+  }
+
+  .nav-lang:hover {
+    border-color: var(--gold);
+    color: var(--ink) !important;
+  }
+
   .nav-toggle {
     display: none;
     flex-direction: column;
@@ -167,10 +201,15 @@ import { SITE, NAV_LINKS } from '../config/site';
       display: none;
     }
 
-    .nav-links li:last-child a {
+    .nav-links li .nav-cta {
       margin-top: 0.75rem;
       text-align: center;
       border: 1px solid var(--ink);
+    }
+
+    .nav-links li .nav-lang {
+      margin-top: 0.75rem;
+      text-align: center;
     }
   }
 </style>
@@ -181,15 +220,18 @@ import { SITE, NAV_LINKS } from '../config/site';
   const menu = document.getElementById('nav-menu');
 
   if (toggle && menu) {
+    const labelOpen = toggle.dataset.labelOpen ?? 'Open menu';
+    const labelClose = toggle.dataset.labelClose ?? 'Close menu';
     toggle.addEventListener('click', () => {
       const open = menu.classList.toggle('open');
       toggle.setAttribute('aria-expanded', String(open));
-      toggle.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');
+      toggle.setAttribute('aria-label', open ? labelClose : labelOpen);
     });
     menu.querySelectorAll('a').forEach((a) =>
       a.addEventListener('click', () => {
         menu.classList.remove('open');
         toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', labelOpen);
       }),
     );
   }

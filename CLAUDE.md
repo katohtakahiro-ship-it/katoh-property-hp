@@ -44,7 +44,7 @@
 ## ディレクトリ構成（予定）
 - /design/ … 参考デザイン（index.html）。トップページの見た目の基準
 - /src/ … Astro ソース（pages, layouts, components, content）
-- /src/content/blog/ … 記事（Markdown、frontmatter に title/date/description/tags/faq）
+- /src/content/blog/ja/ … 日本語記事、/src/content/blog/en/ … 英語記事（同じファイル名で対にする。Markdown、frontmatter に title/date/description/tags/faq）
 - /public/admin/ … Sveltia CMS
 - /scripts/ … 国交省 不動産情報ライブラリAPI（XIT001）で川崎・横浜のタワマン成約価格を四半期ごとに取得・集計・グラフ化するPython
 - /data/ … API取得データ（CSV）。生成したグラフは /public/charts/ に出力

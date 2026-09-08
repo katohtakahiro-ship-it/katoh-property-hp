@@ -1,5 +1,13 @@
 ---
-import { SITE } from '../config/site';
+import { siteFor } from '../config/site';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'ja' } = Astro.props;
+const site = siteFor(locale);
 const year = new Date().getFullYear();
 ---
 
@@ -7,13 +15,13 @@ const year = new Date().getFullYear();
   <div class="container">
     <div class="footer-inner">
       <div>
-        <div class="footer-logo"><span>加藤</span>プロパティマネジメント</div>
-        <p class="footer-license">{SITE.license}</p>
+        <div class="footer-logo"><span>{site.logo.accent}</span>{site.logo.rest}</div>
+        <p class="footer-license">{site.license}</p>
       </div>
       <address class="footer-meta">
-        {SITE.address.full}<br />
-        {SITE.name}<br />
-        © {year} {SITE.name}
+        {site.address.full}<br />
+        {site.name}<br />
+        © {year} {site.name}
       </address>
     </div>
   </div>

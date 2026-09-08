@@ -3,7 +3,8 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import JsonLd from '../components/JsonLd.astro';
-import { SITE } from '../config/site';
+import { SITE, siteFor } from '../config/site';
+import { HTML_LANG, OG_LOCALE, otherLocale, type Locale } from '../i18n';
 
 interface Props {
   /** ページタイトル。省略時はサイト名のみ */
@@ -13,76 +14,90 @@ interface Props {
   ogType?: 'website' | 'article';
   /** ページ固有の JSON-LD（Organization に追加して出力） */
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  /** ページの言語（既定は日本語） */
+  locale?: Locale;
+  /** 対になる言語のページのパス。無い場合は省略（hreflang と言語切替に使う） */
+  alternate?: string | null;
 }
 
-const {
-  title,
-  description = SITE.description,
-  ogType = 'website',
-  jsonLd,
-} = Astro.props;
+const { title, ogType = 'website', jsonLd, locale = 'ja', alternate = null } = Astro.props;
 
-const fullTitle = title ? `${title} | ${SITE.shortName}` : `${SITE.name} | 仲介手数料 賃貸・売買とも半額｜武蔵小杉・川崎・横浜`;
+const site = siteFor(locale);
+const other = otherLocale(locale);
+const otherSite = siteFor(other);
+const description = Astro.props.description ?? site.description;
+
+const fullTitle = title ? `${title} | ${site.shortName}` : site.defaultTitle;
 const siteUrl = Astro.site ?? new URL(SITE.url);
 const canonical = new URL(Astro.url.pathname, siteUrl).href;
+const alternateUrl = alternate ? new URL(alternate, siteUrl).href : null;
 const orgId = new URL('/#organization', siteUrl).href;
 const personId = new URL('/#representative', siteUrl).href;
 
-/** 全ページ共通: Organization / RealEstateAgent（免許番号・住所を含む） */
+/** hreflang: 自分 + 対訳。x-default は日本語ページ */
+const hreflangs: { lang: string; href: string }[] = [{ lang: HTML_LANG[locale], href: canonical }];
+if (alternateUrl) hreflangs.push({ lang: HTML_LANG[other], href: alternateUrl });
+const xDefault = locale === 'ja' ? canonical : alternateUrl;
+
+const ja = locale === 'ja';
+const joinAreas = (list: readonly string[]) => list.join(ja ? '・' : ', ');
+
+/** 全ページ共通: Organization / RealEstateAgent（免許番号・住所を含む）。@id は言語で共通 */
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': ['RealEstateAgent', 'Organization'],
   '@id': orgId,
-  name: SITE.name,
+  name: site.name,
   legalName: SITE.name,
-  alternateName: SITE.shortName,
+  alternateName: [site.shortName, otherSite.name],
   url: siteUrl.href,
-  description: SITE.description,
+  description: site.description,
   address: {
     '@type': 'PostalAddress',
-    postalCode: SITE.address.postalCode,
-    addressRegion: SITE.address.region,
-    addressLocality: SITE.address.locality,
-    streetAddress: SITE.address.street,
+    postalCode: site.address.postalCode,
+    addressRegion: site.address.region,
+    addressLocality: site.address.locality,
+    streetAddress: site.address.street,
     addressCountry: 'JP',
   },
-  areaServed: SITE.areaServed.map((name) => ({ '@type': 'AdministrativeArea', name })),
+  areaServed: site.areaServed.map((name) => ({ '@type': 'AdministrativeArea', name })),
   identifier: {
     '@type': 'PropertyValue',
-    name: '宅地建物取引業免許番号',
-    value: SITE.licenseNumber,
+    name: ja ? '宅地建物取引業免許番号' : 'Real estate brokerage license number',
+    value: site.licenseNumber,
   },
-  founder: SITE.representatives.map((name) => ({ '@type': 'Person', name })),
+  founder: site.representatives.map((name) => ({ '@type': 'Person', name })),
   employee: { '@id': personId },
-  knowsAbout: ['武蔵小杉', '川崎市', '横浜市', '仲介手数料', '不動産売買', '賃貸仲介'],
+  knowsAbout: site.knowsAbout,
+  knowsLanguage: ['ja', 'en'],
   makesOffer: [
     {
       '@type': 'Offer',
-      name: '売買仲介',
-      description: `仲介手数料 ${SITE.fees.sale}（${SITE.fees.saleNote}）`,
-      areaServed: SITE.areaServed.join('・'),
+      name: ja ? '売買仲介' : 'Sales brokerage',
+      description: `${ja ? '仲介手数料' : 'Brokerage fee'}: ${site.fees.sale}（${site.fees.saleNote}）`,
+      areaServed: joinAreas(site.areaServed),
     },
     {
       '@type': 'Offer',
-      name: '賃貸仲介',
-      description: `仲介手数料 ${SITE.fees.rent}`,
-      areaServed: SITE.areaServed.join('・'),
+      name: ja ? '賃貸仲介' : 'Rental brokerage',
+      description: `${ja ? '仲介手数料' : 'Brokerage fee'}: ${site.fees.rent}`,
+      areaServed: joinAreas(site.areaServed),
     },
   ],
 };
-
 
 /** 代表の一人（加藤隆寛）。YouTube を sameAs で紐づける */
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   '@id': personId,
-  name: SITE.representative.name,
-  jobTitle: SITE.representative.title,
-  description: SITE.representative.bio,
+  name: site.representative.name,
+  alternateName: otherSite.representative.name,
+  jobTitle: site.representative.title,
+  description: site.representative.bio,
   worksFor: { '@id': orgId },
-  homeLocation: { '@type': 'Place', name: '神奈川県川崎市' },
-  sameAs: [SITE.representative.youtube.url],
+  homeLocation: { '@type': 'Place', name: ja ? '神奈川県川崎市' : 'Kawasaki, Kanagawa, Japan' },
+  sameAs: [site.representative.youtube.url],
 };
 
 const websiteSchema = {
@@ -90,30 +105,33 @@ const websiteSchema = {
   '@type': 'WebSite',
   '@id': new URL('/#website', siteUrl).href,
   url: siteUrl.href,
-  name: SITE.name,
-  inLanguage: 'ja',
+  name: site.name,
+  inLanguage: ['ja', 'en'],
   publisher: { '@id': orgId },
 };
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang={HTML_LANG[locale]}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {hreflangs.map((h) => <link rel="alternate" hreflang={h.lang} href={h.href} />)}
+    {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
 
     <meta property="og:type" content={ogType} />
-    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:locale" content={OG_LOCALE[locale]} />
+    {alternateUrl && <meta property="og:locale:alternate" content={OG_LOCALE[other]} />}
     <meta name="twitter:card" content="summary" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -130,10 +148,10 @@ const websiteSchema = {
     <slot name="head" />
   </head>
   <body>
-    <Header />
+    <Header locale={locale} alternate={alternate} />
     <main>
       <slot />
     </main>
-    <Footer />
+    <Footer locale={locale} />
   </body>
 </html>

@@ -1,0 +1,312 @@
+---
+/**
+ * English top page. Mirrors src/pages/index.astro section by section and shares its CSS
+ * (src/styles/home.css). Company facts and fees come from src/config/site.ts (SITE_EN).
+ */
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { getPosts, postPath } from '../../lib/blog';
+import '../../styles/home.css';
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+import { siteFor } from '../../config/site';
+import { formatDate } from '../../i18n';
+
+const S = siteFor('en');
+const latestPosts = (await getPosts('en')).slice(0, 3);
+const hasPhoto = existsSync(join(process.cwd(), 'public', S.representative.photo));
+
+const faqItems = [
+  {
+    q: 'How much are your brokerage fees?',
+    a: `For rentals, ${S.fees.rent}. For sales, ${S.fees.sale}. A typical rental agency charges one month’s rent plus tax, and for sales ${S.fees.saleNote}, so both are substantially lower.`,
+  },
+  {
+    q: 'Which areas do you cover?',
+    a: `Our home ground is ${S.primaryArea}. We cover the whole greater Tokyo area: Tokyo, Kanagawa, Chiba and Saitama. Ask us about any specific neighborhood.`,
+  },
+  {
+    q: 'Do you speak English, and do I need to visit your office?',
+    a: 'Yes, we work in English and Japanese. No office visit is needed: our office is home-based, so everything from the first message to the contract is handled online via form or LINE. Viewings are arranged on site.',
+  },
+  {
+    q: 'Can I just ask questions before deciding anything?',
+    a: 'Of course. You are welcome to contact us while you are still exploring. A fee is charged only when a contract is concluded; there is no charge for consultations or estimates.',
+  },
+  {
+    q: 'Are the contracts in English?',
+    a: 'In Japan the Japanese contract and the Japanese “explanation of important matters” (juyo jiko setsumei) are the legally binding documents. We provide English translations for reference and walk you through every document in English before you sign. Please note this point is stated for guidance and should be confirmed for each transaction.',
+  },
+  {
+    q: 'Are you a licensed real estate broker?',
+    a: `Yes. We hold real estate brokerage license ${S.licenseNumber}, issued by Kanagawa Prefecture.`,
+  },
+];
+
+const areas = [
+  { kanji: '神', name: 'Kanagawa', detail: 'Musashikosugi, Kawasaki, Yokohama (home ground)' },
+  { kanji: '東', name: 'Tokyo', detail: 'All 23 wards and the Tama area' },
+  { kanji: '千', name: 'Chiba', detail: 'Chiba City, Funabashi, Matsudo and more' },
+  { kanji: '埼', name: 'Saitama', detail: 'Saitama City, Kawaguchi, Koshigaya and more' },
+];
+
+const steps = [
+  { title: 'Contact us', body: 'Send a message via the form or LINE. No office visit needed.' },
+  { title: 'Tell us what you need', body: 'Area, budget, move-in timing and conditions, discussed online.' },
+  { title: 'Property proposals', body: 'We shortlist several properties that match your conditions.' },
+  { title: 'Viewings', body: 'We meet you on site and visit the properties together.' },
+  { title: 'Contract and handover', body: 'Half-price brokerage fee for rentals and sales. We handle the paperwork.' },
+];
+---
+
+<Base locale="en" alternate="/">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <span class="hero-eyebrow">Clear &amp; Honest Real Estate Brokerage</span>
+      <h1 class="hero-title">
+        Half-price<em>brokerage fees</em><em>Rentals &amp; sales</em>
+      </h1>
+      <p class="hero-sub">
+        Based in {S.primaryArea}, serving Tokyo, Kanagawa, Chiba and Saitama. Rental brokerage fee: {S.fees.rent}. Sales: {S.fees.sale}. No office visit needed: everything is handled online via form or LINE, in English or Japanese.
+      </p>
+      <div class="hero-badges">
+        <span class="badge">Rentals: half fee</span>
+        <span class="badge">Sales: half fee</span>
+        <span class="badge">Greater Tokyo area</span>
+        <span class="badge">Licensed broker</span>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-right-inner">
+        <div class="hero-card">
+          <h2>Why clients choose Katoh Property Management</h2>
+          <div class="card-feature">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            </div>
+            <p><strong>Clear, published fees</strong>Rentals: {S.fees.rent}. Sales: {S.fees.sale}. The same numbers everywhere on this site.</p>
+          </div>
+          <div class="card-feature">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+            </div>
+            <p><strong>Local to Musashikosugi, Kawasaki and Yokohama</strong>Our home ground, with coverage across the greater Tokyo area.</p>
+          </div>
+          <div class="card-feature">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+            </div>
+            <p><strong>English support, fully online</strong>One person handles your case from the first message to the contract, via form or LINE.</p>
+          </div>
+          <a href="#contact" class="hero-cta-btn">Check the fees and get in touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEE -->
+  <section class="fee-section" id="fee">
+    <div class="container">
+      <div class="fee-inner">
+        <div class="fee-left reveal">
+          <span class="section-label">Commission</span>
+          <h2 class="section-title">Half-price brokerage fees<br />for rentals and sales</h2>
+          <div class="fee-highlights">
+            <div class="fee-highlight"><small>Rentals &amp; sales</small>1/2</div>
+          </div>
+          <p class="section-body">
+            Rental agencies in Japan usually charge one month’s rent plus consumption tax as the brokerage fee. Ours is {S.fees.rent}. For sales, {S.fees.saleNote}; ours is {S.fees.sale}. The same numbers apply everywhere on this site.
+          </p>
+        </div>
+        <div class="fee-right reveal">
+          <div class="fee-item">
+            <span class="fee-item-num">01</span>
+            <h3>Rental brokerage</h3>
+            <p class="fee-value">{S.fees.rent}</p>
+            <p>From the search and viewings to the lease contract. Half of the usual one month plus tax.</p>
+          </div>
+          <div class="fee-item">
+            <span class="fee-item-num">02</span>
+            <h3>Sales brokerage</h3>
+            <p class="fee-value">{S.fees.sale}</p>
+            <p>Buying or selling land, condominiums and houses. Note: {S.fees.saleNote}.</p>
+          </div>
+          <div class="fee-item">
+            <span class="fee-item-num">03</span>
+            <h3>You pay only when a contract is concluded</h3>
+            <p>There is no charge for consultations or estimates. Feel free to get in touch first.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AREAS -->
+  <section class="areas-section" id="areas">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">Service Area</span>
+        <h2 class="section-title">Musashikosugi first, greater Tokyo throughout</h2>
+        <p class="section-body">Our home ground is Musashikosugi and the cities of Kawasaki and Yokohama. We handle rentals and sales across Tokyo, Kanagawa, Chiba and Saitama.</p>
+      </div>
+      <div class="areas-grid reveal">
+        {areas.map((area) => (
+          <div class="area-card">
+            <div class="area-kanji" aria-hidden="true">{area.kanji}</div>
+            <div class="area-name">{area.name}</div>
+            <div class="area-detail">{area.detail}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOW -->
+  <section class="flow-section" id="flow">
+    <div class="container">
+      <div class="reveal flow-head">
+        <span class="section-label">How It Works</span>
+        <h2 class="section-title">How it works</h2>
+      </div>
+      <ol class="flow-steps reveal">
+        {steps.map((step, i) => (
+          <li class="flow-step">
+            <div class="flow-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</div>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">FAQ</span>
+        <h2 class="section-title">Frequently asked questions</h2>
+      </div>
+      <div class="reveal faq-wrap">
+        <Faq items={faqItems} />
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  {latestPosts.length > 0 && (
+    <section class="blog-section" id="blog">
+      <div class="container">
+        <div class="reveal blog-head">
+          <div>
+            <span class="section-label">Blog</span>
+            <h2 class="section-title">Latest articles</h2>
+          </div>
+          <a class="blog-more" href="/en/blog/">All articles →</a>
+        </div>
+        <ul class="blog-grid reveal">
+          {latestPosts.map((post) => (
+            <li class="blog-card">
+              <a href={postPath(post)}>
+                <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, 'en')}</time>
+                <h3>{post.data.title}</h3>
+                <p>{post.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- COMPANY -->
+  <section class="company-section" id="company">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">Company</span>
+        <h2 class="section-title">About us</h2>
+      </div>
+      <div class="company-inner">
+        <div class="rep-card reveal" id="representative">
+          {hasPhoto && (
+            <img class="rep-photo" src={S.representative.photo} alt={S.representative.photoAlt} width="480" height="480" loading="lazy" />
+          )}
+          <div class="rep-body">
+            <p class="rep-title">{S.representative.title}</p>
+            <p class="rep-name">{S.representative.name}</p>
+            <p class="rep-bio">{S.representative.bio}</p>
+            <a class="rep-youtube" href={S.representative.youtube.url} target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+              YouTube: {S.representative.youtube.name} ({S.representative.youtube.subscribers} subscribers)
+            </a>
+          </div>
+        </div>
+        <dl class="company-table reveal">
+          <dt>Company</dt><dd>{S.name}<br /><span class="company-ja">合同会社加藤プロパティマネジメント</span></dd>
+          <dt>Managing members</dt><dd>{S.representatives.join(', ')}</dd>
+          <dt>License</dt><dd>{S.license}</dd>
+          <dt>Address</dt><dd>{S.address.full}</dd>
+          <dt>Service area</dt><dd>{S.areaServed.join(', ')} (home ground: {S.primaryArea})</dd>
+          <dt>How we work</dt><dd>No office visit needed. Everything online via form or LINE, in English or Japanese.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-left reveal">
+          <span class="section-label">Contact</span>
+          <h2 class="section-title">Contact us</h2>
+          <p class="section-body">
+            From finding a place to rent to selling your current home, ask us anything. No office visit needed. We reply in English or Japanese via the form or LINE.
+          </p>
+          {S.lineUrl && (
+            <a class="line-btn" href={S.lineUrl} target="_blank" rel="noopener">Message us on LINE</a>
+          )}
+        </div>
+        <form class="contact-form reveal" method="POST" action="/api/contact">
+          <input type="hidden" name="lang" value="en" />
+          <div class="form-row">
+            <label for="f-name">Name <span aria-hidden="true">*</span></label>
+            <input id="f-name" name="name" type="text" placeholder="Jane Smith" required autocomplete="name" />
+          </div>
+          <div class="form-row">
+            <label for="f-email">Email <span aria-hidden="true">*</span></label>
+            <input id="f-email" name="email" type="email" placeholder="you@example.com" required autocomplete="email" />
+          </div>
+          <div class="form-row">
+            <label for="f-tel">Phone (optional)</label>
+            <input id="f-tel" name="tel" type="tel" placeholder="+81 90-0000-0000" autocomplete="tel" />
+          </div>
+          <div class="form-row">
+            <label for="f-type">What can we help with?</label>
+            <select id="f-type" name="type">
+              <option>I want to rent</option>
+              <option>I want to buy</option>
+              <option>I want to sell</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="f-message">Message</label>
+            <textarea id="f-message" name="message" placeholder="Preferred area, budget, move-in timing, or anything else"></textarea>
+          </div>
+          <button class="submit-btn" type="submit">Send →</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .company-ja {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+</style>
+
+<script src="../../scripts/reveal.ts"></script>
