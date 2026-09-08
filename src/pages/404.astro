@@ -1,0 +1,59 @@
+---
+/**
+ * 404 ページ。Cloudflare Pages は dist/404.html があればそれを 404 ステータスで返す
+ * （無い場合はトップページを 200 で返してしまうため必須）。
+ */
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="ページが見つかりません" description="お探しのページは見つかりませんでした。">
+  <section class="not-found">
+    <div class="container">
+      <span class="section-label">404</span>
+      <h1 class="section-title">ページが見つかりません</h1>
+      <p class="section-body">
+        URL が変わったか、削除された可能性があります。トップページまたは記事一覧からお探しください。
+      </p>
+      <p class="section-body" lang="en">
+        The page you are looking for could not be found. Please start from the English top page.
+      </p>
+      <ul class="not-found-links">
+        <li><a href="/">トップページへ</a></li>
+        <li><a href="/blog/">記事一覧へ</a></li>
+        <li><a href="/en/" lang="en">English top page</a></li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .not-found {
+    padding-top: 9rem;
+    min-height: 70vh;
+    background: var(--cream);
+  }
+
+  .not-found-links {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .not-found-links a {
+    display: inline-block;
+    padding: 0.7rem 1.4rem;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    transition: all 0.25s;
+  }
+
+  .not-found-links a:hover {
+    background: var(--ink);
+    color: var(--gold-light);
+  }
+</style>
