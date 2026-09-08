@@ -7,7 +7,7 @@ backend:
   repo: katohtakahiro-ship-it/katoh-property-hp
   branch: main
   # Sveltia CMS Authenticator（Cloudflare Worker）の URL。README の手順でデプロイ後に差し替える
-  base_url: https://sveltia-cms-auth.REPLACE-ME.workers.dev
+  base_url: https://sveltia-cms-auth.katohpmllc.workers.dev
   auth_endpoint: auth
   # GitHub のコミット者として記録される名前。実際のコミットは OAuth でログインしたユーザー名義になる
   commit_messages:
