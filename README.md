@@ -173,9 +173,7 @@ npx wrangler pages dev dist --port 8788
 
 ## 未着手の項目
 
-- LINE 公式アカウントの URL（Pages の環境変数 `LINE_URL` で受付メールに載る。トップページに LINE ボタンを出す場合は `src/config/site.ts` の `lineUrl`）
-- Turnstile（フォームのスパム対策）の設定
-- 代表写真 `public/images/representative.jpg`（置くだけで表示される）
 - 目的別ページ（/buy/ /sell/ /rent/）、エリアページ、会社概要ページ
-- Search Console のサイトマップ送信・GA4 のキーイベント設定（generate_lead）
+- Search Console のサイトマップ送信・GA4 のキーイベント設定（generate_lead を「キーイベント」にする）
+- トップページに LINE ボタンを出す場合は `src/config/site.ts` の `lineUrl` に https://lin.ee/uRSd3Se を設定
 - タワーマンション成約価格ウォッチ用のスクリプト（`/scripts/`、`/data/`）
