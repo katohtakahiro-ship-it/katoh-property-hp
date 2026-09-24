@@ -29,7 +29,7 @@
 - 静的サイト：Astro（Content Collections で記事管理）
 - ホスティング：Cloudflare Pages（GitHub連携で自動デプロイ、無料）
 - 記事編集：Claude Code が主。ウェブ編集用に Sveltia CMS を /admin/ に設置（GitHub OAuth）
-- 問い合わせ：Cloudflare Pages Functions + Resend（またはFormspree）でメール送信
+- 問い合わせ：Cloudflare Pages Functions + Resend でメール送信（実装済み。functions/api/contact.ts、項目定義は src/lib/contact-fields.ts）。通知先 info@katohpm.com、受付メール（自動返信）に「3営業日以内に返信」。LINE は公式アカウントを作成し、URL は Pages の環境変数 LINE_URL で受付メールに載せる（サイト上には当面出さない）
 - 分析：Google Analytics 4 / Search Console
 - ドメイン：katohpm.com（Cloudflare Registrar で取得済み、2026-09-08）
 - Googleビジネスプロフィールは使わない（自宅事務所のため）

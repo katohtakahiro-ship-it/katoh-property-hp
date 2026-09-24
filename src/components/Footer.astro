@@ -1,6 +1,6 @@
 ---
 import { siteFor } from '../config/site';
-import type { Locale } from '../i18n';
+import { localePath, type Locale } from '../i18n';
 
 interface Props {
   locale?: Locale;
@@ -17,6 +17,7 @@ const year = new Date().getFullYear();
       <div>
         <div class="footer-logo"><span>{site.logo.accent}</span>{site.logo.rest}</div>
         <p class="footer-license">{site.license}</p>
+        <p class="footer-links"><a href={localePath(locale, "/privacy/")}>{locale === "ja" ? "プライバシーポリシー" : "Privacy Policy"}</a></p>
       </div>
       <address class="footer-meta">
         {site.address.full}<br />
@@ -56,6 +57,20 @@ const year = new Date().getFullYear();
     font-size: 0.75rem;
     color: rgba(250, 248, 243, 0.35);
     margin-top: 0.5rem;
+  }
+
+  .footer-links {
+    margin-top: 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .footer-links a {
+    color: rgba(250, 248, 243, 0.5);
+    text-decoration: none;
+  }
+
+  .footer-links a:hover {
+    color: var(--gold);
   }
 
   .footer-meta {

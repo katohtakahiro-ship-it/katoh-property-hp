@@ -68,7 +68,6 @@ npm run dev
 補足:
 
 - プレビュー: main 以外のブランチや Pull Request を作ると、自動でプレビュー URL が発行されます
-- 問い合わせフォームの送信処理（`/api/contact`、Cloudflare Pages Functions + Resend）は未実装です。実装時は Pages の環境変数に Resend の API キーを設定します
 - Cloudflare は新規プロジェクトに Workers を推奨していますが、この構成では Pages で問題ありません。必要になれば Astro の Cloudflare アダプタで移行できます
 
 ## 記事を追加
@@ -138,14 +137,44 @@ Sveltia CMS は GitHub にログインするために、OAuth の仲介サーバ
 - Client secret は漏れると他人がログインできる可能性があるので、Worker の変数以外には保存しないでください
 - ローカルでは http://localhost:4321/admin/index.html を開くと（dev サーバーは `/admin/` だけでは 404 になります）、OAuth なしで「ローカルリポジトリで作業」からファイルを直接編集できます（Chrome / Edge）
 
+## 問い合わせフォーム
+
+- 画面: [src/components/ContactForm.astro](src/components/ContactForm.astro)（日英共用）。項目の定義は [src/lib/contact-fields.ts](src/lib/contact-fields.ts) にあり、項目を増減するときはここだけ直す
+- 送信処理: [functions/api/contact.ts](functions/api/contact.ts)（Cloudflare Pages Functions）。Resend で info@katohpm.com に通知メールを送り、送信者には受付メール（自動返信）を送る。相談の種類が件名の先頭に付く（例:「【借りたい】山田様 からのお問い合わせ」）
+- 送信後は `/thanks/`（英語は `/en/thanks/`）に移動する。GA4 の計測に使える
+- スパム対策: 人には見えないダミー項目（ハニーポット）に加え、Turnstile を設定すると認証も行う
+- プライバシーポリシー: `/privacy/`、`/en/privacy/`。フォームの同意チェックとフッターからリンク
+
+Cloudflare Pages の「設定 → 変数とシークレット」に設定する値（変更後は再デプロイで反映）:
+
+| 変数名 | 必須 | 内容 |
+| --- | --- | --- |
+| `RESEND_API_KEY` | 必須 | Resend の API キー（シークレット）。Resend 側で katohpm.com のドメイン認証が済んでいること |
+| `LINE_URL` | 任意 | LINE 公式アカウントの友だち追加 URL（`https://lin.ee/...`）。設定すると、LINE 希望の方への受付メールに載る |
+| `TURNSTILE_SECRET_KEY` | 任意 | Turnstile のシークレットキー。設定すると送信時に認証する |
+| `PUBLIC_TURNSTILE_SITE_KEY` | 任意 | Turnstile のサイトキー。設定するとフォームに認証ウィジェットが出る（ビルド時に埋め込まれる） |
+| `CONTACT_TO` | 任意 | 通知先を変えたいとき（既定は info@katohpm.com） |
+
+Turnstile の設定（推奨）: Cloudflare → 左メニュー「Turnstile」→「ウィジェットを追加」→ ホスト名に `katohpm.com` と `katoh-property-hp.pages.dev`、ウィジェットモードは「Managed」。表示されたサイトキーを `PUBLIC_TURNSTILE_SITE_KEY`、シークレットキーを `TURNSTILE_SECRET_KEY` に登録して再デプロイ。
+
+ローカルで送信処理まで試す場合は `.dev.vars` に `RESEND_API_KEY=...` を書き（Git には入らない）、次を実行:
+
+```bash
+npm run build
+```
+
+```bash
+npx wrangler pages dev dist --port 8788
+```
+
 ## 会社情報・料金を変える
 
 [src/config/site.ts](src/config/site.ts) の `SITE`（日本語）と `SITE_EN`（英語）を直します。トップページ、フッター、JSON-LD、記事末尾の CTA にまとめて反映されます。変更したら [CLAUDE.md](CLAUDE.md) の値も揃えてください。
 
 ## 未着手の項目
 
-- 問い合わせフォームの送信処理（Cloudflare Pages Functions + Resend）
-- LINE 公式アカウントの URL（`src/config/site.ts` の `lineUrl`。設定すると LINE ボタンが表示される）
+- LINE 公式アカウントの URL（Pages の環境変数 `LINE_URL` で受付メールに載る。トップページに LINE ボタンを出す場合は `src/config/site.ts` の `lineUrl`）
+- Turnstile（フォームのスパム対策）の設定
 - 代表写真 `public/images/representative.jpg`（置くだけで表示される）
 - 目的別ページ（/buy/ /sell/ /rent/）、エリアページ、会社概要ページ
 - Google Analytics 4 / Search Console の設定

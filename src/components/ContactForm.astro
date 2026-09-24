@@ -1,0 +1,259 @@
+---
+/**
+ * 問い合わせフォーム（日英共用）。項目は src/lib/contact-fields.ts。
+ * - 相談の種類に応じて項目を出し分け（JS。JS なしでも全項目表示で送信できる）
+ * - 送信は fetch で /api/contact（functions/api/contact.ts）へ。成功で /thanks/ へ遷移
+ * - スパム対策: ハニーポット + Cloudflare Turnstile（PUBLIC_TURNSTILE_SITE_KEY がある時だけ表示）
+ */
+import { FIELDS, INQUIRY_TYPES, TYPE_LABEL, type Locale } from '../lib/contact-fields';
+import { localePath } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const ja = locale === 'ja';
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
+
+const t = {
+  type: ja ? 'ご相談の種類' : 'What can we help with?',
+  choose: ja ? '選択してください' : 'Please select',
+  privacy: ja ? 'プライバシーポリシー' : 'privacy policy',
+  agreePrefix: ja ? '' : 'I agree to the ',
+  agreeSuffix: ja ? 'に同意する' : '',
+  submit: ja ? '送信する →' : 'Send →',
+  sending: ja ? '送信中…' : 'Sending…',
+  note: ja ? '3営業日以内にご返信します。来店は不要です。' : 'We reply within 3 business days. No office visit needed.',
+  errorGeneric: ja ? '送信できませんでした。時間をおいて再度お試しください。' : 'Something went wrong. Please try again later.',
+  errorRequired: ja ? '必須項目を入力してください。' : 'Please fill in the required fields.',
+};
+const fields = FIELDS.filter((f) => !(f.enOnly && ja));
+const thanksPath = localePath(locale, '/thanks/');
+const privacyPath = localePath(locale, '/privacy/');
+---
+
+<form class="contact-form reveal" method="POST" action="/api/contact" novalidate data-thanks={thanksPath} data-err-generic={t.errorGeneric} data-err-required={t.errorRequired} data-sending={t.sending}>
+  <input type="hidden" name="lang" value={locale} />
+  <!-- ハニーポット: 人には見えない。埋まっていたらボットとみなす -->
+  <div class="hp-field" aria-hidden="true">
+    <label for="f-company-url">Company URL</label>
+    <input id="f-company-url" name="company_url" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <div class="form-row">
+    <label for="f-type">{t.type} <span aria-hidden="true">*</span></label>
+    <select id="f-type" name="type" required>
+      <option value="" disabled selected>{t.choose}</option>
+      {INQUIRY_TYPES.map((k) => <option value={k}>{TYPE_LABEL[k][locale]}</option>)}
+    </select>
+  </div>
+
+  {fields.map((f) => {
+    const id = `f-${f.name}`;
+    const forAttr = f.for ? f.for.join(' ') : undefined;
+    const label = (
+      <label for={f.kind === 'radio' || f.kind === 'checkbox' ? undefined : id}>
+        {f.label[locale]} {f.required && <span aria-hidden="true">*</span>}
+      </label>
+    );
+    return (
+      <div class="form-row" data-for={forAttr} data-required={f.required ? 'true' : undefined}>
+        {f.kind === 'checkbox' ? (
+          <label class="check">
+            <input id={id} name={f.name} type="checkbox" value="yes" required={f.required} />
+            <span>
+              {t.agreePrefix}<a href={privacyPath} target="_blank" rel="noopener">{t.privacy}</a>{t.agreeSuffix}
+            </span>
+          </label>
+        ) : f.kind === 'radio' ? (
+          <fieldset>
+            <legend>{f.label[locale]} {f.required && <span aria-hidden="true">*</span>}</legend>
+            <div class="radios">
+              {f.options?.map((o, i) => (
+                <label class="check">
+                  <input type="radio" name={f.name} value={o.value} required={f.required} checked={i === 0} />
+                  <span>{o.label[locale]}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        ) : f.kind === 'select' ? (
+          <>
+            {label}
+            <select id={id} name={f.name} required={f.required}>
+              <option value="">{t.choose}</option>
+              {f.options?.map((o) => <option value={o.value}>{o.label[locale]}</option>)}
+            </select>
+          </>
+        ) : f.kind === 'textarea' ? (
+          <>
+            {label}
+            <textarea id={id} name={f.name} placeholder={f.placeholder?.[locale]} maxlength={f.maxLength} required={f.required} />
+          </>
+        ) : (
+          <>
+            {label}
+            <input id={id} name={f.name} type={f.kind} placeholder={f.placeholder?.[locale]} autocomplete={f.autocomplete} maxlength={f.maxLength} required={f.required} />
+          </>
+        )}
+        {f.hint?.[locale] && <p class="hint">{f.hint[locale]}</p>}
+      </div>
+    );
+  })}
+
+  {turnstileSiteKey && (
+    <div class="form-row">
+      <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-language={locale} data-theme="dark"></div>
+    </div>
+  )}
+
+  <p class="form-error" role="alert" hidden></p>
+  <button class="submit-btn" type="submit">{t.submit}</button>
+  <p class="form-note">{t.note}</p>
+</form>
+
+{turnstileSiteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+
+<style>
+  .hp-field {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  legend {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: rgba(250, 248, 243, 0.6);
+    margin-bottom: 0.5rem;
+  }
+
+  .radios {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .check {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--cream);
+    cursor: pointer;
+    letter-spacing: 0;
+  }
+
+  .check input {
+    width: auto;
+    margin-top: 0.3rem;
+    accent-color: var(--gold);
+  }
+
+  .check a {
+    color: var(--gold-light);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .hint {
+    font-size: 0.72rem;
+    line-height: 1.6;
+    color: rgba(250, 248, 243, 0.45);
+    margin-top: 0.4rem;
+  }
+
+  .form-error {
+    font-size: 0.82rem;
+    color: #f0b4a4;
+    margin-bottom: 0.8rem;
+  }
+
+  .form-note {
+    font-size: 0.75rem;
+    color: rgba(250, 248, 243, 0.45);
+    margin-top: 0.8rem;
+    text-align: center;
+  }
+
+  .form-row[hidden] {
+    display: none;
+  }
+
+  .submit-btn[disabled] {
+    opacity: 0.6;
+    cursor: wait;
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('form.contact-form');
+  if (form) {
+    const typeSelect = form.querySelector<HTMLSelectElement>('select[name="type"]')!;
+    const rows = [...form.querySelectorAll<HTMLElement>('.form-row[data-for]')];
+    const errorEl = form.querySelector<HTMLElement>('.form-error')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const submitLabel = button.textContent;
+
+    /** 相談の種類に合わせて項目を出し分ける */
+    const applyType = () => {
+      const type = typeSelect.value;
+      rows.forEach((row) => {
+        const show = !!type && (row.dataset.for ?? '').split(' ').includes(type);
+        row.hidden = !show;
+        row.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('input, select, textarea').forEach((el) => {
+          el.disabled = !show;
+        });
+      });
+    };
+    typeSelect.addEventListener('change', applyType);
+    applyType();
+
+    const showError = (msg: string) => {
+      errorEl.textContent = msg;
+      errorEl.hidden = false;
+      errorEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.hidden = true;
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        showError(form.dataset.errRequired ?? '');
+        return;
+      }
+      button.disabled = true;
+      button.textContent = form.dataset.sending ?? '';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+        if (res.ok && data.ok) {
+          window.location.href = form.dataset.thanks ?? '/thanks/';
+          return;
+        }
+        showError(data.error || form.dataset.errGeneric || '');
+      } catch {
+        showError(form.dataset.errGeneric ?? '');
+      } finally {
+        button.disabled = false;
+        button.textContent = submitLabel;
+        // Turnstile のトークンは使い切りなので再取得
+        (window as unknown as { turnstile?: { reset: () => void } }).turnstile?.reset();
+      }
+    });
+  }
+</script>

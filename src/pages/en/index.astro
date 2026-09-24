@@ -9,6 +9,7 @@ import { getPosts, postPath } from '../../lib/blog';
 import '../../styles/home.css';
 import Base from '../../layouts/Base.astro';
 import Faq from '../../components/Faq.astro';
+import ContactForm from '../../components/ContactForm.astro';
 import { siteFor } from '../../config/site';
 import { formatDate } from '../../i18n';
 
@@ -268,35 +269,7 @@ const steps = [
             <a class="line-btn" href={S.lineUrl} target="_blank" rel="noopener">Message us on LINE</a>
           )}
         </div>
-        <form class="contact-form reveal" method="POST" action="/api/contact">
-          <input type="hidden" name="lang" value="en" />
-          <div class="form-row">
-            <label for="f-name">Name <span aria-hidden="true">*</span></label>
-            <input id="f-name" name="name" type="text" placeholder="Jane Smith" required autocomplete="name" />
-          </div>
-          <div class="form-row">
-            <label for="f-email">Email <span aria-hidden="true">*</span></label>
-            <input id="f-email" name="email" type="email" placeholder="you@example.com" required autocomplete="email" />
-          </div>
-          <div class="form-row">
-            <label for="f-tel">Phone (optional)</label>
-            <input id="f-tel" name="tel" type="tel" placeholder="+81 90-0000-0000" autocomplete="tel" />
-          </div>
-          <div class="form-row">
-            <label for="f-type">What can we help with?</label>
-            <select id="f-type" name="type">
-              <option>I want to rent</option>
-              <option>I want to buy</option>
-              <option>I want to sell</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label for="f-message">Message</label>
-            <textarea id="f-message" name="message" placeholder="Preferred area, budget, move-in timing, or anything else"></textarea>
-          </div>
-          <button class="submit-btn" type="submit">Send →</button>
-        </form>
+        <ContactForm locale="en" />
       </div>
     </div>
   </section>

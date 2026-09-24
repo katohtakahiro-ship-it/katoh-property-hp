@@ -1,0 +1,106 @@
+---
+import Base from '../../layouts/Base.astro';
+import { siteFor } from '../../config/site';
+const S = siteFor('en');
+const updated = 'September 24, 2026';
+---
+
+<Base title="Privacy Policy" description={`How ${S.name} handles personal information.`} locale="en" alternate="/privacy/">
+  <section class="legal">
+    <div class="container">
+      <span class="section-label">Privacy Policy</span>
+      <h1 class="section-title">Privacy Policy</h1>
+      <p class="lead">{S.name} ("we") handles your personal information in accordance with this policy. The Japanese version is the official text; this translation is provided for reference.</p>
+
+      <h2>1. Information we collect</h2>
+      <p>Through the contact form, email, LINE, phone calls and the course of a transaction, we may collect:</p>
+      <ul>
+        <li>Name, email address, phone number, LINE account information</li>
+        <li>Your property requirements (area, budget, layout, timing) or details of a property you own</li>
+        <li>Information required for a transaction (address, date of birth, employer, income, residence status), requested only when it becomes necessary</li>
+        <li>Website usage statistics from analytics tools, which do not identify individuals</li>
+      </ul>
+
+      <h2>2. How we use it</h2>
+      <ul>
+        <li>Replying to inquiries, proposing properties, arranging viewings and contracts</li>
+        <li>Carrying out our duties under Japan's Real Estate Brokerage Act (explanation of important matters, contract documents)</li>
+        <li>Coordinating screening, rent guarantee, mortgage and other procedures needed for a transaction</li>
+        <li>Improving our services and statistical analysis</li>
+      </ul>
+
+      <h2>3. Sharing with third parties</h2>
+      <p>We do not provide personal information to third parties without your consent, except where required by law. To carry out a transaction we may share information with:</p>
+      <ul>
+        <li>Landlords, sellers, buyers, their brokers and property managers</li>
+        <li>Rent guarantee companies, financial institutions, judicial scriveners, insurers and other parties to the transaction</li>
+      </ul>
+
+      <h2>4. Service providers</h2>
+      <p>We process information using the following services, each subject to its own privacy policy:</p>
+      <ul>
+        <li>Email: Resend, Google Workspace</li>
+        <li>Website delivery and spam protection: Cloudflare</li>
+        <li>Messaging: LINE</li>
+      </ul>
+
+      <h2>5. Retention and security</h2>
+      <p>We keep personal information for as long as needed for the purposes above and as required by law, and take reasonable measures such as access controls to prevent unauthorized access, loss or leakage.</p>
+
+      <h2>6. Access, correction and deletion</h2>
+      <p>You may request disclosure, correction, suspension of use or deletion of your personal information. After verifying your identity we will respond promptly within the scope of the law. Please contact us at the address below.</p>
+
+      <h2>7. Analytics</h2>
+      <p>This site may use cookies or similar technologies for analytics. They do not contain information that identifies you personally.</p>
+
+      <h2>8. Changes</h2>
+      <p>This policy may be revised to reflect changes in law or in our services. Revisions take effect when posted on this site.</p>
+
+      <h2>9. Contact</h2>
+      <p>
+        {S.name}<br />
+        {S.license}<br />
+        {S.address.full}<br />
+        Email: info@katohpm.com
+      </p>
+
+      <p class="updated">Effective: {updated}</p>
+    </div>
+  </section>
+</Base>
+
+<style is:global>
+  .legal {
+    padding-top: 9rem;
+    background: var(--cream);
+  }
+  .legal .container {
+    max-width: 780px;
+  }
+  .legal .lead {
+    font-size: 0.95rem;
+    line-height: 2;
+    color: var(--charcoal);
+  }
+  .legal h2 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 2.5rem 0 0.8rem;
+    color: var(--ink);
+  }
+  .legal p,
+  .legal li {
+    font-size: 0.92rem;
+    line-height: 2;
+    color: var(--charcoal);
+  }
+  .legal ul {
+    margin: 0 0 1rem 1.5rem;
+  }
+  .legal .updated {
+    margin-top: 3rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+</style>

@@ -1,0 +1,109 @@
+---
+/**
+ * プライバシーポリシー（日本語）。会社情報は src/config/site.ts から。
+ * 法令上の要件（個人情報保護法の公表事項）は要確認。公開前に内容の確認を推奨。
+ */
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config/site';
+const updated = '2026年9月24日';
+---
+
+<Base title="プライバシーポリシー" description={`${SITE.name}の個人情報の取り扱いについて。`} locale="ja" alternate="/en/privacy/">
+  <section class="legal">
+    <div class="container">
+      <span class="section-label">Privacy Policy</span>
+      <h1 class="section-title">プライバシーポリシー</h1>
+      <p class="lead">{SITE.name}（以下「当社」）は、お客様の個人情報を以下の方針に従って取り扱います。</p>
+
+      <h2>1. 取得する情報</h2>
+      <p>当社は、お問い合わせフォーム、メール、LINE、お電話でのやり取り、および取引の過程で、次の情報を取得することがあります。</p>
+      <ul>
+        <li>氏名、メールアドレス、電話番号、LINE アカウント情報</li>
+        <li>ご希望の物件条件（エリア、予算、間取り、時期など）、所有物件の情報</li>
+        <li>取引に必要な情報（住所、生年月日、勤務先、収入、在留資格など。必要になった段階でお伺いします）</li>
+        <li>サイトの閲覧に関する情報（アクセス解析による統計情報。個人を特定するものではありません）</li>
+      </ul>
+
+      <h2>2. 利用目的</h2>
+      <ul>
+        <li>お問い合わせへの回答、物件のご提案、内見や契約手続きのご連絡</li>
+        <li>宅地建物取引業法にもとづく業務の遂行（重要事項説明、契約書の作成など）</li>
+        <li>入居審査、家賃債務保証、住宅ローンなど取引に必要な手続きの取り次ぎ</li>
+        <li>サービスの改善、統計的な分析</li>
+      </ul>
+
+      <h2>3. 第三者への提供</h2>
+      <p>法令にもとづく場合を除き、ご本人の同意なく個人情報を第三者に提供しません。ただし、取引の遂行に必要な範囲で、次の相手方に情報を提供することがあります。</p>
+      <ul>
+        <li>物件の貸主・売主・買主、その仲介会社、管理会社</li>
+        <li>家賃債務保証会社、金融機関、司法書士、火災保険会社などの取引関係者</li>
+      </ul>
+
+      <h2>4. 業務委託先</h2>
+      <p>当社は、次のサービスを利用して情報を処理しています。各サービスには、それぞれのプライバシーポリシーが適用されます。</p>
+      <ul>
+        <li>メール送信・受信: Resend、Google Workspace</li>
+        <li>サイトの配信・スパム対策: Cloudflare</li>
+        <li>メッセージのやり取り: LINE</li>
+      </ul>
+
+      <h2>5. 保管と安全管理</h2>
+      <p>個人情報は、利用目的に必要な期間および法令で定められた期間、保管します。不正アクセス、紛失、漏えいを防ぐため、アクセス権限の管理など合理的な安全管理措置を講じます。</p>
+
+      <h2>6. 開示・訂正・削除</h2>
+      <p>ご本人から個人情報の開示、訂正、利用停止、削除のお申し出があった場合は、ご本人であることを確認のうえ、法令の範囲内で速やかに対応します。下記の窓口までご連絡ください。</p>
+
+      <h2>7. アクセス解析</h2>
+      <p>当サイトでは、アクセス状況の把握のために Cookie や類似の技術を用いた解析ツールを利用することがあります。これらは個人を特定する情報を含みません。</p>
+
+      <h2>8. 改定</h2>
+      <p>本ポリシーは、法令の改正やサービスの変更に応じて改定することがあります。改定後の内容は当サイトに掲載した時点から適用されます。</p>
+
+      <h2>9. お問い合わせ窓口</h2>
+      <p>
+        {SITE.name}<br />
+        {SITE.license}<br />
+        {SITE.address.full}<br />
+        メール: info@katohpm.com
+      </p>
+
+      <p class="updated">制定日: {updated}</p>
+    </div>
+  </section>
+</Base>
+
+<style is:global>
+  .legal {
+    padding-top: 9rem;
+    background: var(--cream);
+  }
+  .legal .container {
+    max-width: 780px;
+  }
+  .legal .lead {
+    font-size: 0.95rem;
+    line-height: 2;
+    color: var(--charcoal);
+  }
+  .legal h2 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 2.5rem 0 0.8rem;
+    color: var(--ink);
+  }
+  .legal p,
+  .legal li {
+    font-size: 0.92rem;
+    line-height: 2;
+    color: var(--charcoal);
+  }
+  .legal ul {
+    margin: 0 0 1rem 1.5rem;
+  }
+  .legal .updated {
+    margin-top: 3rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+</style>

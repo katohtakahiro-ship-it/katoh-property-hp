@@ -1,0 +1,62 @@
+---
+import Base from '../layouts/Base.astro';
+import { localePath, otherLocale, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const ja = locale === 'ja';
+---
+
+<Base
+  title={ja ? 'お問い合わせを受け付けました' : 'Thank you for your inquiry'}
+  description={ja ? 'お問い合わせありがとうございます。3営業日以内にご返信します。' : 'Thank you for contacting us. We reply within 3 business days.'}
+  locale={locale}
+  alternate={localePath(otherLocale(locale), '/thanks/')}
+>
+  <slot name="head" slot="head"><meta name="robots" content="noindex" /></slot>
+  <section class="thanks">
+    <div class="container">
+      <span class="section-label">Thank you</span>
+      <h1 class="section-title">{ja ? 'お問い合わせを受け付けました' : 'Thank you for your inquiry'}</h1>
+      <p class="section-body">
+        {ja
+          ? 'ありがとうございます。ご入力いただいたメールアドレスに受付メールをお送りしました。3営業日以内にご返信します。届かない場合は迷惑メールフォルダをご確認ください。'
+          : 'We have sent a confirmation to the email address you entered and will reply within 3 business days. If you do not see it, please check your spam folder.'}
+      </p>
+      <p class="thanks-links">
+        <a href={localePath(locale, '/')}>{ja ? 'トップページへ' : 'Back to top'}</a>
+        <a href={localePath(locale, '/blog/')}>{ja ? '記事一覧へ' : 'Read the blog'}</a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .thanks {
+    padding-top: 9rem;
+    min-height: 70vh;
+    background: var(--cream);
+  }
+  .thanks-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+  .thanks-links a {
+    display: inline-block;
+    padding: 0.7rem 1.4rem;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    transition: all 0.25s;
+  }
+  .thanks-links a:hover {
+    background: var(--ink);
+    color: var(--gold-light);
+  }
+</style>
