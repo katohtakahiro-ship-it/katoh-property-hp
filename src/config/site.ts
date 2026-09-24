@@ -36,7 +36,7 @@ export const SITE = {
   representative: {
     name: '加藤隆寛',
     title: '代表社員',
-    bio: '旅行系 YouTube チャンネル「加藤トラベル」（登録者数35万人）を運営。川崎市在住。武蔵小杉を中心に、地元の目線で物件探し・売却のご相談に対応します。',
+    bio: '旅行系 YouTube チャンネル「加藤トラベル」（登録者数35万人）を運営。川崎市在住。東京・神奈川を中心に、地元の目線で物件探し・売却のご相談に対応します。',
     /** public/ 配下のパス。ファイルが無い間は表示しない */
     photo: '/images/representative.jpg',
     photoAlt: '代表社員 加藤隆寛',
@@ -87,7 +87,7 @@ export const SITE_EN: SiteConfig = {
     ...SITE.representative,
     name: 'Takahiro Katoh',
     title: 'Managing Member',
-    bio: 'Runs the travel YouTube channel "Katoh Travel" (350,000 subscribers). Lives in Kawasaki and handles rental and sales consultations around Musashikosugi with a local’s perspective, in English or Japanese.',
+    bio: 'Runs the travel YouTube channel "Katoh Travel" (350,000 subscribers). Lives in Kawasaki and handles rental and sales consultations across Tokyo and Kanagawa with a local’s perspective, in English or Japanese.',
     photoAlt: 'Takahiro Katoh, Managing Member',
     youtube: { ...SITE.representative.youtube, name: 'Katoh Travel', subscribers: '350,000' },
   },
