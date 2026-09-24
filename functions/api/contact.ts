@@ -93,7 +93,9 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   // Turnstile
   if (env.TURNSTILE_SECRET_KEY) {
-    const ok = await verifyTurnstile(env.TURNSTILE_SECRET_KEY, clean(form.get('cf-turnstile-response'), 5000), request.headers.get('cf-connecting-ip'));
+    const token = clean(form.get('cf-turnstile-response'), 5000);
+    if (!token) return json({ ok: false, error: ja ? '「私はロボットではありません」にチェックを入れてから送信してください。' : 'Please tick the "I am not a robot" box before sending.' }, 400);
+    const ok = await verifyTurnstile(env.TURNSTILE_SECRET_KEY, token, request.headers.get('cf-connecting-ip'));
     if (!ok) return json({ ok: false, error: ja ? '認証に失敗しました。ページを再読み込みしてお試しください。' : 'Verification failed. Please reload the page and try again.' }, 400);
   }
 

@@ -26,13 +26,14 @@ const t = {
   note: ja ? '3営業日以内にご返信します。来店は不要です。' : 'We reply within 3 business days. No office visit needed.',
   errorGeneric: ja ? '送信できませんでした。時間をおいて再度お試しください。' : 'Something went wrong. Please try again later.',
   errorRequired: ja ? '必須項目を入力してください。' : 'Please fill in the required fields.',
+  errorTurnstile: ja ? '「私はロボットではありません」にチェックを入れてから送信してください。' : 'Please tick the "I am not a robot" box before sending.',
 };
 const fields = FIELDS.filter((f) => !(f.enOnly && ja));
 const thanksPath = localePath(locale, '/thanks/');
 const privacyPath = localePath(locale, '/privacy/');
 ---
 
-<form class="contact-form reveal" method="POST" action="/api/contact" novalidate data-thanks={thanksPath} data-err-generic={t.errorGeneric} data-err-required={t.errorRequired} data-sending={t.sending}>
+<form class="contact-form reveal" method="POST" action="/api/contact" novalidate data-thanks={thanksPath} data-err-generic={t.errorGeneric} data-err-required={t.errorRequired} data-err-turnstile={t.errorTurnstile} data-sending={t.sending}>
   <input type="hidden" name="lang" value={locale} />
   <!-- ハニーポット: 人には見えない。埋まっていたらボットとみなす -->
   <div class="hp-field" aria-hidden="true">
@@ -230,6 +231,11 @@ const privacyPath = localePath(locale, '/privacy/');
       if (!form.checkValidity()) {
         form.reportValidity();
         showError(form.dataset.errRequired ?? '');
+        return;
+      }
+      const tsInput = form.querySelector<HTMLInputElement>('input[name="cf-turnstile-response"]');
+      if (tsInput && !tsInput.value) {
+        showError(form.dataset.errTurnstile ?? '');
         return;
       }
       button.disabled = true;
