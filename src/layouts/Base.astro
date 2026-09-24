@@ -145,6 +145,17 @@ const websiteSchema = {
     <JsonLd data={websiteSchema} />
     <JsonLd data={personSchema} />
     {jsonLd && <JsonLd data={jsonLd} />}
+    {import.meta.env.PROD && SITE.gaMeasurementId && (
+      <>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.gaMeasurementId}`}></script>
+        <script is:inline define:vars={{ gaId: SITE.gaMeasurementId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { dataLayer.push(arguments); }
+          gtag('js', new Date());
+          gtag('config', gaId, { anonymize_ip: true });
+        </script>
+      </>
+    )}
     <slot name="head" />
   </head>
   <body>

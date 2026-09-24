@@ -30,7 +30,7 @@
 - ホスティング：Cloudflare Pages（GitHub連携で自動デプロイ、無料）
 - 記事編集：Claude Code が主。ウェブ編集用に Sveltia CMS を /admin/ に設置（GitHub OAuth）
 - 問い合わせ：Cloudflare Pages Functions + Resend でメール送信（実装済み。functions/api/contact.ts、項目定義は src/lib/contact-fields.ts）。通知先 info@katohpm.com、受付メール（自動返信）に「3営業日以内に返信」。LINE 公式アカウント @430umbrf（友だち追加 URL https://lin.ee/uRSd3Se 、管理は https://manager.line.biz/ 、チャット返信は https://chat.line.biz/ ）。URL は Pages の環境変数 LINE_URL で受付メールに載せる。サイト上の LINE ボタンは当面出さない（出す場合は src/config/site.ts の lineUrl に設定）
-- 分析：Google Analytics 4 / Search Console
+- 分析：Google Analytics 4（測定 ID G-P4BQ3L3J87、src/config/site.ts の gaMeasurementId。本番ビルドのみ出力。/thanks/ で generate_lead イベント）/ Search Console（ドメインプロパティ katohpm.com）
 - ドメイン：katohpm.com（Cloudflare Registrar で取得済み、2026-09-08）
 - Googleビジネスプロフィールは使わない（自宅事務所のため）
 - WordPress / AFFINGER は使わない

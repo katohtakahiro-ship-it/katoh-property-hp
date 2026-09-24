@@ -15,7 +15,13 @@ const ja = locale === 'ja';
   locale={locale}
   alternate={localePath(otherLocale(locale), '/thanks/')}
 >
-  <slot name="head" slot="head"><meta name="robots" content="noindex" /></slot>
+  <slot name="head" slot="head">
+    <meta name="robots" content="noindex" />
+    <!-- 問い合わせ完了を GA4 のキーイベントとして送る（gtag が無い環境では何もしない） -->
+    <script is:inline>
+      if (typeof gtag === 'function') gtag('event', 'generate_lead', { method: 'contact_form' });
+    </script>
+  </slot>
   <section class="thanks">
     <div class="container">
       <span class="section-label">Thank you</span>

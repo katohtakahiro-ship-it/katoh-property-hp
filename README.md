@@ -177,5 +177,5 @@ npx wrangler pages dev dist --port 8788
 - Turnstile（フォームのスパム対策）の設定
 - 代表写真 `public/images/representative.jpg`（置くだけで表示される）
 - 目的別ページ（/buy/ /sell/ /rent/）、エリアページ、会社概要ページ
-- Google Analytics 4 / Search Console の設定
+- Search Console のサイトマップ送信・GA4 のキーイベント設定（generate_lead）
 - タワーマンション成約価格ウォッチ用のスクリプト（`/scripts/`、`/data/`）
