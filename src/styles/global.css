@@ -7,8 +7,8 @@
   --warm-white: #fffef9;
   --muted: #7a7a8a;
   --border: rgba(201, 168, 76, 0.25);
-  --font-body: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
-  --font-display: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  --font-body: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  --font-display: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
   --font-accent: 'Cormorant Garamond', Georgia, serif;
 }
 
