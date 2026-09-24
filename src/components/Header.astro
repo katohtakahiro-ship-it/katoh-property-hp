@@ -1,5 +1,6 @@
 ---
 import { siteFor } from '../config/site';
+import Logo from './Logo.astro';
 import { NAV_ITEMS, UI, localePath, otherLocale, type Locale } from '../i18n';
 
 interface Props {
@@ -16,9 +17,7 @@ const switchHref = alternate ?? localePath(other, '/');
 ---
 
 <nav class="site-nav" aria-label={ui.navAria}>
-  <a href={localePath(locale, '/')} class="nav-logo" aria-label={site.name}
-    ><span>{site.logo.accent}</span>{site.logo.rest}</a
-  >
+  <a href={localePath(locale, '/')} class="nav-logo" aria-label={site.name}><Logo locale={locale} /></a>
   <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label={ui.menuOpen} data-label-open={ui.menuOpen} data-label-close={ui.menuClose}>
     <span></span><span></span><span></span>
   </button>
@@ -54,17 +53,10 @@ const switchHref = alternate ?? localePath(other, '/');
   }
 
   .nav-logo {
-    font-family: var(--font-logo);
-    font-weight: 800;
-    font-size: 1.25rem;
-    letter-spacing: 0.08em;
     color: var(--ink);
     text-decoration: none;
-    white-space: nowrap;
-  }
-
-  .nav-logo span {
-    color: var(--gold);
+    display: inline-block;
+    line-height: 0;
   }
 
   .nav-links {

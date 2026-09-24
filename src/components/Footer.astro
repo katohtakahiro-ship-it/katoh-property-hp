@@ -1,5 +1,6 @@
 ---
 import { siteFor } from '../config/site';
+import Logo from './Logo.astro';
 import { localePath, type Locale } from '../i18n';
 
 interface Props {
@@ -15,7 +16,7 @@ const year = new Date().getFullYear();
   <div class="container">
     <div class="footer-inner">
       <div>
-        <div class="footer-logo"><span>{site.logo.accent}</span>{site.logo.rest}</div>
+        <div class="footer-logo"><Logo locale={locale} /></div>
         <p class="footer-license">{site.license}</p>
         <p class="footer-links"><a href={localePath(locale, "/privacy/")}>{locale === "ja" ? "プライバシーポリシー" : "Privacy Policy"}</a></p>
       </div>
@@ -44,13 +45,8 @@ const year = new Date().getFullYear();
   }
 
   .footer-logo {
-    font-family: var(--font-logo);
-    font-size: 1.1rem;
     color: var(--cream);
-  }
-
-  .footer-logo span {
-    color: var(--gold);
+    line-height: 0;
   }
 
   .footer-license {

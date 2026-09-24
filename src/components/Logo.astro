@@ -1,0 +1,31 @@
+---
+/**
+ * 社名ロゴ（案D: 屋根と K のマーク + 社名）。文字はパス化済みの SVG をインライン展開する。
+ * 紺の部分は currentColor なので、親要素の color でヘッダー（紺）・フッター（生成り）を切り替える。
+ * 元データは scratchpad の build-assets.js（opentype.js で Noto Sans JP をパス化）。
+ */
+import logoJa from './logo-mark.svg?raw';
+import logoEn from './logo-mark-en.svg?raw';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+  class?: string;
+}
+const { locale = 'ja', class: className } = Astro.props;
+const svg = locale === 'en' ? logoEn : logoJa;
+---
+
+<span class:list={['logo', className]} set:html={svg} />
+
+<style>
+  .logo {
+    display: inline-block;
+    line-height: 0;
+  }
+  .logo :global(svg) {
+    height: 40px;
+    width: auto;
+    display: block;
+  }
+</style>

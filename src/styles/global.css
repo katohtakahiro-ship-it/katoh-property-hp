@@ -10,8 +10,6 @@
   --font-body: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
   --font-display: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
   --font-accent: 'Cormorant Garamond', Georgia, serif;
-  /* 社名（ヘッダー・フッターのロゴ）だけ明朝 */
-  --font-logo: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
 }
 
 * {

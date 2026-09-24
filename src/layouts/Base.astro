@@ -122,7 +122,8 @@ const websiteSchema = {
     {hreflangs.map((h) => <link rel="alternate" hreflang={h.lang} href={h.href} />)}
     {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="generator" content={Astro.generator} />
 
     <meta property="og:type" content={ogType} />
@@ -137,7 +138,7 @@ const websiteSchema = {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Shippori+Mincho:wght@800&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap"
       rel="stylesheet"
     />
 

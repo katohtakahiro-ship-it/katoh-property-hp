@@ -53,7 +53,9 @@
 - /data/ … API取得データ（CSV）。生成したグラフは /public/charts/ に出力
 
 ## デザイン方針
-- /design/index.html のトーンを踏襲：紺（#1a1a2e）×ゴールド（#c9a84c）×生成り（#faf8f3）、明朝体
+- /design/index.html のトーンを踏襲：紺（#1a1a2e）×ゴールド（#c9a84c）×生成り（#faf8f3）。フォントは Noto Sans JP（2026-09-25 に明朝から変更。英字の飾り見出しのみ Cormorant Garamond）
+- ロゴ：屋根と K のマーク＋社名（src/components/Logo.astro、SVG はパス化済み。日英あり）。ファビコンはマークのみ（public/favicon.svg）。生成スクリプトはローカルの scratchpad にあるので、変更時は SVG を直接編集する
+- 記事の図解画像は Noto Sans JP で描く（public/images/blog/）
 - 高級感より「誠実・明快」。数字（半額）が主役
 - モバイル優先
 
