@@ -97,8 +97,9 @@ faq:
 
 3. 書き方のルール（CLAUDE.md より）: H2 は必ず質問文にし、直後に結論を1〜2文で書く。会社情報・料金は CLAUDE.md の値を使う。「無料」は使わない。法令に関する記述は断定せず「要確認」と書く。データは公的データを出典付きで使う
 4. 記事末尾の FAQ ブロックと FAQPage の JSON-LD は、frontmatter の `faq` から自動生成される
-5. 公開するときは `draft: false` にして commit、main に push。数分で本番に反映される
-6. 英語版を出す場合は `src/content/blog/en/` に**同じファイル名**で置く。日英の記事ページが自動で相互リンクされ、hreflang が付く
+5. タグに「賃貸」「購入」「売却」「売買」を付けると、対応する目的別ページ（/rent/ /buy/ /sell/）の「関連する記事」に自動で表示される（対応表は `src/lib/purpose-pages.ts` の `RELATED_TAGS`）
+6. 公開するときは `draft: false` にして commit、main に push。数分で本番に反映される
+7. 英語版を出す場合は `src/content/blog/en/` に**同じファイル名**で置く。日英の記事ページが自動で相互リンクされ、hreflang が付く
 
 ### 方法 2: ブラウザから書く（Sveltia CMS）
 

@@ -348,3 +348,10 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
     },
   };
 }
+
+/** 目的別ページに関連記事として出す記事のタグ（いずれかを含めば表示） */
+export const RELATED_TAGS: Record<PurposeKey, Record<Locale, readonly string[]>> = {
+  rent: { ja: ['賃貸', 'お部屋探し', '借りたい'], en: ['renting', 'rent', 'rental'] },
+  buy: { ja: ['購入', '売買', '買いたい', 'マンション購入'], en: ['buying', 'buy', 'purchase'] },
+  sell: { ja: ['売却', '売買', '売りたい', '査定'], en: ['selling', 'sell', 'valuation'] },
+};

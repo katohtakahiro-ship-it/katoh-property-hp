@@ -7,7 +7,9 @@ import '../styles/home.css';
 import Base from '../layouts/Base.astro';
 import Faq from './Faq.astro';
 import ContactForm from './ContactForm.astro';
-import { getPurposePages, PURPOSE_KEYS, type PurposeKey } from '../lib/purpose-pages';
+import { getPurposePages, PURPOSE_KEYS, RELATED_TAGS, type PurposeKey } from '../lib/purpose-pages';
+import { getPosts, postPath } from '../lib/blog';
+import { formatDate } from '../i18n';
 import { siteFor } from '../config/site';
 import { localePath, otherLocale, type Locale } from '../i18n';
 
@@ -20,11 +22,15 @@ const ja = locale === 'ja';
 const pages = getPurposePages(locale);
 const page = pages[purpose];
 const site = siteFor(locale);
+const relatedTags = RELATED_TAGS[purpose][locale].map((t) => t.toLowerCase());
+const related = (await getPosts(locale)).filter((p) => p.data.tags.some((t) => relatedTags.includes(t.toLowerCase()))).slice(0, 3);
 const others = PURPOSE_KEYS.filter((k) => k !== purpose).map((k) => pages[k]);
 const t = {
   flow: ja ? 'ご利用の流れ' : 'How it works',
   faq: ja ? 'よくある質問' : 'Frequently asked questions',
   others: ja ? 'ほかの目的' : 'Other services',
+  related: ja ? '関連する記事' : 'Related articles',
+  allPosts: ja ? '記事一覧 →' : 'All articles →',
   fees: ja ? '仲介手数料' : 'Brokerage fees',
   contactNote: ja ? '「ご相談の種類」は選択済みです。' : 'The inquiry type is preselected.',
 };
@@ -98,6 +104,31 @@ const breadcrumb = {
       <Faq items={page.faq} />
     </div>
   </section>
+
+  {related.length > 0 && (
+    <section class="purpose-related">
+      <div class="container">
+        <div class="related-head">
+          <div>
+            <span class="section-label">Blog</span>
+            <h2 class="section-title">{t.related}</h2>
+          </div>
+          <a class="related-more" href={localePath(locale, '/blog/')}>{t.allPosts}</a>
+        </div>
+        <ul class="related-list">
+          {related.map((post) => (
+            <li>
+              <a href={postPath(post)}>
+                <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, locale)}</time>
+                <span class="related-title">{post.data.title}</span>
+                <span class="related-desc">{post.data.description}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
 
   <section class="purpose-others">
     <div class="container">
@@ -266,6 +297,72 @@ const breadcrumb = {
   }
   .purpose-faq .section-title {
     margin-bottom: 2rem;
+  }
+
+  .purpose-related {
+    background: var(--warm-white);
+  }
+  .purpose-related .container {
+    max-width: 780px;
+  }
+  .related-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .related-head .section-title {
+    margin-bottom: 0;
+  }
+  .related-more {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 0.2rem;
+  }
+  .related-list {
+    list-style: none;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .related-list a {
+    display: block;
+    padding: 1.4rem 1.6rem;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.25s;
+  }
+  .related-list a:hover {
+    border-color: var(--gold);
+  }
+  .related-list time {
+    font-family: var(--font-accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .related-title {
+    display: block;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0.3rem 0 0.4rem;
+    line-height: 1.5;
+  }
+  .related-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: var(--muted);
   }
 
   .purpose-others {
