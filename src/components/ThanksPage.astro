@@ -19,7 +19,7 @@ const ja = locale === 'ja';
     <meta name="robots" content="noindex" />
     <!-- 問い合わせ完了を GA4 のキーイベントとして送る（gtag が無い環境では何もしない） -->
     <script is:inline>
-      if (typeof gtag === 'function') gtag('event', 'generate_lead', { method: 'contact_form' });
+      if (typeof window.gtag === 'function') window.gtag('event', 'generate_lead', { method: 'contact_form' });
     </script>
   </slot>
   <section class="thanks">
