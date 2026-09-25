@@ -181,6 +181,58 @@
     color: var(--gold-light);
   }
 
+  /* ── PURPOSE ── */
+  .purpose-section {
+    padding: 0;
+    background: var(--cream);
+  }
+
+  .purpose-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    transform: translateY(-2.5rem);
+  }
+
+  .purpose-grid a {
+    display: block;
+    padding: 1.6rem 1.6rem 1.4rem;
+    background: white;
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 40px rgba(26, 26, 46, 0.08);
+    text-decoration: none;
+    color: var(--ink);
+    transition: all 0.3s;
+  }
+
+  .purpose-grid a:hover {
+    border-color: var(--gold);
+    transform: translateY(-3px);
+  }
+
+  .purpose-label {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .purpose-title {
+    display: block;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .purpose-more {
+    display: inline-block;
+    margin-top: 0.8rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+
   /* ── FEE ── */
   .fee-section {
     background: var(--ink);
@@ -754,6 +806,12 @@
 
     .blog-grid {
       grid-template-columns: 1fr;
+    }
+
+    .purpose-grid {
+      grid-template-columns: 1fr;
+      transform: none;
+      padding: 1.5rem 0 0;
     }
 
     .company-inner {

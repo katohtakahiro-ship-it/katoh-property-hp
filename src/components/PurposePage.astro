@@ -1,0 +1,333 @@
+---
+/**
+ * 目的別ページ（借りたい / 買いたい / 売りたい）の共通レイアウト。内容は src/lib/purpose-pages.ts。
+ * 質問形式の見出し + 結論、流れ、FAQ（FAQPage JSON-LD）、種類を選択済みの問い合わせフォーム。
+ */
+import Base from '../layouts/Base.astro';
+import Faq from './Faq.astro';
+import ContactForm from './ContactForm.astro';
+import { getPurposePages, PURPOSE_KEYS, type PurposeKey } from '../lib/purpose-pages';
+import { siteFor } from '../config/site';
+import { localePath, otherLocale, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  purpose: PurposeKey;
+}
+const { locale, purpose } = Astro.props;
+const ja = locale === 'ja';
+const pages = getPurposePages(locale);
+const page = pages[purpose];
+const site = siteFor(locale);
+const others = PURPOSE_KEYS.filter((k) => k !== purpose).map((k) => pages[k]);
+const t = {
+  flow: ja ? 'ご利用の流れ' : 'How it works',
+  faq: ja ? 'よくある質問' : 'Frequently asked questions',
+  others: ja ? 'ほかの目的' : 'Other services',
+  fees: ja ? '仲介手数料' : 'Brokerage fees',
+  contactNote: ja ? '「ご相談の種類」は選択済みです。' : 'The inquiry type is preselected.',
+};
+
+const siteUrl = Astro.site ?? new URL(site.url);
+const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: ja ? 'ホーム' : 'Home', item: new URL(localePath(locale, '/'), siteUrl).href },
+    { '@type': 'ListItem', position: 2, name: page.label, item: pageUrl },
+  ],
+};
+---
+
+<Base title={page.title} description={page.description} locale={locale} alternate={localePath(otherLocale(locale), `/${purpose}/`)} jsonLd={breadcrumb}>
+  <section class="purpose-hero">
+    <div class="container">
+      <span class="section-label">{page.eyebrow}</span>
+      <h1 class="section-title">{page.title.split('｜')[0].split(' | ')[0]}</h1>
+      <p class="purpose-lead">{page.lead}</p>
+      <div class="purpose-fees">
+        <span class="purpose-fees-label">{t.fees}</span>
+        <span class="purpose-fee"><small>{ja ? '賃貸' : 'Rentals'}</small>{site.fees.rent}</span>
+        <span class="purpose-fee"><small>{ja ? '売買' : 'Sales'}</small>{site.fees.sale}</span>
+      </div>
+      <a class="purpose-cta" href="#contact">{page.ctaTitle} →</a>
+    </div>
+  </section>
+
+  <section class="purpose-body">
+    <div class="container">
+      {page.sections.map((s) => (
+        <article class="qa">
+          <h2>{s.q}</h2>
+          <p class="qa-answer"><strong>{s.a}</strong></p>
+          {s.body?.map((b) => <p>{b}</p>)}
+          {s.list && (
+            <ul>
+              {s.list.map((li) => <li>{li}</li>)}
+            </ul>
+          )}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="purpose-flow">
+    <div class="container">
+      <span class="section-label">How It Works</span>
+      <h2 class="section-title">{t.flow}</h2>
+      <ol class="steps">
+        {page.steps.map((st, i) => (
+          <li>
+            <span class="step-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{st.title}</h3>
+              <p>{st.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="purpose-faq">
+    <div class="container">
+      <span class="section-label">FAQ</span>
+      <h2 class="section-title">{t.faq}</h2>
+      <Faq items={page.faq} />
+    </div>
+  </section>
+
+  <section class="purpose-others">
+    <div class="container">
+      <span class="section-label">{t.others}</span>
+      <ul class="others">
+        {others.map((o) => (
+          <li><a href={o.path}>{o.label}<span>{o.title.split('｜')[0].split(' | ')[0]}</span></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="contact-section purpose-contact" id="contact">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-left">
+          <span class="section-label">Contact</span>
+          <h2 class="section-title">{page.ctaTitle}</h2>
+          <p class="section-body">{ja ? '来店は不要です。3営業日以内にご返信します。' : 'No office visit needed. We reply within 3 business days.'} {t.contactNote}</p>
+        </div>
+        <ContactForm locale={locale} defaultType={purpose} />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style is:global>
+  .purpose-hero {
+    padding-top: 9rem;
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .purpose-hero .container {
+    max-width: 860px;
+  }
+  .purpose-hero .section-title {
+    color: var(--cream);
+    font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+  }
+  .purpose-lead {
+    font-size: 1rem;
+    line-height: 2;
+    color: rgba(250, 248, 243, 0.75);
+    max-width: 640px;
+  }
+  .purpose-fees {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem 2rem;
+    align-items: baseline;
+    margin: 2rem 0;
+    padding: 1.2rem 1.5rem;
+    border: 1px solid rgba(201, 168, 76, 0.3);
+  }
+  .purpose-fees-label {
+    font-family: var(--font-accent);
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    font-size: 0.85rem;
+  }
+  .purpose-fee {
+    font-weight: 700;
+    color: var(--gold-light);
+    font-size: 0.95rem;
+  }
+  .purpose-fee small {
+    display: block;
+    font-weight: 400;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: rgba(250, 248, 243, 0.55);
+  }
+  .purpose-cta {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    background: var(--gold);
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    transition: background 0.25s;
+  }
+  .purpose-cta:hover {
+    background: var(--gold-light);
+  }
+
+  .purpose-body {
+    background: var(--warm-white);
+  }
+  .purpose-body .container {
+    max-width: 780px;
+  }
+  .qa + .qa {
+    margin-top: 3.5rem;
+  }
+  .qa h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.5;
+    padding-left: 1rem;
+    border-left: 3px solid var(--gold);
+    margin-bottom: 1rem;
+    color: var(--ink);
+  }
+  .qa p,
+  .qa li {
+    font-size: 0.95rem;
+    line-height: 2;
+    color: var(--charcoal);
+    margin-bottom: 1rem;
+  }
+  .qa-answer strong {
+    color: var(--ink);
+  }
+  .qa ul {
+    margin-left: 1.5rem;
+  }
+
+  .purpose-flow {
+    background: var(--cream);
+  }
+  .purpose-flow .container {
+    max-width: 780px;
+  }
+  .steps {
+    list-style: none;
+    margin-top: 2rem;
+  }
+  .steps li {
+    display: flex;
+    gap: 1.2rem;
+    padding: 1.2rem 0;
+    border-top: 1px solid var(--border);
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-accent);
+    font-size: 1rem;
+  }
+  .steps h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+  .steps p {
+    font-size: 0.88rem;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  .purpose-faq {
+    background: var(--warm-white);
+  }
+  .purpose-faq .container {
+    max-width: 780px;
+  }
+  .purpose-faq .section-title {
+    margin-bottom: 2rem;
+  }
+
+  .purpose-others {
+    background: var(--cream);
+    padding: 3rem 0;
+  }
+  .purpose-others .container {
+    max-width: 780px;
+  }
+  .others {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .others a {
+    display: block;
+    padding: 1.2rem 1.4rem;
+    background: white;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--ink);
+    font-weight: 700;
+    transition: border-color 0.25s;
+  }
+  .others a span {
+    display: block;
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+  .others a:hover {
+    border-color: var(--gold);
+  }
+
+  .purpose-contact {
+    background: var(--ink);
+  }
+  .purpose-contact .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .purpose-contact .section-title {
+    color: var(--cream);
+  }
+  .purpose-contact .section-body {
+    color: rgba(250, 248, 243, 0.6);
+  }
+
+  @media (max-width: 900px) {
+    .purpose-hero {
+      padding-top: 7rem;
+    }
+    .others {
+      grid-template-columns: 1fr;
+    }
+    .purpose-contact .contact-inner {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+</style>

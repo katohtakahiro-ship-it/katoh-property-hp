@@ -11,6 +11,9 @@ import Base from '../../layouts/Base.astro';
 import Faq from '../../components/Faq.astro';
 import ContactForm from '../../components/ContactForm.astro';
 import { siteFor } from '../../config/site';
+import { getPurposePages, PURPOSE_KEYS } from '../../lib/purpose-pages';
+
+const purposes = getPurposePages('en');
 import { formatDate } from '../../i18n';
 
 const S = siteFor('en');
@@ -103,6 +106,23 @@ const steps = [
           <a href="#contact" class="hero-cta-btn">Check the fees and get in touch</a>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- PURPOSE -->
+  <section class="purpose-section" id="purpose">
+    <div class="container">
+      <ul class="purpose-grid">
+        {PURPOSE_KEYS.map((k) => (
+          <li>
+            <a href={purposes[k].path}>
+              <span class="purpose-label">{purposes[k].label}</span>
+              <span class="purpose-title">{purposes[k].title.split(' | ')[0]}</span>
+              <span class="purpose-more">Learn more →</span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 

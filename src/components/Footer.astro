@@ -1,6 +1,7 @@
 ---
 import { siteFor } from '../config/site';
 import Logo from './Logo.astro';
+import { getPurposePages, PURPOSE_KEYS } from '../lib/purpose-pages';
 import { localePath, type Locale } from '../i18n';
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 const { locale = 'ja' } = Astro.props;
 const site = siteFor(locale);
 const year = new Date().getFullYear();
+const purposes = getPurposePages(locale);
 ---
 
 <footer class="site-footer">
@@ -18,7 +20,11 @@ const year = new Date().getFullYear();
       <div>
         <div class="footer-logo"><Logo locale={locale} /></div>
         <p class="footer-license">{site.license}</p>
-        <p class="footer-links"><a href={localePath(locale, "/privacy/")}>{locale === "ja" ? "プライバシーポリシー" : "Privacy Policy"}</a></p>
+        <p class="footer-links">
+          {PURPOSE_KEYS.map((k) => <a href={purposes[k].path}>{purposes[k].label}</a>)}
+          <a href={localePath(locale, "/blog/")}>{locale === "ja" ? "ブログ" : "Blog"}</a>
+          <a href={localePath(locale, "/privacy/")}>{locale === "ja" ? "プライバシーポリシー" : "Privacy Policy"}</a>
+        </p>
       </div>
       <address class="footer-meta">
         {site.address.full}<br />
@@ -63,6 +69,7 @@ const year = new Date().getFullYear();
   .footer-links a {
     color: rgba(250, 248, 243, 0.5);
     text-decoration: none;
+    margin-right: 1.2rem;
   }
 
   .footer-links a:hover {

@@ -5,13 +5,15 @@
  * - 送信は fetch で /api/contact（functions/api/contact.ts）へ。成功で /thanks/ へ遷移
  * - スパム対策: ハニーポット + Cloudflare Turnstile（PUBLIC_TURNSTILE_SITE_KEY がある時だけ表示）
  */
-import { FIELDS, INQUIRY_TYPES, TYPE_LABEL, type Locale } from '../lib/contact-fields';
+import { FIELDS, INQUIRY_TYPES, TYPE_LABEL, type InquiryType, type Locale } from '../lib/contact-fields';
 import { localePath } from '../i18n';
 
 interface Props {
   locale: Locale;
+  /** 相談の種類を選択済みにする（目的別ページ用）。URL の ?type= でも指定できる */
+  defaultType?: InquiryType;
 }
-const { locale } = Astro.props;
+const { locale, defaultType } = Astro.props;
 const ja = locale === 'ja';
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
 
@@ -44,8 +46,8 @@ const privacyPath = localePath(locale, '/privacy/');
   <div class="form-row">
     <label for="f-type">{t.type} <span aria-hidden="true">*</span></label>
     <select id="f-type" name="type" required>
-      <option value="" disabled selected>{t.choose}</option>
-      {INQUIRY_TYPES.map((k) => <option value={k}>{TYPE_LABEL[k][locale]}</option>)}
+      <option value="" disabled selected={!defaultType}>{t.choose}</option>
+      {INQUIRY_TYPES.map((k) => <option value={k} selected={k === defaultType}>{TYPE_LABEL[k][locale]}</option>)}
     </select>
   </div>
 
@@ -216,6 +218,8 @@ const privacyPath = localePath(locale, '/privacy/');
         });
       });
     };
+    const q = new URLSearchParams(location.search).get('type');
+    if (q && [...typeSelect.options].some((o) => o.value === q)) typeSelect.value = q;
     typeSelect.addEventListener('change', applyType);
     applyType();
 

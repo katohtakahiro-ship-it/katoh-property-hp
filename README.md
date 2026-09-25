@@ -173,7 +173,7 @@ npx wrangler pages dev dist --port 8788
 
 ## 未着手の項目
 
-- 目的別ページ（/buy/ /sell/ /rent/）、エリアページ、会社概要ページ
+- エリアページ（/area/musashikosugi/ など）、会社概要ページ（/company/）
 - Search Console のサイトマップ送信・GA4 のキーイベント設定（generate_lead を「キーイベント」にする）
 - トップページに LINE ボタンを出す場合は `src/config/site.ts` の `lineUrl` に https://lin.ee/uRSd3Se を設定
 - タワーマンション成約価格ウォッチ用のスクリプト（`/scripts/`、`/data/`）
