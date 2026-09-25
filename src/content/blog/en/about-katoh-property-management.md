@@ -2,7 +2,7 @@
 page_slug: about-katoh-property-management
 title: Who is Katoh Property Management? An introduction from Takahiro Katoh
 date: 2026-09-11
-description: An introduction to Katoh Property Management LLC, a family-run, licensed real estate brokerage based in Musashikosugi that handles rentals and sales across Kawasaki, Yokohama and the greater Tokyo area. Built on the parents' 40-plus years in real estate in Yokohama and Kawasaki, the company charges half the standard brokerage fee for both rentals and sales and handles everything online via form or LINE. Takahiro Katoh, managing member and host of the travel YouTube channel "Katoh Travel", introduces the company and himself.
+description: An introduction to Katoh Property Management LLC, a family-run, licensed real estate brokerage based in Musashikosugi that handles rentals and sales across Kawasaki, Yokohama and the greater Tokyo area. Built on the parents' 40-plus years in real estate in Yokohama and Kawasaki, the company charges half the standard brokerage fee for both rentals and sales and handles consultations and paperwork via form, LINE and online meetings, with viewings on site. Takahiro Katoh, managing member and host of the travel YouTube channel "Katoh Travel", introduces the company and himself.
 tags: [about us, Musashikosugi, Kawasaki, brokerage fees, English support]
 draft: false
 faq:
@@ -15,14 +15,14 @@ faq:
   - q: What are the brokerage fees?
     a: Rentals are half a month's rent (0.5 months plus tax). Sales are half the legal maximum, which is 3% of the sale price plus ¥60,000 plus tax, so 1.5% plus ¥30,000 plus tax. A fee is charged only when a contract is concluded. Nothing is charged for consultations or estimates.
   - q: Do I need to visit an office? How do I get in touch?
-    a: No office visit is needed. The office is home-based, so we do not take walk-ins. Contact us through the form on this site or via LINE, and everything from the first conversation to the contract is handled online. Viewings are arranged on site.
+    a: No office visit is needed. The office is home-based, so we do not take walk-ins. Contact us through the form on this site or via LINE. Consultations and contract paperwork are handled online, and viewings take place on site with us.
   - q: Do you work in English?
     a: Yes, in English or Japanese. In Japan the Japanese contract and the Japanese explanation of important matters are the legally binding documents. We provide English translations for reference and explain every document in English.
 ---
 
 ## What kind of company is Katoh Property Management?
 
-**In short: a family-run, licensed real estate brokerage based in Musashikosugi that handles rentals and sales across Kawasaki, Yokohama and the greater Tokyo area.** Brokerage fees are half the standard rate for both rentals and sales, and everything is handled online via form or LINE, with no office visit needed.
+**In short: a family-run, licensed real estate brokerage based in Musashikosugi that handles rentals and sales across Kawasaki, Yokohama and the greater Tokyo area.** Brokerage fees are half the standard rate for both rentals and sales. No office visit is needed: consultations and paperwork are handled via form, LINE and online meetings, and viewings take place on site.
 
 Hello, I am Takahiro Katoh, a managing member of Katoh Property Management LLC. For the first article on this blog, let me introduce the company and myself.
 
@@ -47,7 +47,7 @@ I was born in Yokohama and now live in Kawasaki. My grandparents' home was also 
 
 ## How can the brokerage fee be half price?
 
-**In short: we have no shopfront. The office is home-based and the whole process runs online, which keeps fixed costs and advertising costs low.**
+**In short: we have no shopfront. The office is home-based and consultations and paperwork run online, which keeps fixed costs and advertising costs low.**
 
 A typical agency pays for a shop near the station, shop staff and listings on portal sites, and recovers those costs through brokerage fees. We have none of them. Consultations come in by form and LINE, interviews and contracts are handled online, and viewings are arranged on site. That structure is what makes a half-price fee workable.
 

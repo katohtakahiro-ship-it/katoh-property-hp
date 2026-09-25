@@ -146,11 +146,11 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const autoReply = ja
     ? {
         subject: `お問い合わせを受け付けました｜${COMPANY.short.ja}`,
-        text: `${name} 様\n\nお問い合わせありがとうございます。${COMPANY.ja}の加藤です。\n以下の内容で受け付けました。3営業日以内にご返信します。${lineBlock}\n\n――― お問い合わせ内容 ―――\n${summary}\n――――――――――――――\n\n来店は不要です。ヒアリングからご契約までオンラインで完結します。\nこのメールに心当たりがない場合は、お手数ですが破棄してください。\n\n${COMPANY.ja}\n${COMPANY.license.ja}\n${COMPANY.address.ja}\n${COMPANY.site}`,
+        text: `${name} 様\n\nお問い合わせありがとうございます。${COMPANY.ja}の加藤です。\n以下の内容で受け付けました。3営業日以内にご返信します。${lineBlock}\n\n――― お問い合わせ内容 ―――\n${summary}\n――――――――――――――\n\n来店は不要です。ヒアリングと契約手続きはオンラインで進め、内見は現地でご案内します。\nこのメールに心当たりがない場合は、お手数ですが破棄してください。\n\n${COMPANY.ja}\n${COMPANY.license.ja}\n${COMPANY.address.ja}\n${COMPANY.site}`,
       }
     : {
         subject: `We received your inquiry | ${COMPANY.short.en}`,
-        text: `Dear ${name},\n\nThank you for contacting ${COMPANY.en}. This is Takahiro Katoh.\nWe have received the details below and will reply within 3 business days.${lineBlock}\n\n--- Your inquiry ---\n${summary}\n--------------------\n\nNo office visit is needed; everything from the first conversation to the contract is handled online.\nIf you did not send this inquiry, please disregard this email.\n\n${COMPANY.en}\n${COMPANY.license.en}\n${COMPANY.address.en}\n${COMPANY.site}/en/`,
+        text: `Dear ${name},\n\nThank you for contacting ${COMPANY.en}. This is Takahiro Katoh.\nWe have received the details below and will reply within 3 business days.${lineBlock}\n\n--- Your inquiry ---\n${summary}\n--------------------\n\nNo office visit is needed; consultations and paperwork are handled online, and viewings take place on site.\nIf you did not send this inquiry, please disregard this email.\n\n${COMPANY.en}\n${COMPANY.license.en}\n${COMPANY.address.en}\n${COMPANY.site}/en/`,
       };
 
   try {

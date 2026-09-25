@@ -8,7 +8,7 @@ export const SITE = {
   /** 独自ドメイン（astro.config.mjs の site と揃える） */
   url: 'https://katohpm.com',
   description:
-    '武蔵小杉を中心に川崎市・横浜市、一都3県（東京・神奈川・千葉・埼玉）に対応する宅地建物取引業者。仲介手数料は売買・賃貸とも半額。売買は法定上限（成約価格の3%＋6万円）の半額、賃貸は家賃の半額（0.5ヶ月分＋税）。来店不要、フォーム・LINEでオンライン完結。',
+    '武蔵小杉を中心に川崎市・横浜市、一都3県（東京・神奈川・千葉・埼玉）に対応する宅地建物取引業者。仲介手数料は売買・賃貸とも半額。売買は法定上限（成約価格の3%＋6万円）の半額、賃貸は家賃の半額（0.5ヶ月分＋税）。来店不要。ご相談と契約手続きはフォーム・LINE・オンラインで進め、内見は現地でご案内。',
   license: '宅地建物取引業 神奈川県知事（2）第30531号',
   licenseNumber: '神奈川県知事（2）第30531号',
   address: {
@@ -65,7 +65,7 @@ export const SITE_EN: SiteConfig = {
   name: 'Katoh Property Management LLC',
   shortName: 'Katoh Property Management',
   description:
-    'Licensed real estate brokerage based in Musashikosugi, Kawasaki, serving Kawasaki, Yokohama and the greater Tokyo area (Tokyo, Kanagawa, Chiba and Saitama). Brokerage fees are half the standard rate for both rentals and sales. No office visit needed: everything is handled online via form or LINE, in English or Japanese.',
+    'Licensed real estate brokerage based in Musashikosugi, Kawasaki, serving Kawasaki, Yokohama and the greater Tokyo area (Tokyo, Kanagawa, Chiba and Saitama). Brokerage fees are half the standard rate for both rentals and sales. No office visit needed: consultations and contract paperwork are handled via form, LINE and online meetings, and viewings take place on site. English or Japanese.',
   license: 'Licensed real estate broker: Kanagawa Prefecture Governor (2) No. 30531',
   licenseNumber: 'Kanagawa Prefecture Governor (2) No. 30531',
   address: {

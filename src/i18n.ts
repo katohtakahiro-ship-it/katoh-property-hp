@@ -52,7 +52,7 @@ export const UI = {
       updated: '更新',
       faqHeading: 'この記事のよくある質問',
       ctaTitle: '仲介手数料は賃貸・売買とも半額',
-      ctaBody: '武蔵小杉を中心に川崎市・横浜市、一都3県に対応。来店不要、フォーム・LINEでオンライン完結です。',
+      ctaBody: '武蔵小杉を中心に川崎市・横浜市、一都3県に対応。来店不要。ご相談と契約手続きはフォーム・LINE・オンラインで進め、内見は現地でご案内します。',
       ctaButton: '相談する',
       readInOther: 'Read this article in English',
     },
@@ -75,7 +75,7 @@ export const UI = {
       faqHeading: 'Frequently asked questions about this article',
       ctaTitle: 'Half-price brokerage fees for rentals and sales',
       ctaBody:
-        'Serving Musashikosugi, Kawasaki, Yokohama and the greater Tokyo area. No office visit needed: everything is handled online via form or LINE, in English or Japanese.',
+        'Serving Musashikosugi, Kawasaki, Yokohama and the greater Tokyo area. No office visit needed: consultations and contract paperwork are handled via form, LINE and online meetings, and viewings take place on site. English or Japanese.',
       ctaButton: 'Contact us',
       readInOther: 'この記事を日本語で読む',
     },
