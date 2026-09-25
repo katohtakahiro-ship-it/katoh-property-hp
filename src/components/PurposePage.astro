@@ -3,6 +3,7 @@
  * 目的別ページ（借りたい / 買いたい / 売りたい）の共通レイアウト。内容は src/lib/purpose-pages.ts。
  * 質問形式の見出し + 結論、流れ、FAQ（FAQPage JSON-LD）、種類を選択済みの問い合わせフォーム。
  */
+import '../styles/home.css';
 import Base from '../layouts/Base.astro';
 import Faq from './Faq.astro';
 import ContactForm from './ContactForm.astro';
@@ -117,7 +118,7 @@ const breadcrumb = {
           <h2 class="section-title">{page.ctaTitle}</h2>
           <p class="section-body">{ja ? '来店は不要です。3営業日以内にご返信します。' : 'No office visit needed. We reply within 3 business days.'} {t.contactNote}</p>
         </div>
-        <ContactForm locale={locale} defaultType={purpose} />
+        <ContactForm locale={locale} defaultType={purpose} reveal={false} />
       </div>
     </div>
   </section>
@@ -331,3 +332,5 @@ const breadcrumb = {
     }
   }
 </style>
+
+<script src="../scripts/reveal.ts"></script>

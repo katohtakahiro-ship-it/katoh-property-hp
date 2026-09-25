@@ -12,8 +12,10 @@ interface Props {
   locale: Locale;
   /** 相談の種類を選択済みにする（目的別ページ用）。URL の ?type= でも指定できる */
   defaultType?: InquiryType;
+  /** スクロールで出現する演出（トップページ用）。false なら最初から表示 */
+  reveal?: boolean;
 }
-const { locale, defaultType } = Astro.props;
+const { locale, defaultType, reveal = true } = Astro.props;
 const ja = locale === 'ja';
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
 
@@ -35,7 +37,7 @@ const thanksPath = localePath(locale, '/thanks/');
 const privacyPath = localePath(locale, '/privacy/');
 ---
 
-<form class="contact-form reveal" method="POST" action="/api/contact" novalidate data-thanks={thanksPath} data-err-generic={t.errorGeneric} data-err-required={t.errorRequired} data-err-turnstile={t.errorTurnstile} data-sending={t.sending}>
+<form class:list={["contact-form", { reveal }]} method="POST" action="/api/contact" novalidate data-thanks={thanksPath} data-err-generic={t.errorGeneric} data-err-required={t.errorRequired} data-err-turnstile={t.errorTurnstile} data-sending={t.sending}>
   <input type="hidden" name="lang" value={locale} />
   <!-- ハニーポット: 人には見えない。埋まっていたらボットとみなす -->
   <div class="hp-field" aria-hidden="true">
