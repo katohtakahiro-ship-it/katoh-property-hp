@@ -58,6 +58,7 @@ const breadcrumb = {
         <span class="purpose-fee"><small>{ja ? '賃貸' : 'Rentals'}</small>{site.fees.rent}</span>
         <span class="purpose-fee"><small>{ja ? '売買' : 'Sales'}</small>{site.fees.sale}</span>
       </div>
+      <p class="purpose-fee-note">{site.fees.condition}</p>
       <a class="purpose-cta" href="#contact">{page.ctaTitle} →</a>
     </div>
   </section>
@@ -194,6 +195,14 @@ const breadcrumb = {
     color: var(--gold-light);
     font-size: 0.95rem;
   }
+  .purpose-fee-note {
+    font-size: 0.8rem;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 640px;
+    margin: 0 0 1.5rem;
+  }
+
   .purpose-fee small {
     display: block;
     font-weight: 400;

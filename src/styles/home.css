@@ -843,3 +843,43 @@
       padding: 1.5rem;
     }
   }
+
+/* 半額の適用条件（打消し表示）。「半額」の表示のすぐ近くに置く */
+.hero-note {
+  font-size: 0.78rem;
+  line-height: 1.8;
+  color: rgba(250, 248, 243, 0.5);
+  max-width: 400px;
+  margin: -2rem 0 2.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.8s forwards;
+}
+
+.fee-condition {
+  font-size: 0.82rem;
+  line-height: 1.8;
+  color: var(--muted);
+  margin-top: 1rem;
+}
+
+.fee-conditions {
+  margin-top: 0.75rem;
+  font-size: 0.82rem;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+.fee-conditions summary {
+  cursor: pointer;
+  color: var(--navy);
+  font-weight: 500;
+}
+
+.fee-conditions ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.fee-conditions li + li {
+  margin-top: 0.35rem;
+}

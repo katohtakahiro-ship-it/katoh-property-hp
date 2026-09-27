@@ -26,6 +26,10 @@ const faqItems = [
     a: `For rentals, ${S.fees.rent}. For sales, ${S.fees.sale}. A typical rental agency charges one month’s rent plus tax, and for sales ${S.fees.saleNote}, so both are substantially lower.`,
   },
   {
+    q: 'Are there conditions for the half-price fee?',
+    a: `Yes. It applies to new rental searches, purchases and sales requested through the form on this site, LINE or a personal referral. Inquiries about properties we list on behalf of a seller or landlord on portal sites or elsewhere are not eligible; for those, the fee stated in the listing and in the brokerage agreement applies (within the legal maximum). Eligibility is fixed at your first inquiry and written into the brokerage agreement (for rentals, the explanation of important matters).`,
+  },
+  {
     q: 'Which areas do you cover?',
     a: `Our home ground is ${S.primaryArea}. We cover the whole greater Tokyo area: Tokyo, Kanagawa, Chiba and Saitama. Ask us about any specific neighborhood.`,
   },
@@ -74,6 +78,7 @@ const steps = [
       <p class="hero-sub">
         Based in {S.primaryArea}, serving Tokyo, Kanagawa, Chiba and Saitama. Rental brokerage fee: {S.fees.rent}. Sales: {S.fees.sale}. No office visit needed: consultations and contract paperwork are handled via form, LINE and online meetings, and viewings take place on site. English or Japanese.
       </p>
+      <p class="hero-note">{S.fees.condition}</p>
       <div class="hero-badges">
         <span class="badge">Rentals: half fee</span>
         <span class="badge">Sales: half fee</span>
@@ -139,6 +144,13 @@ const steps = [
           <p class="section-body">
             Rental agencies in Japan usually charge one month’s rent plus consumption tax as the brokerage fee. Ours is {S.fees.rent}. For sales, {S.fees.saleNote}; ours is {S.fees.sale}. The same numbers apply everywhere on this site.
           </p>
+          <p class="fee-condition">{S.fees.condition}</p>
+          <details class="fee-conditions">
+            <summary>Who qualifies for the half-price fee</summary>
+            <ul>
+              {S.fees.conditionDetail.map((c) => <li>{c}</li>)}
+            </ul>
+          </details>
         </div>
         <div class="fee-right reveal">
           <div class="fee-item">

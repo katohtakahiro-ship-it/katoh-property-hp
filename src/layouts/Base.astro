@@ -74,13 +74,13 @@ const organizationSchema = {
     {
       '@type': 'Offer',
       name: ja ? '売買仲介' : 'Sales brokerage',
-      description: `${ja ? '仲介手数料' : 'Brokerage fee'}: ${site.fees.sale}（${site.fees.saleNote}）`,
+      description: `${ja ? '仲介手数料' : 'Brokerage fee'}: ${site.fees.sale}（${site.fees.saleNote}） ${site.fees.condition}`,
       areaServed: joinAreas(site.areaServed),
     },
     {
       '@type': 'Offer',
       name: ja ? '賃貸仲介' : 'Rental brokerage',
-      description: `${ja ? '仲介手数料' : 'Brokerage fee'}: ${site.fees.rent}`,
+      description: `${ja ? '仲介手数料' : 'Brokerage fee'}: ${site.fees.rent} ${site.fees.condition}`,
       areaServed: joinAreas(site.areaServed),
     },
   ],

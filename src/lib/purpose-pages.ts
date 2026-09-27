@@ -87,6 +87,7 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
           { title: '契約・お引渡し', body: `仲介手数料は${S.fees.rent}。鍵のお引渡しまでサポートします。` },
         ],
         faq: [
+          { q: '仲介手数料が半額になる条件はありますか？', a: S.fees.conditionDetail.join('。') + '。' },
           { q: '賃貸の仲介手数料はいくらですか？', a: `${S.fees.rent}です。家賃15万円なら82,500円（税込）で、一般的な家賃1ヶ月分＋税との差は82,500円です。手数料以外の名目の費用はいただきません。` },
           { q: 'ポータルサイトで見つけた物件を仲介してもらえますか？', a: 'はい。物件の URL をお送りください。多くの物件は不動産会社どうしで共有されていますので、原則として当社からも申し込めます。一部に扱えない物件もあり、その場合はお伝えします。' },
           { q: '来店は必要ですか？', a: '不要です。ご相談から契約手続きまでフォーム・LINE・オンラインで進めます。内見は現地でお待ち合わせしてご案内します。' },
@@ -136,6 +137,7 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
           { title: '決済・お引渡し', body: `仲介手数料は${S.fees.sale}。ローン実行と登記手続きまでサポートします。` },
         ],
         faq: [
+          { q: '仲介手数料が半額になる条件はありますか？', a: S.fees.conditionDetail.join('。') + '。' },
           { q: '購入時の仲介手数料はいくらですか？', a: `${S.fees.sale}です。7,000万円の物件なら1,188,000円（税込）で、法定上限との差は1,188,000円です。ローン事務代行手数料などの名目の費用はいただきません。` },
           { q: '他社サイトで見つけた物件も仲介してもらえますか？', a: 'はい。物件の URL をお送りください。多くの売買物件は不動産会社どうしで共有されていますので、原則として当社から申込ができます。売主側の会社だけで扱う物件もあり、その場合はお伝えします。' },
           { q: '住宅ローンの相談はできますか？', a: 'はい。事前審査のタイミングや必要書類をご案内します。金融機関はお客様のご希望を優先して選びます。' },
@@ -185,6 +187,7 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
           { title: '契約・決済・お引渡し', body: `仲介手数料は${S.fees.sale}。契約から引渡しまでサポートします。` },
         ],
         faq: [
+          { q: '仲介手数料が半額になる条件はありますか？', a: S.fees.conditionDetail.join('。') + '。' },
           { q: '売却時の仲介手数料はいくらですか？', a: `${S.fees.sale}です。7,000万円の売却なら1,188,000円（税込）で、法定上限との差は1,188,000円です。費用が発生するのは成約時のみです。` },
           { q: '査定に費用はかかりますか？', a: 'かかりません。国土交通省の成約価格データと周辺事例をもとに、根拠を示してご説明します。' },
           { q: '囲い込みはしませんか？', a: 'しません。他社経由の購入希望者にも同じ条件でご案内し、レインズにも登録します。' },
@@ -239,6 +242,7 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
         { title: 'Contract and keys', body: `Brokerage fee: ${S.fees.rent}. We support you through to key handover.` },
       ],
       faq: [
+        { q: 'Are there conditions for the half-price fee?', a: S.fees.conditionDetail.join('. ') + '.' },
         { q: 'How much is the rental brokerage fee?', a: `${S.fees.rent}. For a ¥150,000 apartment, ¥82,500 including tax, which is ¥82,500 less than the usual one month plus tax. No administrative or document fees.` },
         { q: 'Can you apply for a listing I found on a portal site?', a: 'Yes. Send the link. Most listings are shared among agencies, so in principle we can apply. A few are exclusive to one agency; we will tell you if so.' },
         { q: 'Do I need to visit an office?', a: 'No. Consultations and paperwork are handled via form, LINE and online meetings. Viewings take place on site with us.' },
@@ -289,6 +293,7 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
         { title: 'Settlement and handover', body: `Brokerage fee: ${S.fees.sale}. We support you through loan execution and registration.` },
       ],
       faq: [
+        { q: 'Are there conditions for the half-price fee?', a: S.fees.conditionDetail.join('. ') + '.' },
         { q: 'How much is the brokerage fee when buying?', a: `${S.fees.sale}. On a ¥70 million property, ¥1,188,000 including tax, ¥1,188,000 less than the legal maximum. No loan-processing fees.` },
         { q: 'Can you handle a listing from another agency’s website?', a: 'Yes. Send the link. Most properties are shared among agencies, so in principle we can submit an offer. Some are exclusive to the seller’s agent; we will tell you if so.' },
         { q: 'Can foreigners buy property in Japan?', a: 'Yes. There is no nationality restriction on owning property in Japan. Mortgage conditions vary by bank and residence status, so please confirm early. We explain everything in English; the Japanese contract is the binding document.' },
@@ -338,6 +343,7 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
         { title: 'Contract, settlement, handover', body: `Brokerage fee: ${S.fees.sale}. We support you through to handover.` },
       ],
       faq: [
+        { q: 'Are there conditions for the half-price fee?', a: S.fees.conditionDetail.join('. ') + '.' },
         { q: 'How much is the brokerage fee when selling?', a: `${S.fees.sale}. For a ¥70 million sale, ¥1,188,000 including tax, ¥1,188,000 less than the legal maximum. Charged only when the sale is concluded.` },
         { q: 'Does a valuation cost anything?', a: 'No. We base it on public transaction data and nearby listings, and show you the data.' },
         { q: 'Do you hide listings from other agencies?', a: 'No. We register the property on REINS and welcome buyers from other agencies on the same terms.' },

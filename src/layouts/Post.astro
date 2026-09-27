@@ -89,6 +89,7 @@ const blogPostingSchema = {
         <p class="post-cta-label">{site.shortName}</p>
         <p class="post-cta-title">{ui.blog.ctaTitle}</p>
         <p class="post-cta-body">{ui.blog.ctaBody}</p>
+        <p class="post-cta-note">{site.fees.condition}</p>
         <a class="post-cta-btn" href={localePath(locale, '/#contact')}>{ui.blog.ctaButton}</a>
       </aside>
 
@@ -317,6 +318,13 @@ const blogPostingSchema = {
     font-size: 0.88rem;
     line-height: 1.9;
     color: rgba(250, 248, 243, 0.65);
+    margin-bottom: 1.5rem;
+  }
+
+  .post-cta-note {
+    font-size: 0.78rem;
+    line-height: 1.8;
+    color: rgba(250, 248, 243, 0.55);
     margin-bottom: 1.5rem;
   }
 

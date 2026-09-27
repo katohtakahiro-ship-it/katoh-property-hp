@@ -25,6 +25,10 @@ const faqItems = [
     a: `賃貸は${SITE.fees.rent}、売買は${SITE.fees.sale}です。一般的な賃貸仲介は家賃1ヶ月分＋税、売買仲介の${SITE.fees.saleNote}のため、いずれも大きく抑えられます。`,
   },
   {
+    q: '仲介手数料が半額になる条件はありますか？',
+    a: `はい。当社サイトのフォーム・LINE・ご紹介から新規にご相談いただいた、お部屋探し・購入・売却が対象です。当社が売主様・貸主様からお預かりしてポータルサイト等に広告掲載している物件へのお問い合わせは対象外で、各広告と媒介契約書に表示する額（法定上限の範囲内）になります。適用の有無は最初のお問い合わせの時点で決まり、媒介契約書（賃貸は重要事項説明）に明記します。`,
+  },
+  {
     q: '対応しているエリアはどこですか？',
     a: `${SITE.primaryArea}を主戦場とし、東京都・神奈川県・千葉県・埼玉県の一都3県全域に対応しています。具体的なエリアはお気軽にご相談ください。`,
   },
@@ -69,6 +73,7 @@ const steps = [
       <p class="hero-sub">
         {SITE.primaryArea}、そして一都3県（東京・神奈川・千葉・埼玉）に対応。賃貸の仲介手数料は{SITE.fees.rent}、売買は{SITE.fees.sale}。来店不要。ご相談と契約手続きはフォーム・LINE・オンラインで進め、内見は現地でご案内します。
       </p>
+      <p class="hero-note">{SITE.fees.condition}</p>
       <div class="hero-badges">
         <span class="badge">賃貸仲介 半額</span>
         <span class="badge">売買仲介 半額</span>
@@ -134,6 +139,13 @@ const steps = [
           <p class="section-body">
             賃貸仲介は一般に「家賃1ヶ月分＋消費税」の仲介手数料がかかるところ、当社は{SITE.fees.rent}です。売買仲介の{SITE.fees.saleNote}。当社は{SITE.fees.sale}でご対応します。数字はサイト全体で統一しています。
           </p>
+          <p class="fee-condition">{SITE.fees.condition}</p>
+          <details class="fee-conditions">
+            <summary>半額の対象と対象外</summary>
+            <ul>
+              {SITE.fees.conditionDetail.map((c) => <li>{c}</li>)}
+            </ul>
+          </details>
         </div>
         <div class="fee-right reveal">
           <div class="fee-item">

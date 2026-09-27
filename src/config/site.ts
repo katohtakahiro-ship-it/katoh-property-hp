@@ -24,6 +24,14 @@ export const SITE = {
     sale: '法定上限の半額（成約価格の1.5%＋3万円、税別）',
     saleNote: '法定上限は成約価格の3%＋6万円（税別）',
     rent: '家賃の半額（0.5ヶ月分＋税）',
+    /** 半額の適用条件（短文）。「半額」の表示のすぐ近くに置く（景表法の打消し表示の考え方。要確認） */
+    condition: '※当社サイト・LINE・ご紹介から新規にご相談いただいた場合の料金です。当社が売主様・貸主様からお預かりして広告掲載している物件のご購入・ご入居は、各広告に表示する条件となります。',
+    /** 半額の適用条件（詳細） */
+    conditionDetail: [
+      '対象：当社サイトのフォーム・LINE、または当社のお客様・知人からのご紹介を通じて新規にご相談いただいた、お部屋探し（借主側の仲介）、住まいの購入、住まいの売却のご依頼',
+      '対象外：当社が売主様・貸主様からお預かりし、ポータルサイト等に広告掲載している物件へのお問い合わせ（当社サイト経由の場合を含む）。この場合の仲介手数料は、各広告および媒介契約書に表示する額（法定上限の範囲内）となります',
+      '適用の有無は最初のお問い合わせの時点で決まり、媒介契約書（賃貸は重要事項説明）に適用する報酬額を明記します',
+    ],
   },
   /** 電話番号はサイトに掲載しない（CLAUDE.md 作業ルール）。以下は未設定なら非表示 */
   /** LINE 公式アカウントの URL */
@@ -81,6 +89,12 @@ export const SITE_EN: SiteConfig = {
     sale: 'half the legal maximum (1.5% of the sale price + ¥30,000, plus tax)',
     saleNote: 'the legal maximum is 3% of the sale price + ¥60,000, plus tax',
     rent: 'half a month’s rent (0.5 months + tax)',
+    condition: 'These rates apply to new inquiries received through this website, LINE or a personal referral. For properties we list ourselves on behalf of a seller or landlord (including on portal sites), the fee stated in that listing applies.',
+    conditionDetail: [
+      'Eligible: new rental searches, home purchases and home sales requested through the form on this site, LINE, or a referral from one of our clients or acquaintances',
+      'Not eligible: inquiries about properties we list on behalf of a seller or landlord on portal sites or elsewhere, even if you contact us through this site. For those, the fee stated in the listing and in the brokerage agreement applies (within the legal maximum)',
+      'Eligibility is fixed at the time of your first inquiry, and the applicable fee is written into the brokerage agreement (for rentals, the explanation of important matters)',
+    ],
   },
   representatives: ['Yoshie Katoh', 'Takahiro Katoh'],
   representative: {
