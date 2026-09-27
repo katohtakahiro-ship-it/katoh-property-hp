@@ -42,7 +42,7 @@
 - サイトマップ：/ 、/blog/ 、/blog/[slug]/ 、/rent/ /buy/ /sell/（目的別ページ、2026-09-25 公開。内容は src/lib/purpose-pages.ts、日英）、/privacy/ 、/thanks/ 。今後：/area/musashikosugi/ 等、/company/
 - トップに最新記事枠を置く。料金セクションには法定上限との比較・試算を置く
 - 参考：東京R不動産 https://www.realtokyoestate.co.jp/ 、渋井不動産 https://shibui.estate/ 、REDS https://www.reds.co.jp/ 、Blackship Realty / Tokyo Portfolio（英語版の構成・分かりやすさの参考。YouTube 集客型）
-- 英語版：/en/ 配下に日本語と対になるページを置く。ブログは日英で同じスラッグ、hreflang で相互リンク。記事は当面日本語のみで書く（英訳は指示があった時に同名ファイルで作る）。契約書・重説は日本語が正本で英語は参考訳（要確認事項として明記）
+- 英語版：/en/ 配下に日本語と対になるページを置く。ブログは日英で同じスラッグ、hreflang で相互リンク。日本語記事を公開する（draft: false にする）ときは、毎回必ず英語版も同時に作る（src/content/blog/en/ に同名ファイル、page_slug・date も同じ。2026-09-28 決定）。図解画像に日本語が入る場合は英語版の画像（ファイル名末尾 -en.png）も作る。金額は円表記（例：72.02万円 → ¥720,200）に換算し、英語記事末尾に「日本語版が原文」の注記を置く。契約書・重説は日本語が正本で英語は参考訳（要確認事項として明記）
 - ドメイン：katohpm.com（Cloudflare Registrar で取得）。メールは Google Workspace（Meet 録画のため Business Standard を検討。IT重説の録画は義務ではない見込みだが要確認）
 
 ## ディレクトリ構成（予定）
