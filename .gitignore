@@ -29,3 +29,13 @@ pnpm-debug.log*
 # wrangler
 .wrangler/
 .dev.vars
+
+# python
+__pycache__/
+.cache/
+
+# 国交省 API の生データ（scripts/fetch_transactions.py で再取得できる。集計結果 data/mansion_summary.csv のみ管理）
+data/reinfolib/
+
+# レインズ会員画面から取得した成約事例（個別事例は公開・コミットしない。集計値のみ記事に使う）
+data/reins/
