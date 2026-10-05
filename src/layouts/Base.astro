@@ -158,6 +158,30 @@ const websiteSchema = {
         </script>
       </>
     )}
+    <!-- 問い合わせの分析用：同じ訪問の中で見たページを sessionStorage に記録する（タブを閉じると消える。Cookie は使わない）。
+         フォーム送信時に通知メールへ自動で添える（ContactForm.astro / functions/api/contact.ts）。訪問者の入力は増えない -->
+    <script is:inline>
+      (function () {
+        try {
+          var k = 'kpm_journey', s = window.sessionStorage, j = JSON.parse(s.getItem(k) || 'null') || {};
+          var p = location.pathname;
+          if (!j.landing) {
+            var h = '';
+            try { h = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var q = new URLSearchParams(location.search);
+            j.landing = p;
+            j.referrer = h && h !== location.hostname ? h : ''; // 流入元はホスト名だけ（検索語などは持たない）
+            j.source = [q.get('utm_source'), q.get('utm_medium'), q.get('utm_campaign')].filter(Boolean).join(' / ').slice(0, 120);
+            j.pages = [];
+          }
+          if (!p.endsWith('/thanks/') && j.pages[j.pages.length - 1] !== p) {
+            j.pages.push(p);
+            if (j.pages.length > 12) j.pages = j.pages.slice(-12);
+          }
+          s.setItem(k, JSON.stringify(j));
+        } catch (e) {}
+      })();
+    </script>
     <slot name="head" />
   </head>
   <body>

@@ -40,6 +40,16 @@ const wantsJson = (req: Request) => (req.headers.get('accept') ?? '').includes('
 const clean = (v: FormDataEntryValue | null, max = 3000) =>
   typeof v === 'string' ? v.replace(/\r\n?/g, '\n').trim().slice(0, max) : '';
 
+/** 分析用の経路情報（フォームが自動で添える）。メール本文に入るので形式を厳しく絞る */
+const cleanPath = (v: FormDataEntryValue | string | null) => {
+  const s = clean(v, 200);
+  return /^\/[A-Za-z0-9_/.-]*$/.test(s) ? s : '';
+};
+const cleanHost = (v: FormDataEntryValue | null) => {
+  const s = clean(v, 100);
+  return /^[A-Za-z0-9.-]+$/.test(s) ? s : '';
+};
+
 const isEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s) && s.length <= 200;
 
 async function verifyTurnstile(secret: string, token: string, ip: string | null): Promise<boolean> {
@@ -124,12 +134,32 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     `IP: ${request.headers.get('cf-connecting-ip') ?? '-'} / ${request.headers.get('cf-ipcountry') ?? '-'}`,
   ].join('\n');
 
+  // 閲覧の経路（当社宛ての通知メールにだけ載せる。お客様への受付メールには載せない）
+  const srcPage = cleanPath(form.get('src_page'));
+  const srcLanding = cleanPath(form.get('src_landing'));
+  const srcReferrer = cleanHost(form.get('src_referrer'));
+  const srcSource = clean(form.get('src_source'), 120).replace(/[^\w ./-]/g, '');
+  const srcPages = clean(form.get('src_pages'), 2600)
+    .split('>')
+    .map((p) => cleanPath(p))
+    .filter(Boolean)
+    .slice(-12);
+  const srcArticles = [...new Set(srcPages.filter((p) => /\/blog\/[^/]+\/$/.test(p)))];
+  const journey = [
+    `${ja ? '送信したページ' : 'Form page'}: ${srcPage || '-'}`,
+    `${ja ? '最初に見たページ' : 'Landing page'}: ${srcLanding || '-'}`,
+    `${ja ? '流入元' : 'Referrer'}: ${srcReferrer || (ja ? '不明（直接アクセス・アプリ内など）' : 'unknown (direct, in-app, etc.)')}${srcSource ? ` [${srcSource}]` : ''}`,
+    `${ja ? '読んだ記事' : 'Articles read'}: ${srcArticles.length ? '\n' + srcArticles.map((p) => `  ${COMPANY.site}${p}`).join('\n') : ja ? 'なし' : 'none'}`,
+    `${ja ? '見た順' : 'Path'}: ${srcPages.length ? srcPages.join(' > ') : '-'}`,
+  ].join('\n');
+  const journeyTitle = ja ? '閲覧の経路（自動記録・この訪問のみ）' : 'Visit path (recorded automatically, this visit only)';
+
   const notify = {
     from: fromHeader,
     to: [to],
     reply_to: email,
     subject: `${typeTag}${name}${ja ? '様' : ''} ${ja ? 'からのお問い合わせ' : 'sent an inquiry'}`,
-    text: `${ja ? 'サイトの問い合わせフォームから送信されました。このメールに返信すると送信者に届きます。' : 'Sent from the website contact form. Replying to this email reaches the sender.'}\n\n${summary}\n\n---\n${meta}`,
+    text: `${ja ? 'サイトの問い合わせフォームから送信されました。このメールに返信すると送信者に届きます。' : 'Sent from the website contact form. Replying to this email reaches the sender.'}\n\n${summary}\n\n---\n${meta}\n\n--- ${journeyTitle} ---\n${journey}`,
   };
 
   const lineBlock =

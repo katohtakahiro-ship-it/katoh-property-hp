@@ -247,9 +247,23 @@ const privacyPath = localePath(locale, '/privacy/');
       button.disabled = true;
       button.textContent = form.dataset.sending ?? '';
       try {
+        // 分析用：送信したページと、同じ訪問の中で見たページを自動で添える（Base.astro が記録。入力項目は増えない）
+        const body = new FormData(form);
+        body.set('src_page', location.pathname);
+        try {
+          const j = JSON.parse(sessionStorage.getItem('kpm_journey') || 'null') as { landing?: string; referrer?: string; source?: string; pages?: string[] } | null;
+          if (j) {
+            body.set('src_landing', j.landing ?? '');
+            body.set('src_referrer', j.referrer ?? '');
+            body.set('src_source', j.source ?? '');
+            body.set('src_pages', (j.pages ?? []).join('>'));
+          }
+        } catch {
+          /* 記録が無くても送信は続ける */
+        }
         const res = await fetch(form.action, {
           method: 'POST',
-          body: new FormData(form),
+          body,
           headers: { Accept: 'application/json' },
         });
         const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };

@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import { siteFor } from '../../config/site';
 const S = siteFor('en');
 const updated = 'September 24, 2026';
+const revised = 'October 5, 2026';
 ---
 
 <Base title="Privacy Policy" description={`How ${S.name} handles personal information.`} locale="en" alternate="/privacy/">
@@ -19,6 +20,7 @@ const updated = 'September 24, 2026';
         <li>Your property requirements (area, budget, layout, timing) or details of a property you own</li>
         <li>Information required for a transaction (address, date of birth, employer, income, residence status), requested only when it becomes necessary</li>
         <li>Website usage statistics from analytics tools, which do not identify individuals</li>
+        <li>Only if you send the contact form: the page you sent it from, the pages of this site you viewed during the same visit, and the name of the site you came from (added automatically when you send; you do not need to enter anything)</li>
       </ul>
 
       <h2>2. How we use it</h2>
@@ -52,6 +54,7 @@ const updated = 'September 24, 2026';
 
       <h2>7. Analytics</h2>
       <p>This site may use cookies or similar technologies for analytics. They do not contain information that identifies you personally.</p>
+      <p>We also keep a temporary record, inside your browser, of the pages of this site you view (no cookie is used, and the record disappears when you close the tab). This record is sent to us together with your message only if you submit the contact form, and we use it to respond to your inquiry and to improve our service. If you do not submit the form, it never reaches us.</p>
 
       <h2>8. Changes</h2>
       <p>This policy may be revised to reflect changes in law or in our services. Revisions take effect when posted on this site.</p>
@@ -64,7 +67,7 @@ const updated = 'September 24, 2026';
         Email: info@katohpm.com
       </p>
 
-      <p class="updated">Effective: {updated}</p>
+      <p class="updated">Effective: {updated}<br />Last revised: {revised}</p>
     </div>
   </section>
 </Base>

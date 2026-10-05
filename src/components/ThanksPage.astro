@@ -19,7 +19,22 @@ const ja = locale === 'ja';
     <meta name="robots" content="noindex" />
     <!-- 問い合わせ完了を GA4 のキーイベントとして送る（gtag が無い環境では何もしない） -->
     <script is:inline>
-      if (typeof window.gtag === 'function') window.gtag('event', 'generate_lead', { method: 'contact_form' });
+      (function () {
+        if (typeof window.gtag !== 'function') return;
+        var params = { method: 'contact_form' };
+        // 分析用：どのページから送信したか、最初に見たページ、最後に読んだ記事（Base.astro の記録から）
+        try {
+          var j = JSON.parse(window.sessionStorage.getItem('kpm_journey') || 'null');
+          if (j && j.pages && j.pages.length) {
+            var articles = j.pages.filter(function (p) { return new RegExp('/blog/[^/]+/$').test(p); });
+            params.form_page = j.pages[j.pages.length - 1];
+            params.landing_page = j.landing || '';
+            params.last_article = articles.length ? articles[articles.length - 1] : '(none)';
+            params.lead_referrer = j.referrer || '(direct)';
+          }
+        } catch (e) {}
+        window.gtag('event', 'generate_lead', params);
+      })();
     </script>
   </slot>
   <section class="thanks">
