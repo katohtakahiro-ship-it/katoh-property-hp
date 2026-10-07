@@ -97,6 +97,9 @@ const t = ja
         {
           h: 'License',
           list: [rep.qualification],
+          p: [
+            'Takken-shi is Japan’s national license for real estate transactions. Under the Real Estate Brokerage Act, the explanation of important matters before a contract, and signing that explanation document and the contract document, must be done by a licensed transaction specialist.',
+          ],
         },
         {
           h: 'Education',
@@ -172,12 +175,12 @@ const jsonLd = [
       {t.sections.map((s) => (
         <div class="profile-section">
           <h2>{s.h}</h2>
-          {s.p?.map((para) => <p>{para}</p>)}
           {s.list && (
             <ul>
               {s.list.map((li) => <li>{li}</li>)}
             </ul>
           )}
+          {s.p?.map((para) => <p>{para}</p>)}
           {s.link && (
             <p><a class="profile-link" href={s.link.href} target="_blank" rel="noopener">{s.link.label} ↗</a></p>
           )}
