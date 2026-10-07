@@ -1,0 +1,357 @@
+---
+/**
+ * 代表プロフィール（加藤隆寛）。ブログ記事の著者ページを兼ねる。
+ * 会社情報・資格・学歴・リンクは src/config/site.ts の representative から。
+ * 住まいが特定できる情報（最寄り駅・家族構成など）は載せない。
+ */
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import Base from '../layouts/Base.astro';
+import { siteFor } from '../config/site';
+import { getPosts, postPath } from '../lib/blog';
+import { formatDate, localePath, otherLocale, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const ja = locale === 'ja';
+const site = siteFor(locale);
+const rep = site.representative;
+const other = siteFor(otherLocale(locale)).representative;
+const hasPhoto = existsSync(join(process.cwd(), 'public', rep.photo));
+const posts = (await getPosts(locale)).slice(0, 5);
+
+const t = ja
+  ? {
+      title: `${rep.name}（代表社員・宅地建物取引士）のプロフィール`,
+      description: `${site.name} 代表社員の一人、宅地建物取引士の${rep.name}のプロフィール。横浜市生まれ、横浜と川崎で育ち、川崎市在住。両親が40年以上営んできた不動産業を土台に、家族で当社を運営しています。`,
+      sections: [
+        {
+          h: '生まれ育ちと住まい',
+          p: [
+            '横浜市で生まれ、母の実家がある川崎市と横浜で育ちました。いまも川崎市に住んでいます。',
+            '武蔵小杉・元住吉・新丸子といった東急東横線沿線や、川崎・横浜のタワーマンションについては、この土地で暮らしてきた人間としての土地勘でお話しできます。',
+          ],
+        },
+        {
+          h: '家族と会社',
+          p: [
+            '両親は横浜・川崎を中心に、40年以上にわたって不動産会社を経営してきました。当社は、その両親と妻と私の家族ぐるみで運営しています。',
+            '宅地建物取引業の免許上の代表者は母（代表社員 加藤良枝）で、お客様とのやり取りは主に私が担当しています。',
+          ],
+        },
+        {
+          h: '資格',
+          list: [rep.qualification],
+        },
+        {
+          h: '学歴',
+          list: rep.education.map((e) => `${e.school} ${e.detail}`),
+        },
+        {
+          h: 'YouTube「加藤トラベル」',
+          p: [
+            `旅行系 YouTube チャンネル「${rep.youtube.name}」（登録者数${rep.youtube.subscribers}）を運営しています。顔を出して活動しているのは、不動産の仕事でも同じです。大きなお金が動く取引だからこそ、「誰がやっている会社なのか」が見えることを大事にしています。`,
+          ],
+          link: { href: rep.youtube.url, label: `YouTube「${rep.youtube.name}」を見る` },
+        },
+        {
+          h: '合気道と空手',
+          p: [
+            `合気道と空手を続けており、川崎市内で合気道の道場「${rep.dojo.name}」を開いています。`,
+          ],
+          link: { href: rep.dojo.url, label: `${rep.dojo.name}のサイトを見る` },
+        },
+        {
+          h: '対応エリア',
+          p: [
+            '東京・神奈川を中心に、お部屋探し（借主側の仲介）・住まいの購入・売却のご相談に対応しています。来店は不要で、ご相談と契約手続きはフォーム・LINE・オンラインで進め、内見は現地でご案内します。',
+          ],
+        },
+      ],
+      posts: 'この人が書いた記事',
+      allPosts: '記事一覧 →',
+      cta: '相談する',
+      ctaBody: 'お部屋探し・購入・売却のご相談は、フォームからお気軽にどうぞ。',
+      home: 'ホーム',
+    }
+  : {
+      title: `${rep.name}, Managing Member and Licensed Real Estate Transaction Specialist`,
+      description: `Profile of ${rep.name}, one of the managing members of ${site.name} and a licensed real estate transaction specialist (takken-shi). Born in Yokohama, raised in Yokohama and Kawasaki, and living in Kawasaki.`,
+      sections: [
+        {
+          h: 'Where I grew up',
+          p: [
+            'I was born in Yokohama and grew up between Yokohama and Kawasaki, where my mother’s family is from. I still live in Kawasaki.',
+            'I know the Tokyu Toyoko Line neighborhoods such as Musashikosugi, Motosumiyoshi and Shin-Maruko, and the tower condos of Kawasaki and Yokohama, as someone who has lived here.',
+          ],
+        },
+        {
+          h: 'A family business',
+          p: [
+            'My parents have run a real estate company in Yokohama and Kawasaki for over 40 years. Our company is run by my parents, my wife and me.',
+            'The representative on our brokerage license is my mother (Managing Member Yoshie Katoh). I handle most of the communication with clients, in English or Japanese.',
+          ],
+        },
+        {
+          h: 'License',
+          list: [rep.qualification],
+        },
+        {
+          h: 'Education',
+          list: rep.education.map((e) => `${e.school}, ${e.detail}`),
+        },
+        {
+          h: 'YouTube: Katoh Travel',
+          p: [
+            `I run the travel YouTube channel "${rep.youtube.name}" (${rep.youtube.subscribers} subscribers). I show my face there, and I do the same in real estate: when a lot of money is at stake, you should be able to see who you are dealing with.`,
+          ],
+          link: { href: rep.youtube.url, label: `Watch ${rep.youtube.name} on YouTube` },
+        },
+        {
+          h: 'Aikido and karate',
+          p: [`I practice aikido and karate, and run an aikido dojo, ${rep.dojo.name}, in Kawasaki.`],
+          link: { href: rep.dojo.url, label: `Visit the ${rep.dojo.name} website` },
+        },
+        {
+          h: 'Service area',
+          p: [
+            'I help with rentals (as the tenant’s agent), home purchases and home sales, mainly in Tokyo and Kanagawa. No office visit needed: consultations and contract paperwork are handled via form, LINE and online meetings, and viewings take place on site.',
+          ],
+        },
+      ],
+      posts: 'Articles by this author',
+      allPosts: 'All articles →',
+      cta: 'Contact us',
+      ctaBody: 'For rentals, purchases or sales, send us a message through the form.',
+      home: 'Home',
+    };
+
+const siteUrl = Astro.site ?? new URL(site.url);
+const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
+const personId = new URL('/#representative', siteUrl).href;
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    '@id': `${pageUrl}#profile`,
+    url: pageUrl,
+    name: t.title,
+    inLanguage: locale,
+    mainEntity: { '@id': personId },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t.home, item: new URL(localePath(locale, '/'), siteUrl).href },
+      { '@type': 'ListItem', position: 2, name: rep.name, item: pageUrl },
+    ],
+  },
+];
+---
+
+<Base title={t.title} description={t.description} locale={locale} alternate={other.profilePath} jsonLd={jsonLd}>
+  <section class="profile-hero">
+    <div class="container">
+      <span class="section-label">Profile</span>
+      <div class="profile-head">
+        {hasPhoto && <img class="profile-photo" src={rep.photo} alt={rep.photoAlt} width="480" height="480" />}
+        <div>
+          <p class="profile-role">{rep.title}{ja ? "・" : " / "}{rep.qualification}</p>
+          <h1 class="profile-name">{rep.name}<span>{other.name}</span></h1>
+          <p class="profile-bio">{rep.bio}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="profile-body">
+    <div class="container">
+      {t.sections.map((s) => (
+        <div class="profile-section">
+          <h2>{s.h}</h2>
+          {s.p?.map((para) => <p>{para}</p>)}
+          {s.list && (
+            <ul>
+              {s.list.map((li) => <li>{li}</li>)}
+            </ul>
+          )}
+          {s.link && (
+            <p><a class="profile-link" href={s.link.href} target="_blank" rel="noopener">{s.link.label} ↗</a></p>
+          )}
+        </div>
+      ))}
+
+      {posts.length > 0 && (
+        <div class="profile-section">
+          <h2>{t.posts}</h2>
+          <ul class="profile-posts">
+            {posts.map((post) => (
+              <li>
+                <a href={postPath(post)}>
+                  <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, locale)}</time>
+                  <span>{post.data.title}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p><a class="profile-link" href={localePath(locale, '/blog/')}>{t.allPosts}</a></p>
+        </div>
+      )}
+
+      <aside class="profile-cta">
+        <p>{t.ctaBody}</p>
+        <a href={localePath(locale, '/#contact')}>{t.cta}</a>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .profile-hero {
+    padding-top: 9rem;
+    padding-bottom: 3rem;
+    background: var(--cream);
+  }
+  .profile-hero .container,
+  .profile-body .container {
+    max-width: 780px;
+  }
+  .profile-head {
+    display: flex;
+    gap: 2.2rem;
+    align-items: flex-start;
+    margin-top: 1.5rem;
+  }
+  .profile-photo {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    flex-shrink: 0;
+  }
+  .profile-role {
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+  .profile-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+  .profile-name span {
+    font-family: var(--font-accent);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 1rem;
+    letter-spacing: 0.05em;
+  }
+  .profile-bio {
+    font-size: 0.95rem;
+    line-height: 2;
+    color: var(--charcoal);
+  }
+  .profile-body {
+    padding: 3rem 0 5rem;
+  }
+  .profile-section {
+    margin-bottom: 2.8rem;
+  }
+  .profile-section h2 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ink);
+    padding-left: 1rem;
+    border-left: 3px solid var(--gold);
+    margin-bottom: 1rem;
+  }
+  .profile-section p,
+  .profile-section li {
+    font-size: 0.95rem;
+    line-height: 2;
+    color: var(--charcoal);
+  }
+  .profile-section p {
+    margin-bottom: 0.8rem;
+  }
+  .profile-section ul {
+    margin: 0 0 0.8rem 1.5rem;
+  }
+  .profile-link {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 0.15rem;
+  }
+  .profile-link:hover {
+    color: var(--gold);
+  }
+  .profile-section ul.profile-posts {
+    list-style: none;
+    margin-left: 0;
+  }
+  .profile-posts li {
+    border-bottom: 1px solid var(--border);
+  }
+  .profile-posts a {
+    display: block;
+    padding: 0.8rem 0;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .profile-posts a:hover span {
+    color: var(--gold);
+  }
+  .profile-posts time {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .profile-cta {
+    margin-top: 3.5rem;
+    padding: 2.2rem;
+    background: var(--ink);
+    color: var(--cream);
+    text-align: center;
+  }
+  .profile-cta p {
+    font-size: 0.9rem;
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+  }
+  .profile-cta a {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    background: var(--gold);
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+  .profile-cta a:hover {
+    background: var(--gold-light);
+  }
+  @media (max-width: 600px) {
+    .profile-head {
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .profile-photo {
+      width: 140px;
+      height: 140px;
+    }
+    .profile-name span {
+      display: block;
+      margin: 0.3rem 0 0;
+    }
+  }
+</style>

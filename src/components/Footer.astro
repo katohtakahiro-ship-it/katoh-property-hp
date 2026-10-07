@@ -23,6 +23,7 @@ const purposes = getPurposePages(locale);
         <p class="footer-links">
           {PURPOSE_KEYS.map((k) => <a href={purposes[k].path}>{purposes[k].label}</a>)}
           <a href={localePath(locale, "/blog/")}>{locale === "ja" ? "ブログ" : "Blog"}</a>
+          <a href={site.representative.profilePath}>{locale === "ja" ? "代表プロフィール" : "About Takahiro Katoh"}</a>
           <a href={localePath(locale, "/privacy/")}>{locale === "ja" ? "プライバシーポリシー" : "Privacy Policy"}</a>
         </p>
       </div>

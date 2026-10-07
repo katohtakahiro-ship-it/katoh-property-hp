@@ -55,6 +55,9 @@ export const UI = {
       ctaBody: '武蔵小杉を中心に川崎市・横浜市、一都3県に対応。来店不要。ご相談と契約手続きはフォーム・LINE・オンラインで進め、内見は現地でご案内します。',
       ctaButton: '相談する',
       readInOther: 'Read this article in English',
+      authorLabel: 'この記事を書いた人',
+      authorBio: '横浜市生まれ、横浜と川崎で育ち、いまも川崎市在住。両親が横浜・川崎で40年以上不動産業を営んできた家族と、当社を運営しています。旅行系 YouTube「加藤トラベル」も運営。',
+      authorLink: 'プロフィールを見る →',
     },
   },
   en: {
@@ -78,6 +81,9 @@ export const UI = {
         'Serving Musashikosugi, Kawasaki, Yokohama and the greater Tokyo area. No office visit needed: consultations and contract paperwork are handled via form, LINE and online meetings, and viewings take place on site. English or Japanese.',
       ctaButton: 'Contact us',
       readInOther: 'この記事を日本語で読む',
+      authorLabel: 'About the author',
+      authorBio: 'Born in Yokohama, raised in Yokohama and Kawasaki, and still living in Kawasaki. Runs the company with family who have been in real estate in Yokohama and Kawasaki for over 40 years. Also runs the travel YouTube channel "Katoh Travel".',
+      authorLink: 'Read the full profile →',
     },
   },
 } as const satisfies Record<Locale, unknown>;

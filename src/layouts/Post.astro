@@ -5,8 +5,11 @@
  * - 本文（slot）
  * - frontmatter.faq から FAQ ブロック + FAQPage JSON-LD（Faq コンポーネントが生成）
  * - BlogPosting JSON-LD
+ * - 著者欄（代表のプロフィールページへリンク）
  * - 末尾 CTA
  */
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import Base from './Base.astro';
 import Faq from '../components/Faq.astro';
 import type { FaqItem } from '../components/Faq.astro';
@@ -32,6 +35,10 @@ const ui = UI[locale];
 const siteUrl = Astro.site ?? new URL(SITE.url);
 const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
 const orgId = new URL('/#organization', siteUrl).href;
+const personId = new URL('/#representative', siteUrl).href;
+const rep = site.representative;
+/** 代表写真は public/ にファイルがある時だけ表示する */
+const hasPhoto = existsSync(join(process.cwd(), 'public', rep.photo));
 
 const blogPostingSchema = {
   '@context': 'https://schema.org',
@@ -44,7 +51,7 @@ const blogPostingSchema = {
   dateModified: (updated ?? date).toISOString(),
   inLanguage: HTML_LANG[locale],
   keywords: tags.join(', '),
-  author: { '@id': orgId },
+  author: { '@id': personId },
   publisher: { '@id': orgId },
 };
 ---
@@ -84,6 +91,16 @@ const blogPostingSchema = {
           <Faq items={faq} />
         </section>
       )}
+
+      <aside class="post-author" aria-label={ui.blog.authorLabel}>
+        {hasPhoto && <img class="post-author-photo" src={rep.photo} alt={rep.photoAlt} width="96" height="96" loading="lazy" />}
+        <div>
+          <p class="post-author-label">{ui.blog.authorLabel}</p>
+          <p class="post-author-name">{rep.name}<span>{rep.title}{locale === "ja" ? "・" : " / "}{rep.qualification}</span></p>
+          <p class="post-author-bio">{ui.blog.authorBio}</p>
+          <a class="post-author-link" href={rep.profilePath}>{ui.blog.authorLink}</a>
+        </div>
+      </aside>
 
       <aside class="post-cta">
         <p class="post-cta-label">{site.shortName}</p>
@@ -290,6 +307,68 @@ const blogPostingSchema = {
     margin-bottom: 2rem;
   }
 
+  /* ── 著者欄 ── */
+  .post-author {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    margin-top: 4rem;
+    padding: 1.8rem;
+    background: var(--cream);
+    border: 1px solid var(--border);
+  }
+
+  .post-author-photo {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    flex-shrink: 0;
+  }
+
+  .post-author-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    margin-bottom: 0.2rem;
+  }
+
+  .post-author-name {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+  }
+
+  .post-author-name span {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 0.8rem;
+  }
+
+  .post-author-bio {
+    font-size: 0.85rem;
+    line-height: 1.9;
+    color: var(--charcoal);
+    margin-bottom: 0.8rem;
+  }
+
+  .post-author-link {
+    font-size: 0.85rem;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 0.15rem;
+  }
+
+  .post-author-link:hover {
+    color: var(--gold);
+  }
+
   /* ── CTA ── */
   .post-cta {
     margin-top: 4rem;
@@ -364,6 +443,15 @@ const blogPostingSchema = {
     }
     .post-cta {
       padding: 2rem 1.5rem;
+    }
+    .post-author {
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1.5rem;
+    }
+    .post-author-name span {
+      display: block;
+      margin: 0.2rem 0 0;
     }
   }
 </style>

@@ -44,7 +44,18 @@ export const SITE = {
   representative: {
     name: '加藤隆寛',
     title: '代表社員',
-    bio: '旅行系 YouTube チャンネル「加藤トラベル」（登録者数35万人）を運営。川崎市在住。東京・神奈川を中心に、地元の目線で物件探し・売却のご相談に対応します。',
+    qualification: '宅地建物取引士',
+    bio: '宅地建物取引士。横浜市生まれ、母の実家がある川崎市と横浜で育ち、いまも川崎市に住んでいます。両親が横浜・川崎で40年以上不動産業を営んできた家族とともに、東京・神奈川を中心にお部屋探し・購入・売却のご相談に対応します。旅行系 YouTube チャンネル「加藤トラベル」（登録者数35万人）も運営しています。',
+    /** 詳しいプロフィールページ（ブログ記事の著者欄からもリンクする） */
+    profilePath: '/company/takahiro-katoh/',
+    /** graduated: false は在籍のみ（JSON-LD の alumniOf には入れない。卒業したように読める書き方をしない） */
+    education: [
+      { school: 'ニューヨーク市立大学シティカレッジ（The City College of New York）', detail: '在籍後、帰国して早稲田大学に入学', graduated: false },
+      { school: '早稲田大学', detail: '文化構想学部 文芸・ジャーナリズム論系 卒業', graduated: true },
+      { school: '一橋大学大学院', detail: '経営管理研究科（MBA）修了', graduated: true },
+    ],
+    /** 川崎市内で開いている合気道の道場（日英で別サイト） */
+    dojo: { name: '合気道加藤道場', url: 'https://katohdojo.com/' },
     /** public/ 配下のパス。ファイルが無い間は表示しない */
     photo: '/images/representative.jpg',
     photoAlt: '代表社員 加藤隆寛',
@@ -101,7 +112,15 @@ export const SITE_EN: SiteConfig = {
     ...SITE.representative,
     name: 'Takahiro Katoh',
     title: 'Managing Member',
-    bio: 'Runs the travel YouTube channel "Katoh Travel" (350,000 subscribers). Lives in Kawasaki and handles rental and sales consultations across Tokyo and Kanagawa with a local’s perspective, in English or Japanese.',
+    qualification: 'Licensed Real Estate Transaction Specialist (Takken-shi)',
+    bio: 'Licensed real estate transaction specialist (takken-shi). Born in Yokohama and raised between Yokohama and Kawasaki, where the family on the mother’s side is from, and still living in Kawasaki. Together with parents who have run a real estate business in Yokohama and Kawasaki for over 40 years, handles rentals, purchases and sales across Tokyo and Kanagawa, in English or Japanese. Also runs the travel YouTube channel "Katoh Travel" (350,000 subscribers).',
+    profilePath: '/en/company/takahiro-katoh/',
+    education: [
+      { school: 'The City College of New York (CUNY)', detail: 'attended before returning to Japan to study at Waseda University', graduated: false },
+      { school: 'Waseda University', detail: 'BA, School of Culture, Media and Society (Contemporary Literature and Criticism)', graduated: true },
+      { school: 'Hitotsubashi University', detail: 'MBA, Graduate School of Business Administration', graduated: true },
+    ],
+    dojo: { name: 'Aikido Katoh Dojo', url: 'https://katohdojo-en.com/' },
     photoAlt: 'Takahiro Katoh, Managing Member',
     youtube: { ...SITE.representative.youtube, name: 'Katoh Travel', subscribers: '350,000' },
   },
