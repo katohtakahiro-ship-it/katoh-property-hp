@@ -32,6 +32,11 @@ export const SITE = {
       '対象外：当社が売主様・貸主様からお預かりし、ポータルサイト等に広告掲載している物件へのお問い合わせ（当社サイト経由の場合を含む）。この場合の仲介手数料は、各広告および媒介契約書に表示する額（法定上限の範囲内）となります',
       '適用の有無は最初のお問い合わせの時点で決まり、媒介契約書（賃貸は重要事項説明）に適用する報酬額を明記します',
     ],
+    /** 賃貸で「半額」が仲介手数料だけだと分かるようにする FAQ（トップ・/rent/ で使う） */
+    rentOtherCostsFaq: {
+      q: '更新料や礼金も半額になりますか？',
+      a: 'いいえ。半額になるのは、契約時に当社にお支払いいただく仲介手数料だけです。更新料・礼金・保証会社の保証料・火災保険料・鍵交換代などは、貸主様・管理会社・保証会社などの条件によるもので、当社の仲介手数料とは別の費用です。',
+    },
   },
   /** 電話番号はサイトに掲載しない（CLAUDE.md 作業ルール）。以下は未設定なら非表示 */
   /** LINE 公式アカウントの URL */
@@ -106,6 +111,10 @@ export const SITE_EN: SiteConfig = {
       'Not eligible: inquiries about properties we list on behalf of a seller or landlord on portal sites or elsewhere, even if you contact us through this site. For those, the fee stated in the listing and in the brokerage agreement applies (within the legal maximum)',
       'Eligibility is fixed at the time of your first inquiry, and the applicable fee is written into the brokerage agreement (for rentals, the explanation of important matters)',
     ],
+    rentOtherCostsFaq: {
+      q: 'Are renewal fees and key money also half price?',
+      a: 'No. Only the brokerage fee you pay us when the lease is signed is half price. Renewal fees, key money (reikin), guarantee company fees, fire insurance and key replacement are set by the landlord, the management company or the guarantee company, and are separate from our fee.',
+    },
   },
   representatives: ['Yoshie Katoh', 'Takahiro Katoh'],
   representative: {

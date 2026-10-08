@@ -88,7 +88,8 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
         ],
         faq: [
           { q: '仲介手数料が半額になる条件はありますか？', a: S.fees.conditionDetail.join('。') + '。' },
-          { q: '賃貸の仲介手数料はいくらですか？', a: `${S.fees.rent}です。家賃15万円なら82,500円（税込）で、一般的な家賃1ヶ月分＋税との差は82,500円です。手数料以外の名目の費用はいただきません。` },
+          { q: '賃貸の仲介手数料はいくらですか？', a: `${S.fees.rent}です。家賃15万円なら82,500円（税込）で、一般的な家賃1ヶ月分＋税との差は82,500円です。契約時に、仲介手数料以外の名目の費用はいただきません。` },
+          S.fees.rentOtherCostsFaq,
           { q: 'ポータルサイトで見つけた物件を仲介してもらえますか？', a: 'はい。物件の URL をお送りください。多くの物件は不動産会社どうしで共有されていますので、原則として当社からも申し込めます。一部に扱えない物件もあり、その場合はお伝えします。' },
           { q: '来店は必要ですか？', a: '不要です。ご相談から契約手続きまでフォーム・LINE・オンラインで進めます。内見は現地でお待ち合わせしてご案内します。' },
           { q: '対応エリアはどこですか？', a: '東京・神奈川を中心に、千葉・埼玉を含む一都3県です。武蔵小杉や東急東横線沿線、川崎・横浜のタワーマンションは特に詳しくご案内できます。' },
@@ -243,7 +244,8 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
       ],
       faq: [
         { q: 'Are there conditions for the half-price fee?', a: S.fees.conditionDetail.join('. ') + '.' },
-        { q: 'How much is the rental brokerage fee?', a: `${S.fees.rent}. For a ¥150,000 apartment, ¥82,500 including tax, which is ¥82,500 less than the usual one month plus tax. No administrative or document fees.` },
+        { q: 'How much is the rental brokerage fee?', a: `${S.fees.rent}. For a ¥150,000 apartment, ¥82,500 including tax, which is ¥82,500 less than the usual one month plus tax. No other administrative or document fees at signing.` },
+        S.fees.rentOtherCostsFaq,
         { q: 'Can you apply for a listing I found on a portal site?', a: 'Yes. Send the link. Most listings are shared among agencies, so in principle we can apply. A few are exclusive to one agency; we will tell you if so.' },
         { q: 'Do I need to visit an office?', a: 'No. Consultations and paperwork are handled via form, LINE and online meetings. Viewings take place on site with us.' },
         { q: 'Which areas do you cover?', a: 'Tokyo and Kanagawa first, plus Chiba and Saitama. Musashikosugi, the Tokyu Toyoko line and the tower condominiums of Kawasaki and Yokohama are our strongest areas.' },
