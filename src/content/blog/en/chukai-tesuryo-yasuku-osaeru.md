@@ -83,4 +83,6 @@ These rates apply to new inquiries received through the form on this website, LI
 
 We are a licensed real estate broker (Kanagawa Prefecture Governor (2) No. 30531) with an office in Kawasaki, handling rentals and sales across Tokyo, Kanagawa, Chiba and Saitama, with Tokyo and Kanagawa at the center. The office is home-based, so no office visit is needed: consultations and contract paperwork are handled via form, LINE and online meetings, and we meet you on site for viewings. We work in English or Japanese. Whether you already have a property in mind or are just starting to look, feel free to get in touch.
 
+For how each service works and what it costs, see [Renting](/en/rent/), [Buying](/en/buy/) and [Selling](/en/sell/).
+
 > **Note**: The maximum brokerage fees are based on the Real Estate Brokerage Act and notices issued by the Ministry of Land, Infrastructure, Transport and Tourism. The amounts in this article are illustrative; actual amounts depend on the property and the terms of the contract. The application of the law includes points that need to be confirmed, so please check before signing. This English article is a translation for reference; the Japanese version is the original.
