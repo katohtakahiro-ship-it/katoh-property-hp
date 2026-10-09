@@ -120,8 +120,10 @@ def collect_ga4(ga: GA4, start, end, prev_start, prev_end) -> dict:
     prev_leads = ga.run(["eventName"], ["eventCount"], prev_start, prev_end, dim_filter=event_filter("generate_lead"))
 
     sources = ga.run(["sessionSource", "sessionMedium"], ["sessions", "engagedSessions"], start, end, limit=25, order_metric="sessions")
+    # AI からの流入は件数が少なく上位25件に入らないことがあるので、全参照元から拾う
+    all_sources = ga.run(["sessionSource"], ["sessions"], start, end, limit=500, order_metric="sessions")
     ai = {}
-    for s in sources:
+    for s in all_sources:
         for host, label in AI_SOURCES.items():
             if host in s["sessionSource"]:
                 ai[label] = ai.get(label, 0) + s["sessions"]
@@ -131,6 +133,8 @@ def collect_ga4(ga: GA4, start, end, prev_start, prev_end) -> dict:
         "totals_prev": prev[0] if prev else {},
         "leads": leads[0]["eventCount"] if leads else 0,
         "leads_prev": prev_leads[0]["eventCount"] if prev_leads else 0,
+        # 問い合わせ（generate_lead）が起きたセッションの参照元。カスタムディメンション登録なしで取れる
+        "leads_by_source": ga.run(["sessionSource", "sessionMedium"], ["eventCount"], start, end, order_metric="eventCount", dim_filter=event_filter("generate_lead")),
         "channels": ga.run(["sessionDefaultChannelGroup"], ["sessions", "engagedSessions"], start, end, order_metric="sessions"),
         "sources": sources,
         "ai_sources": ai,
@@ -317,6 +321,9 @@ def build_html(ym: str, ga: dict, gsc: dict | None, posts: list[dict], commentar
         "<h2 style='font-size:16px'>今月公開した記事</h2>",
         f"<ul>{posts_html}</ul>",
         "<h2 style='font-size:16px'>問い合わせの経路</h2>",
+        "<h4 style='margin:12px 0 0'>問い合わせがあった訪問の参照元</h4>",
+        table(ga["leads_by_source"], [("sessionSource", "参照元"), ("sessionMedium", "メディア"), ("eventCount", "件数")]),
+        "<p style='color:#888;font-size:12px'>AI のアプリ（ChatGPT・Claude・Gemini などのスマホアプリやデスクトップアプリ）から開いたリンクや、AI の回答を見て社名を検索した場合は、AI ではなく「(direct)」や「google」として記録されます。広告ブロッカー（Brave など）を使う訪問者は、GA4 に記録されません。</p>",
         lead_html,
         "<h2 style='font-size:16px'>チャネル別</h2>",
         table(ga["channels"], [("sessionDefaultChannelGroup", "チャネル"), ("sessions", "セッション"), ("engagedSessions", "エンゲージ")]),
