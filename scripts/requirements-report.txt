@@ -1,0 +1,7 @@
+# 月次アクセスレポート（scripts/monthly_report.py）
+google-analytics-data
+google-api-python-client
+google-auth
+anthropic>=0.117
+markdown
+requests

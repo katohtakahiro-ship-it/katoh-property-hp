@@ -39,3 +39,6 @@ data/reinfolib/
 
 # レインズ会員画面から取得した成約事例（個別事例は公開・コミットしない。集計値のみ記事に使う）
 data/reins/
+
+# 月次レポートの手元出力（scripts/monthly_report.py --dry-run）
+report.html

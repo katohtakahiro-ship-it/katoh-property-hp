@@ -1,0 +1,30 @@
+# 月次アクセスレポート。毎月3日 9:00（日本時間）に前月分を集計し、info@katohpm.com にメールで送る。
+# Search Console のデータ確定を待つため1日ではなく3日に実行する。手動実行（Run workflow）も可。
+name: Monthly report
+
+on:
+  schedule:
+    - cron: '0 0 3 * *' # UTC 0:00 = JST 9:00
+  workflow_dispatch:
+    inputs:
+      month:
+        description: '対象月 YYYY-MM（空欄なら前月）'
+        required: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r scripts/requirements-report.txt
+      - name: Build and send report
+        env:
+          GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID }}
+          GSC_SITE_URL: sc-domain:katohpm.com
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: python scripts/monthly_report.py ${{ github.event.inputs.month && format('--month {0}', github.event.inputs.month) || '' }}

@@ -34,6 +34,7 @@
 - 問い合わせ：Cloudflare Pages Functions + Resend でメール送信（実装済み。functions/api/contact.ts、項目定義は src/lib/contact-fields.ts）。通知先 info@katohpm.com、受付メール（自動返信）に「3営業日以内に返信」。LINE 公式アカウント @430umbrf（友だち追加 URL https://lin.ee/uRSd3Se 、管理は https://manager.line.biz/ 、チャット返信は https://chat.line.biz/ ）。URL は Pages の環境変数 LINE_URL で受付メールに載せる。サイト上の LINE ボタンは当面出さない（出す場合は src/config/site.ts の lineUrl に設定）
 - 分析：Google Analytics 4（測定 ID G-P4BQ3L3J87、src/config/site.ts の gaMeasurementId。本番ビルドのみ出力。/thanks/ で generate_lead イベント）/ Search Console（ドメインプロパティ katohpm.com）
 - 問い合わせの経路分析（2026-10-05）：訪問中に見たページを sessionStorage（kpm_journey。Cookie なし、タブを閉じると消える）に記録し、フォーム送信時に自動で添える。当社宛ての通知メールにだけ「送信したページ・最初に見たページ・流入元・読んだ記事・見た順」を載せ、受付メールには載せない。GA4 の generate_lead にも form_page / landing_page / last_article / lead_referrer を付ける（GA 側でカスタムディメンション登録が必要）。訪問者の入力項目は増やさない。プライバシーポリシーに記載済み（個人情報保護法上の扱いは要確認）
+- 月次アクセスレポート（2026-10-09）：GitHub Actions（.github/workflows/monthly-report.yml）が毎月3日 9:00 JST に scripts/monthly_report.py を実行。GA4 Data API と Search Console API から前月分を集計（AI アシスタントからの流入、問い合わせ経路を含む）し、Claude（claude-opus-5-5）の所見を付けて Resend で info@katohpm.com に送る。認証は Google Cloud のサービスアカウント（GA4 は閲覧者、Search Console は制限付きユーザーとして追加）。GitHub の Secrets：GOOGLE_SERVICE_ACCOUNT / ANTHROPIC_API_KEY / RESEND_API_KEY、Variables：GA4_PROPERTY_ID。手動実行は Actions の Run workflow（対象月を指定可）
 - ドメイン：katohpm.com（Cloudflare Registrar で取得済み、2026-09-08）
 - Googleビジネスプロフィールは使わない（自宅事務所のため）
 - WordPress / AFFINGER は使わない
