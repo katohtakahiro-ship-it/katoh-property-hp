@@ -362,6 +362,23 @@ def send_email(subject: str, html_body: str):
     res.raise_for_status()
 
 
+def load_service_account() -> dict:
+    """GitHub Secrets に貼った JSON キーを読む。前後の空白・BOM・引用符は取り除く。中身はログに出さない"""
+    raw = os.environ.get("GOOGLE_SERVICE_ACCOUNT", "").strip().lstrip("﻿").strip()
+    if len(raw) >= 2 and raw[0] == raw[-1] and raw[0] in "'\"":
+        raw = raw[1:-1].strip()
+    try:
+        info = json.loads(raw)
+    except json.JSONDecodeError:
+        sys.exit(
+            f"GOOGLE_SERVICE_ACCOUNT を JSON として読めません（長さ {len(raw)} 文字、先頭が '{{' {'である' if raw.startswith('{') else 'ではない'}）。"
+            "JSON キーのファイルをメモ帳で開き、{ から } までの全文を貼り直してください。"
+        )
+    if info.get("type") != "service_account":
+        sys.exit("GOOGLE_SERVICE_ACCOUNT がサービスアカウントの JSON キーではありません（type が service_account ではない）。")
+    return info
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--month", help="対象月 YYYY-MM（既定は前月）")
@@ -372,7 +389,7 @@ def main():
     start, end = month_range(ym)
     prev_start, prev_end = month_range(previous_month(start))
 
-    creds = service_account.Credentials.from_service_account_info(json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"]), scopes=SCOPES)
+    creds = service_account.Credentials.from_service_account_info(load_service_account(), scopes=SCOPES)
     ga = collect_ga4(GA4(creds, os.environ["GA4_PROPERTY_ID"]), start, end, prev_start, prev_end)
     try:
         gsc = collect_gsc(creds, os.environ.get("GSC_SITE_URL", "sc-domain:katohpm.com"), start, end, prev_start, prev_end)
