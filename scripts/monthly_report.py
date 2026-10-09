@@ -224,7 +224,7 @@ def write_commentary(payload: dict) -> str | None:
         return None
     import anthropic
 
-    client = anthropic.Anthropic()
+    client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"].strip())
     try:
         response = client.beta.messages.create(
             model=MODEL,
@@ -350,7 +350,7 @@ def build_html(ym: str, ga: dict, gsc: dict | None, posts: list[dict], commentar
 def send_email(subject: str, html_body: str):
     res = requests.post(
         "https://api.resend.com/emails",
-        headers={"Authorization": f"Bearer {os.environ['RESEND_API_KEY']}"},
+        headers={"Authorization": f"Bearer {os.environ['RESEND_API_KEY'].strip()}"},
         json={
             "from": "加藤プロパティマネジメント レポート <info@katohpm.com>",
             "to": [os.environ.get("REPORT_TO", "info@katohpm.com")],
