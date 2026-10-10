@@ -24,6 +24,8 @@ Ask about "tower condominiums in Kawasaki" and most people think of Musashikosug
 
 **Counting buildings of 20 floors or more, Saiwai Ward has the most with 20, and Nakahara Ward has 16.** Kawasaki as a whole has 49 (completed buildings, as of October 2026).
 
+![Map of the number of tower condominiums (20 or more floors above ground) in each ward of Kawasaki: Saiwai 20, Nakahara 16, Kawasaki 6, Takatsu 5, Tama 2, Miyamae 0 and Asao 0. Saiwai and Nakahara are highlighted.](/images/blog/kawasaki-tower-map-en.png)
+
 | Ward | 20+ floors | 30+ floors | 40+ floors | Main areas |
 |---|---|---|---|---|
 | **Saiwai** | **20** | 9 | 2 | Kawasaki Station west, Shin-Kawasaki / Kashimada, Tode, Yako |
@@ -46,6 +48,8 @@ Some 20-floor buildings are long, slab-shaped blocks rather than towers, but we 
 ## Why, then, is Musashikosugi called "the tower condominium town"?
 
 **Because slender high-rise towers are packed closely around the station.** Of the 11 buildings in Kawasaki with 40 floors or more, 9 are in Musashikosugi.
+
+![Two maps comparing tower condominium counts by ward in Kawasaki. At 20 or more floors, Saiwai has the most with 20 and Nakahara has 16. At 40 or more floors, Nakahara has the most with 9 and Saiwai has 2.](/images/blog/kawasaki-tower-map-20-40-en.png)
 
 Saiwai's towers are spread across the west side of Kawasaki Station, Shin-Kawasaki, Tode and Yako, and 9 of them have 20 to 22 floors.
 
@@ -158,4 +162,4 @@ To get in touch, see our pages for [buyers](/en/buy/), [sellers](/en/sell/) and 
 - **Scope**: residential buildings in Kawasaki with 20 or more floors above ground, completed as of October 2026. Both owner-occupied and rental buildings are included, regardless of shape (tower or slab).
 - **Counting**: where a development has several buildings on one site, we counted only those with 20 floors or more, one by one (for example, of the nine residential buildings in Park City Shin-Kawasaki, only the two 30-floor buildings are counted).
 
-> **Note**: The counts and lists in this article are based on our own research using publicly available information, and we cannot guarantee that every building is included. If you notice an omission or error, please let us know through our contact form. Closed prices were compiled and processed by us using the contract price data (API) of the MLIT Real Estate Information Library. This service uses the API of the MLIT Real Estate Information Library, but the currency, accuracy and completeness of the information provided are not guaranteed. Building names are our English renderings of the Japanese names. This English article is a translation for reference; the Japanese version is the original.
+> **Note**: The counts and lists in this article are based on our own research using publicly available information, and we cannot guarantee that every building is included. If you notice an omission or error, please let us know through our contact form. Closed prices were compiled and processed by us using the contract price data (API) of the MLIT Real Estate Information Library. This service uses the API of the MLIT Real Estate Information Library, but the currency, accuracy and completeness of the information provided are not guaranteed. Building names are our English renderings of the Japanese names. Place names on the background of the maps are in Japanese. This English article is a translation for reference; the Japanese version is the original.
