@@ -24,7 +24,7 @@ faq:
 
 **As an average, yes, but the figure mixes a genuine price change with a change in which properties sold.** August 2026 was a month in which many older condominiums changed hands, and the average building age crossed the 25-year mark. That alone pulls the average price per square meter down considerably.
 
-On social media, the figure was taken as "central Tokyo keeps rising while Kawasaki is down 7–8% year on year". The source is Market Watch, the monthly bulletin published by the East Japan Real Estate Information Network (East Japan REINS, 東日本不動産流通機構). This article uses the same table, together with the organization's data by building age, to look step by step at what fell and what changed.
+On social media, the figure was taken as "central Tokyo keeps rising while Kawasaki is down 7–8% year on year". The source is Market Watch, the monthly bulletin published by the East Japan Real Estate Information Network (East Japan REINS, 東日本不動産流通機構). This article uses the same table, together with REINS data by building age, to look step by step at what fell and what changed.
 
 ## What were Kawasaki's figures for August 2026?
 
@@ -38,7 +38,7 @@ On social media, the figure was taken as "central Tokyo keeps rising while Kawas
 | Average floor area | 65.52 m² | 66.33 m² | +0.81 m² |
 | Average building age | 23.69 years | 26.85 years | +3.16 years |
 
-Source: East Japan REINS, "Market Watch, August 2026", resale condominium transactions (Kawasaki, Kanagawa)
+Source: East Japan REINS, "Market Watch", August 2026
 
 ![Monthly price per square meter and average building age of resale condominiums closed in Kawasaki, August 2025 to August 2026. The price per square meter moved from ¥776,600 to ¥720,200, and the average building age from 23.69 to 26.85 years.](/images/blog/kawasaki-mansion-202608-en.png)
 
@@ -55,7 +55,7 @@ East Japan REINS's annual report, "The greater Tokyo real estate market by build
 | 26–30 years | ¥644,500 | −¥216,500 (−25.1%) |
 | 31–35 years | ¥441,400 | −¥203,100 |
 
-Source: East Japan REINS, "The greater Tokyo real estate market by building age (2025)", Figure 6 (resale condominium transactions)
+Source: East Japan REINS, "The greater Tokyo real estate market by building age (2025)"
 
 The relationship between building age and price is not a straight line; there are large steps around 25 years and around 30 years. These are the ages at which the new seismic standards, the requirements for Japan's mortgage tax deduction and the timing of major repair work tend to overlap, which likely changes how buyers see a property. (Identifying the causes is outside the scope of the report.)
 
@@ -83,7 +83,7 @@ Lining up August 2024, August 2025 and August 2026, the price per square meter w
 | Yokohama, Kanagawa | ¥629,000 | +¥21,200 | 29.50 years | +1.48 years | −13 |
 | Kawasaki, Kanagawa | ¥720,200 | −¥56,400 | 26.85 years | +3.16 years | ±0 |
 
-Source: as above (calculated from each area's figures for August 2026 and August 2025)
+Source: East Japan REINS, "Market Watch", August 2026
 
 Prices rose in the Joto district and Yokohama, but closed transactions fell by 94 in the Joto district and 98 in the central 3 wards. When transaction numbers fall, the average price is more easily moved by which properties happen to sell. In Kawasaki, the number of transactions was unchanged, so the rise in the share of older properties can be read as showing up plainly in the average. Yokohama already had an older mix, at an average of 29.50 years, and a smaller change in building age, so its price moved more gently.
 
@@ -101,4 +101,4 @@ Prices rose in the Joto district and Yokohama, but closed transactions fell by 9
 
 This blog will cover the Kawasaki resale condominium market regularly. Articles looking at Musashikosugi, the Tokyu Toyoko line neighborhoods, and the tower condominiums of Kawasaki and Yokohama by station and building age, based on public data, will follow. For help with selling or buying, see our pages for [sellers](/en/sell/) and [buyers](/en/buy/).
 
-> **Sources and notes**: The monthly figures in this article are taken from the East Japan Real Estate Information Network's "Market Watch" (monthly bulletin), "Resale condominium transactions", for August 2026 and August 2025; the year-on-year differences were calculated by us. The prices per square meter by building age are taken from Figure 6 of the organization's "The greater Tokyo real estate market by building age (2025)". Both are aggregates of properties reported as closed in the relevant period and do not by themselves show price changes across the market as a whole. Use of the data follows the organization's published terms. Yen amounts are converted from the 万円 figures in the source (72.02万円 = ¥720,200). This English article is a translation for reference; the Japanese version is the original.
+> **Sources**: East Japan Real Estate Information Network, "Market Watch" (monthly bulletin) and "The greater Tokyo real estate market by building age (2025)". Year-on-year differences are our own calculations. The figures cover closed transactions only, so they do not match the price movement of any individual property. Yen amounts are converted from the 万円 figures in the source (72.02万円 = ¥720,200). This English article is a translation for reference; the Japanese version is the original.
