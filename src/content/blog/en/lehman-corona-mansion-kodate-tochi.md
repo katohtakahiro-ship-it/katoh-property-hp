@@ -2,14 +2,14 @@
 page_slug: lehman-corona-mansion-kodate-tochi
 title: How much have condo, house and land prices risen since before the 2008 financial crisis? (Tokyo, Yokohama, Kawasaki)
 date: 2026-10-22
-description: Taking 2008, before the global financial crisis, as 100, resale condominium prices in Tokyo, Kanagawa, Yokohama and Kawasaki reached 200–216 in 2025, roughly double. Detached houses, at 111–128, and residential land, at 103–119, rose far more gently. Using public data from Japan's Ministry of Land, Infrastructure, Transport and Tourism, this article compares how far each fell after the 2008 financial crisis and the COVID-19 shock, and how many years it took to return to the earlier level.
+description: Taking 2008, before the global financial crisis, as 100, resale condominium prices in Tokyo, Kanagawa, Yokohama and Kawasaki reached 200–216 in 2025, roughly double. Detached houses, at 111–129, and residential land, at 103–119, rose far more gently. Using public data from Japan's Ministry of Land, Infrastructure, Transport and Tourism, this article compares how far each fell after the 2008 financial crisis and the COVID-19 shock, and how many years it took to return to the earlier level.
 tags: [selling, buying, sales, Kawasaki, Yokohama, Tokyo, resale condominiums, detached houses, land prices, market data]
 draft: false
 faq:
   - q: How much have resale condominium prices risen since before the 2008 financial crisis?
     a: In our estimates, with the first half of 2008 as 100, resale condominium prices in the second half of 2025 were 216 in Tokyo, 203 in Kanagawa, 202 in Yokohama and 200 in Kawasaki, roughly double. The figures are based on the ministry's transaction price data and compare properties after adjusting for building age, floor area and municipality.
   - q: What about detached houses and land?
-    a: With 2008 as 100, detached houses were 128 in Tokyo, 111 in Kanagawa, 116 in Yokohama and 116 in Kawasaki, and residential land prices (official land prices, 2026) were 119 in Tokyo, 103 in Kanagawa, 111 in Yokohama and 114 in Kawasaki. While condominiums roughly doubled, houses and land rose by only a few percent to just under 30%.
+    a: With 2008 as 100, detached houses were 129 in Tokyo, 111 in Kanagawa, 116 in Yokohama and 116 in Kawasaki, and residential land prices (official land prices, 2026) were 119 in Tokyo, 103 in Kanagawa, 111 in Yokohama and 114 in Kawasaki. While condominiums roughly doubled, houses and land rose by only a few percent to just under 30%.
   - q: How many years did it take for prices to recover after the 2008 financial crisis?
     a: Resale condominiums bottomed out in the first half of 2009 and passed their 2008 level in the first half of 2010 in Yokohama and Kawasaki, the second half of 2010 in Kanagawa, and the second half of 2013 in Tokyo. Detached houses bottomed out in 2012–2013 and took about 13–14 years to recover, in 2021–2022. Residential land took about 15 years in Tokyo, Yokohama and Kawasaki, recovering in 2023, and 18 years for Kanagawa as a whole, recovering in 2026.
   - q: Did property prices fall in the COVID-19 shock?
@@ -20,11 +20,11 @@ faq:
 
 ## How much have prices risen since before the 2008 financial crisis?
 
-**Taking 2008 as 100, resale condominiums in Tokyo, Kanagawa, Yokohama and Kawasaki reached 200–216, roughly double. Detached houses were at 111–128 and residential land at 103–119, a much gentler rise.** Over the same 18 or so years, only condominiums grew sharply.
+**Taking 2008 as 100, resale condominiums in Tokyo, Kanagawa, Yokohama and Kawasaki reached 200–216, roughly double. Detached houses were at 111–129 and residential land at 103–119, a much gentler rise.** Over the same 18 or so years, only condominiums grew sharply.
 
 | Area | Resale condominiums (2H 2025) | Detached houses (2H 2025) | Residential land (2026) |
 | --- | --- | --- | --- |
-| Tokyo | **216** | 128 | 119 |
+| Tokyo | **216** | 129 | 119 |
 | Kanagawa | **203** | 111 | 103 |
 | Yokohama | **202** | 116 | 111 |
 | Kawasaki | **200** | 116 | 114 |
@@ -35,7 +35,7 @@ The condominium and house figures are our estimates based on the ministry's tran
 
 ![Resale condominium prices, first half of 2008 = 100, 2007 to 2025. Tokyo 216, Kanagawa 203, Yokohama 202, Kawasaki 200.](/images/blog/shock-recovery-mansion-en.png)
 
-![Detached house prices, first half of 2008 = 100, 2007 to 2025. Tokyo 128, Yokohama 116, Kawasaki 116, Kanagawa 111.](/images/blog/shock-recovery-kodate-en.png)
+![Detached house prices, first half of 2008 = 100, 2007 to 2025. Tokyo 129, Yokohama 116, Kawasaki 116, Kanagawa 111.](/images/blog/shock-recovery-kodate-en.png)
 
 ![Residential land prices (official land prices), 2008 = 100, 2007 to 2026. Tokyo 119, Kawasaki 114, Yokohama 111, Kanagawa 103, Japan 94.](/images/blog/shock-recovery-chika-en.png)
 
@@ -45,8 +45,8 @@ The condominium and house figures are our estimates based on the ministry's tran
 
 | Area | Resale condominiums | Detached houses | Residential land |
 | --- | --- | --- | --- |
-| Tokyo | Bottom 1H 2009 (−7.5%) → recovered 2H 2013 | Bottom 2H 2012 (−15.0%) → recovered 1H 2021 | Bottom 2013 (−14.2%) → recovered 2023 |
-| Kanagawa | Bottom 1H 2009 (−9.7%) → recovered 2H 2010 | Bottom 2H 2013 (−15.4%) → recovered 1H 2022 | Bottom 2013 (−8.8%) → recovered 2026 |
+| Tokyo | Bottom 1H 2009 (−7.5%) → recovered 2H 2013 | Bottom 2H 2012 (−15.1%) → recovered 1H 2021 | Bottom 2013 (−14.2%) → recovered 2023 |
+| Kanagawa | Bottom 1H 2009 (−9.7%) → recovered 2H 2010 | Bottom 2H 2013 (−15.3%) → recovered 1H 2022 | Bottom 2013 (−8.8%) → recovered 2026 |
 | Yokohama | Bottom 1H 2009 (−9.8%) → recovered 1H 2010 | Bottom 2H 2013 (−12.9%) → recovered 2H 2021 | Bottom 2012 (−9.6%) → recovered 2023 |
 | Kawasaki | Bottom 1H 2009 (−11.6%) → recovered 1H 2010 | Bottom 2H 2012 (−17.4%) → recovered 1H 2022 | Bottom 2012 (−10.0%) → recovered 2023 |
 

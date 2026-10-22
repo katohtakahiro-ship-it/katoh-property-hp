@@ -142,7 +142,8 @@ def build_index(torihiki_dir, kind):
                     x, logp = (math.log(land), math.log(floor), age, age * age / 100), math.log(price)
             except ValueError:
                 continue  # 「2000㎡以上」など数値でない面積・価格
-            recs.append((f"{year}H{half}", r["MunicipalityCode"], x, logp))
+            # 01〜09 の都道府県は先頭の0が落ちた4桁で入っているので5桁にそろえる
+            recs.append((f"{year}H{half}", r["MunicipalityCode"].zfill(5), x, logp))
     rows = []
     for a, fn in AREAS.items():
         sub = [rec for rec in recs if fn(rec[1])]
