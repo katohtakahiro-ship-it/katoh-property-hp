@@ -1,6 +1,6 @@
 ---
 /**
- * 売却の簡易査定（テスト公開中：noindex・サイトマップとサイト内リンクなし）。東京都・神奈川県の全市区町村。
+ * 売却の簡易査定（/sell/ からリンク）。東京都・神奈川県の全市区町村。
  * マンションは、市区町村・面積・築年（またはマンション名）から国交省の成約価格情報で売れる価格の目安を出す。
  * 戸建て・土地は用途地域や接道で価格が大きく変わるため目安は出さず、市区町村の㎡単価の推移だけ見せて本格査定へつなぐ。
  * 計算はブラウザ内で完結し、データは scripts/satei_data.py が作る public/data/satei/。
@@ -75,10 +75,6 @@ const faq = [
 ---
 
 <Base title="不動産売却の簡易査定｜東京都・神奈川県のマンションの価格を成約データで" description="東京都・神奈川県の中古マンションの売却価格の目安を、国土交通省の成約価格データからその場で計算します。マンション名でも調べられます。名前や連絡先の入力は不要。戸建て・土地は本格査定で、根拠の事例付きの報告書をお渡しします。">
-  <meta slot="head" name="robots" content="noindex" />
-
-  <div class="preview-banner">テスト公開中（検索エンジンには載らず、サイト内からのリンクもありません）</div>
-
   <section class="purpose-hero">
     <div class="container">
       <span class="section-label">Valuation</span>
@@ -588,18 +584,6 @@ const faq = [
 </script>
 
 <style is:global>
-  .preview-banner {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    background: #b3261e;
-    color: #fff;
-    text-align: center;
-    font-size: 0.8rem;
-    padding: 0.4rem 1rem;
-  }
   .purpose-hero { padding-top: 9rem; background: var(--ink); color: var(--cream); }
   .purpose-hero .container { max-width: 860px; }
   .purpose-hero .section-title { color: var(--cream); font-size: clamp(1.7rem, 3.4vw, 2.5rem); }

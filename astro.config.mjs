@@ -19,8 +19,8 @@ export default defineConfig({
 
   integrations: [
     sitemap({
-      // 問い合わせ完了ページと、テスト公開中の簡易査定（どちらも noindex）は載せない
-      filter: (page) => !page.includes('/thanks/') && !page.includes('/sell/satei/'),
+      // 問い合わせ完了ページ（noindex）は載せない
+      filter: (page) => !page.includes('/thanks/'),
       // サイトマップにも hreflang を出す
       i18n: {
         defaultLocale: 'ja',
