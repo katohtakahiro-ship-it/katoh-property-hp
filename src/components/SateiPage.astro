@@ -1,6 +1,7 @@
 ---
 /**
- * 売却の簡易査定（日英共用。/sell/satei/ と /en/sell/valuation/、/sell/ からリンク）。東京都・神奈川県の全市区町村。
+ * 売却の簡易査定（日英共用。/sell/satei/ と /en/sell/valuation/、/sell/ からリンク）。
+ * データは東京都・神奈川県の全市区町村分あるが、当面は川崎市7区だけで査定する（スクリプトの ENABLED）。
  * マンションは、市区町村・面積・築年（またはマンション名）から国交省の成約価格情報で売れる価格の目安を出す。
  * 戸建て・土地は用途地域や接道で価格が大きく変わるため目安は出さず、市区町村の㎡単価の推移だけ見せて本格査定へつなぐ。
  * 計算はブラウザ内で完結し、データは scripts/satei_data.py が作る public/data/satei/。
@@ -23,17 +24,17 @@ const PATH = { ja: '/sell/satei/', en: '/en/sell/valuation/' } as const;
 
 const content = {
   ja: {
-    title: '不動産売却の簡易査定｜東京都・神奈川県のマンションの価格を成約データで',
+    title: 'マンション売却の簡易査定｜川崎市の価格の目安を成約データで',
     description:
-      '東京都・神奈川県の中古マンションの売却価格の目安を、国土交通省の成約価格データからその場で計算します。マンション名でも調べられます。名前や連絡先の入力は不要。戸建て・土地は本格査定で、根拠の事例付きの報告書をお渡しします。',
+      '川崎市（7区）の中古マンションの売却価格の目安を、国土交通省の成約価格データと最近の成約からその場で計算します。マンション名・所在階でも調べられます。名前や連絡先の入力は不要。横浜市・東京都内は順次対応します。',
     h1: ['売却価格の目安を、', '国の成約データで確かめる'],
-    lead: '東京都・神奈川県の中古マンションについて、国土交通省の成約データから売れる価格の目安をその場で計算します。お名前やご連絡先の入力はいりません。営業電話もしません。戸建て・土地は、当社が調べて本格査定でお出しします。',
+    lead: '川崎市（7区）の中古マンションについて、国土交通省の成約データと当社が確認している最近の成約から、売れる価格の目安をその場で計算します。お名前やご連絡先の入力はいりません。営業電話もしません。横浜市・東京都内は順次対応します。それ以外の地域と戸建て・土地は、当社が調べて本格査定でお出しします。',
     feeLabel: '売却の仲介手数料',
     tool: '簡易査定',
     kinds: { legend: '物件の種類', mansion: 'マンション', house: '戸建て', land: '土地' },
     building: 'マンション名（任意）',
     buildingPlaceholder: '例：パークシティ、武蔵小杉、小倉',
-    muni: '市区町村',
+    muni: '区',
     district: '町名（任意）',
     districtAny: '指定しない',
     area: '専有面積（㎡）',
@@ -97,7 +98,7 @@ const content = {
       },
     ],
     steps: [
-      { title: '簡易査定', body: 'マンションは、このページで価格の目安を確かめます。お名前やご連絡先の入力はいりません。戸建て・土地は、次の本格査定のご依頼から始まります。' },
+      { title: '簡易査定', body: '川崎市のマンションは、このページで価格の目安を確かめます。お名前やご連絡先の入力はいりません。それ以外の地域や戸建て・土地は、次の本格査定のご依頼から始まります。' },
       { title: '本格査定のご依頼', body: 'フォームか LINE で、物件の所在地・売りたい時期をお送りください。' },
       { title: '机上査定', body: 'レインズの成約事例、売出中の物件、管理状況や法令上の制限を確認します。' },
       { title: '現地確認', body: '建物・室内・周辺の環境を拝見します。所要時間は30分〜1時間ほどです。' },
@@ -105,7 +106,7 @@ const content = {
     ],
     faq: [
       { q: '簡易査定に名前や電話番号の入力は必要ですか？', a: '必要ありません。市区町村・専有面積・築年（またはマンション名）を入れるだけで、その場で目安が表示されます。入力した内容は当社に送信されません。' },
-      { q: '簡易査定の対象はどこですか？', a: '東京都・神奈川県の全市区町村の中古マンションです。事例が少ない地域では目安を表示できないことがあります。戸建て・土地、埼玉県・千葉県の物件は、フォームか LINE で本格査定をご依頼ください。' },
+      { q: '簡易査定の対象はどこですか？', a: 'いまは川崎市（7区）の中古マンションです。国のデータと最近の成約の差を地域ごとに確かめてから広げるため、横浜市・東京都内は順次対応します。それ以外の地域の物件や戸建て・土地は、フォームか LINE で本格査定をご依頼ください（一都3県に対応しています）。' },
       { q: 'マンション名で調べられるのはどのマンションですか？', a: 'いまは川崎市の大規模マンションを登録していて、順次増やしています。一覧にないマンションも、名前を入力していただければ、町名・築年の近い事例で目安を出し、本格査定でそのマンションの事例をお調べします。' },
       { q: '簡易査定と本格査定の違いは何ですか？', a: '簡易査定は公的データだけで出す目安です。本格査定は、レインズの成約事例・売出中の物件・管理状況や法令上の制限・現地確認を加えて、その物件の価格を出します。' },
       { q: '査定に費用はかかりますか？', a: 'かかりません。仲介手数料は売買契約が成立したときにだけ発生します。' },
@@ -113,17 +114,17 @@ const content = {
     ],
   },
   en: {
-    title: 'Home valuation in Tokyo and Kanagawa | Condo prices from government sale data',
+    title: 'Condo valuation in Kawasaki | Price estimate from actual sale data',
     description:
-      'Get an instant price estimate for a second-hand condominium anywhere in Tokyo or Kanagawa, calculated from the government’s record of actual sale prices. Search by building name. No name or contact details needed. Houses and land get a full valuation with a written report.',
+      'Get an instant price estimate for a second-hand condominium in Kawasaki, calculated from the government’s record of actual sale prices and recent sales. Search by building name and floor. No name or contact details needed. Yokohama and Tokyo are coming soon.',
     h1: ['What is your condo worth?', 'Check it against actual sale prices'],
-    lead: 'For second-hand condominiums anywhere in Tokyo and Kanagawa, this tool estimates a likely sale price from the actual sale prices published by Japan’s Ministry of Land, Infrastructure, Transport and Tourism (MLIT). No name or contact details are needed, and we never make sales calls. For houses and land, we research the property and give you a price in a full valuation.',
+    lead: 'For second-hand condominiums in Kawasaki (all 7 wards), this tool estimates a likely sale price from the actual sale prices published by Japan’s Ministry of Land, Infrastructure, Transport and Tourism (MLIT) and the recent sales we track. No name or contact details are needed, and we never make sales calls. Yokohama and Tokyo are coming soon. For other areas, houses and land, we research the property and give you a price in a full valuation.',
     feeLabel: 'Our brokerage fee for sales',
     tool: 'Instant estimate',
     kinds: { legend: 'Property type', mansion: 'Condominium', house: 'House', land: 'Land' },
     building: 'Building name (optional)',
     buildingPlaceholder: 'Building name in Japanese, or a ward (e.g. Nakahara)',
-    muni: 'City / ward',
+    muni: 'Ward',
     district: 'Town (optional)',
     districtAny: 'Any',
     area: 'Floor area (㎡)',
@@ -187,7 +188,7 @@ const content = {
       },
     ],
     steps: [
-      { title: 'Instant estimate', body: 'For condominiums, check an estimated price on this page. No name or contact details needed. For houses and land, start with a request for a full valuation.' },
+      { title: 'Instant estimate', body: 'For condominiums in Kawasaki, check an estimated price on this page. No name or contact details needed. For other areas, houses and land, start with a request for a full valuation.' },
       { title: 'Request a full valuation', body: 'Send us the location and when you would like to sell, using the form or LINE.' },
       { title: 'Desk research', body: 'We check recent sales on REINS, current listings, the building’s management and legal restrictions.' },
       { title: 'On-site inspection', body: 'We see the building, the interior and the neighborhood. It takes about 30 minutes to an hour.' },
@@ -195,7 +196,7 @@ const content = {
     ],
     faq: [
       { q: 'Do I need to enter my name or phone number for the instant estimate?', a: 'No. Enter the city or ward, floor area and year built (or the building name) and the estimate appears immediately. Nothing you enter is sent to us.' },
-      { q: 'Which areas does the instant estimate cover?', a: 'Second-hand condominiums in every city, ward, town and village of Tokyo and Kanagawa. In areas with few sales, an estimate may not be available. For houses, land, and properties in Saitama or Chiba, please request a full valuation by form or LINE.' },
+      { q: 'Which areas does the instant estimate cover?', a: 'For now, second-hand condominiums in Kawasaki (all 7 wards). We are checking the gap between the government data and recent sales area by area, and will add Yokohama and Tokyo next. For other areas, houses and land, please request a full valuation by form or LINE (we cover Tokyo, Kanagawa, Chiba and Saitama).' },
       { q: 'Which buildings can I search by name?', a: 'For now, large condominiums in Kawasaki, and we are adding more. Building names are listed in Japanese; you can also type a ward name in English, such as Nakahara, to see the buildings there. If your building is not listed, we estimate from similar sales and look up your building in the full valuation.' },
       { q: 'What is the difference between the instant estimate and a full valuation?', a: 'The instant estimate uses public data only. A full valuation adds recent REINS sales, current listings, the building’s management and legal restrictions, and an on-site inspection to price your specific property.' },
       { q: 'Is there a charge for the valuation?', a: 'No. Our brokerage fee is payable only when a sale is concluded.' },
@@ -379,6 +380,11 @@ const content = {
   const K = 6;
   /** これ以上の地上階数をタワーとして、所在階の補正をかける */
   const TOWER_FLOORS = 20;
+  /**
+   * 簡易査定を出す地域。最近の成約との比較（補正率）は川崎市の成約でしか確かめていないため、当面は川崎市7区だけにする。
+   * 横浜市・東京都内は、レインズの成約で補正率を地域ごとに出せるようになってから加える
+   */
+  const ENABLED = (code: string) => code >= '14131' && code <= '14137';
 
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
   const EN = $('satei-form').dataset.locale === 'en';
@@ -505,7 +511,7 @@ const content = {
   const muniLabel = (code: string) => (EN ? muniOf(code)?.en : muniOf(code)?.name) ?? '';
   /** 画面に出す所在地（英語版は町名を出さない） */
   const placeLabel = (code: string, town: string) => (EN ? muniLabel(code) : `${muniLabel(code)}${town}`);
-  const index = buildings.map((b) => ({ b, name: norm(b.n), place: norm(`${muniOf(b.c)?.name ?? ''}${b.d}${muniOf(b.c)?.en ?? ''}`) }));
+  const index = buildings.filter((b) => ENABLED(b.c)).map((b) => ({ b, name: norm(b.n), place: norm(`${muniOf(b.c)?.name ?? ''}${b.d}${muniOf(b.c)?.en ?? ''}`) }));
 
   /** 種類に合わせて入力欄と市区町村の一覧を切り替える */
   async function onKind() {
@@ -517,7 +523,7 @@ const content = {
     for (const g of GROUPS) {
       const og = document.createElement('optgroup');
       og.label = T.group[g] ?? g;
-      for (const m of meta.munis.filter((m) => m.group === g && (m.counts[k] ?? 0) >= MIN_COMPS)) og.append(new Option(EN ? m.en : m.name, m.code));
+      for (const m of meta.munis.filter((m) => m.group === g && ENABLED(m.code) && (m.counts[k] ?? 0) >= MIN_COMPS)) og.append(new Option(EN ? m.en : m.name, m.code));
       if (og.children.length) muniSel.append(og);
     }
     muniSel.value = prev;
