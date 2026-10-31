@@ -1,0 +1,23 @@
+{
+ "asof": "2026-10-27",
+ "general": 1.066,
+ "building": 1.066,
+ "tower": 1.157,
+ "floor_slope": 0.144,
+ "counts": {
+  "general": 474,
+  "building": 3,
+  "tower": 114,
+  "floor_slope": 79
+ },
+ "window": {
+  "general": [
+   "2026-07-28",
+   "2026-10-27"
+  ],
+  "building": [
+   "2026-04-27",
+   "2026-10-27"
+  ]
+ }
+}

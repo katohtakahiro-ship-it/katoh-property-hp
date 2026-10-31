@@ -1,0 +1,692 @@
+---
+/**
+ * 売却の簡易査定（テスト公開中：noindex・サイトマップとサイト内リンクなし）。東京都・神奈川県の全市区町村。
+ * マンションは、市区町村・面積・築年（またはマンション名）から国交省の成約価格情報で売れる価格の目安を出す。
+ * 戸建て・土地は用途地域や接道で価格が大きく変わるため目安は出さず、市区町村の㎡単価の推移だけ見せて本格査定へつなぐ。
+ * 計算はブラウザ内で完結し、データは scripts/satei_data.py が作る public/data/satei/。
+ */
+import '../../styles/home.css';
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import { siteFor } from '../../config/site';
+
+const site = siteFor('ja');
+
+const sections = [
+  {
+    q: 'この簡易査定の価格は、どう計算していますか？',
+    a: '国土交通省が公表している中古マンションの成約価格から、同じ市区町村で専有面積と築年が近い事例を選び、㎡単価の中央値に面積を掛けて出しています。',
+    body: [
+      '使うのは直近2年（8四半期）の成約事例です。条件に合う事例が少ない場合は、直近3年まで期間を広げます。ここ数年は価格の上昇が大きいため、3年より前の事例は使いません。事例は、その市区町村の㎡単価の動きをもとに、最新の四半期の水準に直してから使います（時点修正）。',
+      '町名を選ぶと、その町の事例を件数に応じて重みづけします。マンション名を選ぶと、そのマンションとみられる直近3年の事例（同じ町・同じ築年）の集計で計算します。事例が10件に満たない場合は、近くの築年・広さが近いマンションの事例で補います。',
+      '国のデータは公表が数か月遅れ、価格も丸められているため、そのままでは最近の成約より低めに出ます。当社が毎月確認している最近の成約事例と比べ、そのずれの分を上乗せしています（率は結果に表示します）。',
+      'タワーマンション（20階建て以上）をマンション名で選んだ場合は、所在階を入れると階数による差を反映します。同じ建物の中で、最下階と最上階の差はおよそ15%です。向き・眺望・室内の状態は反映していません。',
+    ],
+  },
+  {
+    q: '戸建て・土地の簡易査定はできますか？',
+    a: '戸建て・土地は、価格の目安を表示せず、当社が調べて本格査定でお出しします。',
+    body: [
+      '戸建て・土地の価格は、用途地域、前面道路の幅や接し方、土地の形、日当たりで大きく変わります。同じ町内でも、商業地域と住宅地では土地1㎡あたりの価格が2倍以上違うことがあります。国の取引データだけでは、こうした違いを正しく反映できません。',
+      '本格査定では、公示地価・路線価・用途地域・接道の状況を当社で調べ、近くの成約事例と比べて価格を出します。お客様が用途地域などを調べていただく必要はありません。',
+    ],
+  },
+  {
+    q: '本格的な査定では、何をしますか？',
+    a: '簡易査定の結果に、レインズの成約事例、いま売り出し中の競合物件、管理状況や法令上の制限、現地確認の結果を加えて、根拠の事例付きの査定報告書（PDF）をお渡しします。',
+    list: [
+      'レインズ（不動産会社だけが使える取引情報システム）で、近くの物件の成約事例を、階数・向き・接道・成約時期まで確認します',
+      'いま売り出し中の物件と、売れ残っている物件の価格を確認します',
+      'マンションは管理規約・修繕積立金・長期修繕計画を、戸建て・土地は公示地価・路線価・用途地域・接道の状況を確認します',
+      '現地で建物・室内・周辺の環境を拝見します（来店は不要で、当社が伺います）',
+      '「チャレンジ価格」「おすすめの売出価格」「成約が見込める価格」「早く売りたい場合の価格」と、お手取りの試算を、オンラインでご説明します',
+    ],
+    body: ['査定の費用はかかりません。仲介手数料は、売買契約が成立したときにだけ発生します。'],
+  },
+  {
+    q: '査定を依頼したら、営業電話がかかってきますか？',
+    a: 'かかってきません。当社はご連絡をメールか LINE でお送りし、こちらから電話をかけることはしません。',
+    body: ['一括査定サイトのように複数の会社へ情報が渡ることもありません。ご依頼の情報は当社だけが扱います。'],
+  },
+  {
+    q: '売却の仲介手数料はいくらですか？',
+    a: `${site.fees.sale}です。7,000万円で売れた場合、法定上限との差は1,188,000円になります。`,
+    body: [site.fees.condition],
+  },
+];
+
+const steps = [
+  { title: '簡易査定', body: 'マンションは、このページで価格の目安を確かめます。お名前やご連絡先の入力はいりません。戸建て・土地は、次の本格査定のご依頼から始まります。' },
+  { title: '本格査定のご依頼', body: 'フォームか LINE で、物件の所在地・売りたい時期をお送りください。' },
+  { title: '机上査定', body: 'レインズの成約事例、売出中の物件、管理状況や法令上の制限を確認します。' },
+  { title: '現地確認', body: '建物・室内・周辺の環境を拝見します。所要時間は30分〜1時間ほどです。' },
+  { title: '査定報告書のご説明', body: '根拠の事例付きの報告書（PDF）をお渡しし、オンラインでご説明します。売却するかどうかは、そのあとでご判断ください。' },
+];
+
+const faq = [
+  { q: '簡易査定に名前や電話番号の入力は必要ですか？', a: '必要ありません。市区町村・専有面積・築年（またはマンション名）を入れるだけで、その場で目安が表示されます。入力した内容は当社に送信されません。' },
+  { q: '簡易査定の対象はどこですか？', a: '東京都・神奈川県の全市区町村の中古マンションです。事例が少ない地域では目安を表示できないことがあります。戸建て・土地、埼玉県・千葉県の物件は、フォームか LINE で本格査定をご依頼ください。' },
+  { q: 'マンション名で調べられるのはどのマンションですか？', a: '川崎市・横浜市の大規模マンションから順に登録しています。一覧にないマンションも、名前を入力していただければ、町名・築年の近い事例で目安を出し、本格査定でそのマンションの事例をお調べします。' },
+  { q: '簡易査定と本格査定の違いは何ですか？', a: '簡易査定は公的データだけで出す目安です。本格査定は、レインズの成約事例・売出中の物件・管理状況や法令上の制限・現地確認を加えて、その物件の価格を出します。' },
+  { q: '査定に費用はかかりますか？', a: 'かかりません。仲介手数料は売買契約が成立したときにだけ発生します。' },
+  { q: '査定を依頼したら、必ず売らないといけませんか？', a: 'いいえ。査定報告書をご覧になったうえで、売るかどうか、いつ売るかをご判断ください。' },
+];
+---
+
+<Base title="不動産売却の簡易査定｜東京都・神奈川県のマンションの価格を成約データで" description="東京都・神奈川県の中古マンションの売却価格の目安を、国土交通省の成約価格データからその場で計算します。マンション名でも調べられます。名前や連絡先の入力は不要。戸建て・土地は本格査定で、根拠の事例付きの報告書をお渡しします。">
+  <meta slot="head" name="robots" content="noindex" />
+
+  <div class="preview-banner">テスト公開中（検索エンジンには載らず、サイト内からのリンクもありません）</div>
+
+  <section class="purpose-hero">
+    <div class="container">
+      <span class="section-label">Valuation</span>
+      <h1 class="section-title">売却価格の目安を、<br />国の成約データで確かめる</h1>
+      <p class="purpose-lead">東京都・神奈川県の中古マンションについて、国土交通省の成約データから売れる価格の目安をその場で計算します。お名前やご連絡先の入力はいりません。営業電話もしません。戸建て・土地は、当社が調べて本格査定でお出しします。</p>
+      <div class="purpose-fees">
+        <span class="purpose-fees-label">Fee</span>
+        <span class="purpose-fee"><small>売却の仲介手数料</small>{site.fees.sale}</span>
+      </div>
+      <p class="purpose-fee-note">{site.fees.condition}</p>
+    </div>
+  </section>
+
+  <section class="satei-tool" id="tool">
+    <div class="container">
+      <span class="section-label">Step 1</span>
+      <h2 class="section-title">簡易査定</h2>
+      <form class="satei-form" id="satei-form">
+        <fieldset class="satei-kinds">
+          <legend>物件の種類</legend>
+          <label><input type="radio" name="kind" value="mansion" checked /><span>マンション</span></label>
+          <label><input type="radio" name="kind" value="house" /><span>戸建て</span></label>
+          <label><input type="radio" name="kind" value="land" /><span>土地</span></label>
+        </fieldset>
+        <div class="satei-wide" data-for="mansion">
+          <label for="satei-building"><span>マンション名（任意）</span></label>
+          <div class="satei-combo">
+            <input type="text" id="satei-building" autocomplete="off" placeholder="例：パークシティ、武蔵小杉、小倉" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="satei-bld-list" />
+            <ul class="satei-combo-list" id="satei-bld-list" role="listbox" hidden></ul>
+          </div>
+          <small class="satei-hint" id="satei-building-hint">入力すると候補が出ます。いまは川崎市の大規模マンションを登録しています。</small>
+        </div>
+        <label>
+          <span>市区町村</span>
+          <select name="muni" id="satei-muni" required></select>
+        </label>
+        <label data-for="mansion">
+          <span>町名（任意）</span>
+          <select name="district" id="satei-district"><option value="">指定しない</option></select>
+        </label>
+        <label data-for="mansion">
+          <span>専有面積（㎡）</span>
+          <input type="number" id="satei-area" min="15" max="300" step="1" value="70" inputmode="numeric" />
+        </label>
+        <label data-for="mansion">
+          <span>築年（西暦）</span>
+          <input type="number" id="satei-built" min="1950" max="2026" step="1" value="2010" inputmode="numeric" />
+        </label>
+        <label id="satei-floorno-field" hidden>
+          <span>所在階（タワーのみ・任意）</span>
+          <input type="number" id="satei-floorno" min="1" max="80" step="1" inputmode="numeric" />
+        </label>
+        <p class="satei-wide satei-info" data-for="house land" hidden>
+          戸建て・土地は、用途地域・前面道路・土地の形で価格が大きく変わるため、ここでは価格の目安を出しません。当社が調べて、本格査定でお出しします。参考に、選んだ市区町村の土地1㎡あたりの価格の推移を表示できます。
+        </p>
+        <button type="submit" class="purpose-cta" id="satei-submit">目安を計算する →</button>
+      </form>
+
+      <div class="satei-result" id="satei-result" hidden>
+        <div id="r-price-block">
+          <p class="satei-label" id="r-label">売却価格の目安</p>
+          <p class="satei-price"><span id="r-mid"></span><small>万円</small></p>
+          <p class="satei-range">多くの事例が収まる範囲：<span id="r-range"></span></p>
+          <dl class="satei-meta">
+            <div><dt>㎡単価（中央値）</dt><dd id="r-unit"></dd></div>
+            <div><dt>使った事例</dt><dd id="r-count"></dd></div>
+            <div><dt>期間</dt><dd id="r-period"></dd></div>
+          </dl>
+        </div>
+        <p class="satei-note" id="r-note"></p>
+
+        <div id="r-detail">
+          <h3 id="r-chart-title"></h3>
+          <div class="satei-chart" id="r-chart"></div>
+
+          <div id="r-table-block">
+            <h3>条件の近い成約事例</h3>
+            <div class="satei-table-wrap">
+              <table class="satei-table">
+                <thead><tr><th>成約時期</th><th>町名</th><th>面積</th><th>築年</th><th>成約価格</th><th>時点修正後の㎡単価</th></tr></thead>
+                <tbody id="r-rows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <p class="satei-source" id="r-source"></p>
+
+        <div class="satei-next">
+          <p id="r-next-text"></p>
+          <a class="purpose-cta" href="#contact">本格査定を依頼する →</a>
+          {site.lineUrl && <a class="line-btn" href={site.lineUrl} target="_blank" rel="noopener">LINEで依頼する</a>}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="purpose-body">
+    <div class="container">
+      {sections.map((s) => (
+        <article class="qa">
+          <h2>{s.q}</h2>
+          <p class="qa-answer"><strong>{s.a}</strong></p>
+          {s.list && <ul>{s.list.map((li) => <li>{li}</li>)}</ul>}
+          {s.body?.map((b) => <p>{b}</p>)}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="purpose-flow">
+    <div class="container">
+      <span class="section-label">How It Works</span>
+      <h2 class="section-title">簡易査定から本格査定までの流れ</h2>
+      <ol class="steps">
+        {steps.map((st, i) => (
+          <li>
+            <span class="step-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{st.title}</h3>
+              <p>{st.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="purpose-faq">
+    <div class="container">
+      <span class="section-label">FAQ</span>
+      <h2 class="section-title">よくある質問</h2>
+      <Faq items={faq} />
+    </div>
+  </section>
+
+  <section class="contact-section purpose-contact" id="contact">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-left">
+          <span class="section-label">Step 2</span>
+          <h2 class="section-title">本格査定のご依頼</h2>
+          <p class="section-body">来店は不要です。3営業日以内にメールでご返信します。簡易査定で入力した内容は、物件種別・所在地・マンション名・メッセージ欄に自動で入ります。</p>
+          {site.lineUrl && <a class="line-btn" href={site.lineUrl} target="_blank" rel="noopener">LINEで依頼する</a>}
+        </div>
+        <ContactForm locale="ja" defaultType="sell" reveal={false} />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  type Kind = 'mansion' | 'house' | 'land';
+  type Muni = { code: string; name: string; group: string; counts: Partial<Record<Kind, number>> };
+  type Index = { quarters: string[]; last: Record<Kind, number>; munis: Muni[] };
+  type Data = { code: string; name: string; districts: string[]; idx: number[]; deals: number[][] };
+  /** マンション名の一覧。n 名前 / c 市区町村コード / d 町名 / y データ上の築年 / f 地上階数 / k 5年間の事例数 / s 同じ町・同じ築年の別の建物 */
+  type Building = { n: string; c: string; d: string; y: number; u: number | null; f: number | null; k: number; s: string[] };
+  /**
+   * 補正率（scripts/reins_calibrate.py）。国のデータは公表が遅れ価格も丸められているため、当社が確認している最近の成約と
+   * 比べた「実際÷目安」の中央値を掛ける。tower は建物の中ほどの階の水準で、所在階の補正は floor_slope ×（位置 − 0.5）
+   */
+  type Calibration = { asof: string; general: number; building: number; tower: number; floor_slope: number };
+
+  const KIND_LABEL: Record<Kind, string> = { mansion: 'マンション', house: '戸建て', land: '土地' };
+  const GROUPS = ['東京23区', '東京都 市部', '東京都 町村', '横浜市', '川崎市', '相模原市', '神奈川県 市部', '神奈川県 町村'];
+  const MIN_COMPS = 5;
+  const WANT = 12;
+  /** マンション名で計算するのに必要な直近3年の事例数（これ未満なら近くの似たマンションで補う） */
+  const MIN_BUILDING = 10;
+  /** 使う事例の期間（四半期）。価格の上昇が続いているため、3年より前の事例は使わない */
+  const RECENT = 12;
+  /** 町名の事例をどれだけ信じるか。町名の事例 n 件と、市区町村全体（重み K）を混ぜる */
+  const K = 6;
+  /** これ以上の地上階数をタワーとして、所在階の補正をかける */
+  const TOWER_FLOORS = 20;
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const muniSel = $<HTMLSelectElement>('satei-muni');
+  const distSel = $<HTMLSelectElement>('satei-district');
+  const bldInput = $<HTMLInputElement>('satei-building');
+  const val = (id: string) => Number($<HTMLInputElement>(id).value);
+  const fmt = (n: number) => n.toLocaleString('ja-JP');
+  const qLabel = (q: string) => q.replace(/(\d{4})Q(\d)/, '$1年$2Q');
+  const round10 = (n: number) => Math.round(n / 10) * 10;
+  function quantile(a: number[], p: number) {
+    const s = [...a].sort((x, y) => x - y);
+    const i = (s.length - 1) * p;
+    const lo = Math.floor(i);
+    return s[lo] + (s[Math.ceil(i)] - s[lo]) * (i - lo);
+  }
+  const median = (a: number[]) => quantile(a, 0.5);
+  const getJson = (path: string) => fetch(`/data/satei/${path}`).then((r) => r.json());
+
+  const [meta, buildings, calib]: [Index, Building[], Calibration | null] = await Promise.all([
+    getJson('index.json'),
+    getJson('buildings.json'),
+    getJson('calibration.json').catch(() => null),
+  ]);
+  const cache = new Map<string, unknown>();
+  async function cached<T>(path: string): Promise<T> {
+    if (!cache.has(path)) cache.set(path, await getJson(path));
+    return cache.get(path) as T;
+  }
+  const kind = () => (document.querySelector<HTMLInputElement>('input[name="kind"]:checked')!.value as Kind);
+  const findBuilding = () => buildings.find((b) => b.n === bldInput.value.trim());
+
+  /** 表記ゆれ（全角半角・カナの大小・ケ/ヶ・中黒・空白）を吸収して比べる */
+  const norm = (s: string) => s.normalize('NFKC').toLowerCase().replace(/[ヶヵ]/g, 'ケ').replace(/[\s・･\-ー]/g, '');
+  const muniName = (code: string) => meta.munis.find((m) => m.code === code)?.name ?? '';
+  const index = buildings.map((b) => ({ b, name: norm(b.n), place: norm(`${muniName(b.c)}${b.d}`) }));
+
+  /** 種類に合わせて入力欄と市区町村の一覧を切り替える */
+  async function onKind() {
+    const k = kind();
+    document.querySelectorAll<HTMLElement>('[data-for]').forEach((el) => (el.hidden = !el.dataset.for!.split(' ').includes(k)));
+    $('satei-submit').textContent = k === 'mansion' ? '目安を計算する →' : '価格の推移を見る →';
+    const prev = muniSel.value || '14133'; // 川崎市中原区
+    muniSel.length = 0;
+    for (const g of GROUPS) {
+      const og = document.createElement('optgroup');
+      og.label = g;
+      for (const m of meta.munis.filter((m) => m.group === g && (m.counts[k] ?? 0) >= MIN_COMPS)) og.append(new Option(m.name, m.code));
+      if (og.children.length) muniSel.append(og);
+    }
+    muniSel.value = prev;
+    if (!muniSel.value) muniSel.selectedIndex = 0;
+    $('satei-result').hidden = true;
+    await onMuni();
+  }
+  /** 町名の一覧（マンションの事例がある町名）。戸建て・土地は町名を使わない */
+  async function onMuni(district?: string) {
+    distSel.length = 1;
+    if (kind() !== 'mansion') return;
+    const d = await cached<Data>(`mansion/${muniSel.value}.json`);
+    d.districts.forEach((name, i) => distSel.append(new Option(name, String(i))));
+    if (district) distSel.value = String(d.districts.indexOf(district));
+  }
+  document.querySelectorAll('input[name="kind"]').forEach((r) => r.addEventListener('change', onKind));
+  muniSel.addEventListener('change', () => onMuni());
+  /** マンション名を選んだら、市区町村・町名・築年を合わせる */
+  async function applyBuilding() {
+    const b = findBuilding();
+    const hint = $('satei-building-hint');
+    // タワーを選んだときだけ所在階の欄を出す
+    const floorField = $('satei-floorno-field');
+    const floorInput = $<HTMLInputElement>('satei-floorno');
+    const tower = !!b && (b.f ?? 0) >= TOWER_FLOORS;
+    floorField.hidden = !tower;
+    if (tower) { floorInput.max = String(b!.f); floorInput.placeholder = `1〜${b!.f}`; } else floorInput.value = '';
+    if (!b) {
+      hint.textContent = bldInput.value.trim() ? '一覧にないマンションです。市区町村・町名・築年を入れてください。名前は本格査定のご依頼に引き継ぎます。' : HINT;
+      return;
+    }
+    muniSel.value = b.c;
+    await onMuni(b.d);
+    $<HTMLInputElement>('satei-built').value = String(b.y);
+    hint.textContent = `${muniName(b.c)}${b.d}・築${b.y}年（国のデータ上）の事例で計算します。`;
+  }
+
+  // 候補リスト（ブラウザ標準の datalist はスマホや一部のブラウザで出ない・選んでも反映されないため自前で出す）
+  const HINT = '入力すると候補が出ます。いまは川崎市の大規模マンションを登録しています。';
+  const listEl = $('satei-bld-list');
+  let shown: Building[] = [];
+  let active = -1;
+  function openList() {
+    const q = norm(bldInput.value);
+    const here = muniSel.value;
+    if (!q) {
+      // 入力前は、選んでいる市区町村のマンションだけを出す
+      shown = index.filter((x) => x.b.c === here).map((x) => x.b);
+    } else {
+      // 名前の先頭が一致 → 名前に含まれる → 区名・町名で一致の順。同じ順位なら、選んでいる市区町村 → 同じ都県 → 名前順
+      const rank = (x: (typeof index)[number]) => (x.name.startsWith(q) ? 0 : x.name.includes(q) ? 1 : x.place.includes(q) ? 2 : -1);
+      const near = (b: Building) => (b.c === here ? 0 : b.c.slice(0, 2) === here.slice(0, 2) ? 1 : 2);
+      shown = index
+        .map((x) => ({ x, r: rank(x) }))
+        .filter(({ r }) => r >= 0)
+        .sort((p, q2) => p.r - q2.r || near(p.x.b) - near(q2.x.b) || p.x.b.n.localeCompare(q2.x.b.n, 'ja'))
+        .map(({ x }) => x.b);
+    }
+    shown = shown.slice(0, 40);
+    active = -1;
+    listEl.innerHTML = shown.length
+      ? shown.map((b, i) => `<li role="option" id="bld-opt-${i}" data-i="${i}"><span>${b.n}</span><small>${muniName(b.c)}${b.d}</small></li>`).join('')
+      : q
+        ? '<li class="satei-combo-empty">一覧にありません。このまま入力して計算できます。</li>'
+        : `<li class="satei-combo-empty">${muniName(here)}の登録マンションはまだありません。名前を入力すると、ほかの地域からも探せます。</li>`;
+    listEl.hidden = false;
+    bldInput.setAttribute('aria-expanded', 'true');
+  }
+  function closeList() {
+    listEl.hidden = true;
+    bldInput.setAttribute('aria-expanded', 'false');
+    bldInput.removeAttribute('aria-activedescendant');
+  }
+  function highlight(i: number) {
+    active = i;
+    listEl.querySelectorAll('li[role="option"]').forEach((li, j) => li.classList.toggle('active', j === i));
+    const li = listEl.querySelector<HTMLElement>(`#bld-opt-${i}`);
+    if (li) { li.scrollIntoView({ block: 'nearest' }); bldInput.setAttribute('aria-activedescendant', li.id); }
+  }
+  async function choose(i: number) {
+    bldInput.value = shown[i].n;
+    closeList();
+    await applyBuilding();
+  }
+  bldInput.addEventListener('focus', openList);
+  bldInput.addEventListener('input', () => { openList(); applyBuilding(); });
+  bldInput.addEventListener('blur', () => setTimeout(closeList, 150));
+  bldInput.addEventListener('keydown', (e) => {
+    if (listEl.hidden && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) openList();
+    if (e.key === 'ArrowDown') { e.preventDefault(); highlight(Math.min(active + 1, shown.length - 1)); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); highlight(Math.max(active - 1, 0)); }
+    else if (e.key === 'Enter' && !listEl.hidden && active >= 0) { e.preventDefault(); choose(active); }
+    else if (e.key === 'Escape') closeList();
+  });
+  // mousedown で選ぶ（click だと先に blur でリストが閉じる）
+  listEl.addEventListener('mousedown', (e) => {
+    const li = (e.target as HTMLElement).closest<HTMLElement>('li[data-i]');
+    if (!li) return;
+    e.preventDefault();
+    choose(Number(li.dataset.i));
+  });
+  await onKind();
+
+  $('satei-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const k = kind();
+    $('satei-result').hidden = false;
+    if (k === 'mansion') await valueMansion();
+    else await showTrend(k);
+  });
+
+  async function valueMansion() {
+    const d = await cached<Data>(`mansion/${muniSel.value}.json`);
+    const last = meta.last.mansion;
+    const dist = distSel.value === '' ? -1 : Number(distSel.value);
+    const A = val('satei-area'), built = val('satei-built');
+    const factor = (q: number) => d.idx[last] / d.idx[q];
+    const unitOf = (x: number[]) => (x[2] * factor(x[0])) / x[3];
+    const typedName = bldInput.value.trim();
+    const b = findBuilding();
+    const notes: string[] = [];
+
+    let comps: number[][];
+    let center: number;
+    let spread: number[];
+    let byBuilding = false;
+    const recent = (x: number[]) => x[0] > last - RECENT;
+    const like = (x: number[], y: number, at: number, bt: number) => recent(x) && Math.abs(x[3] - A) <= A * at && Math.abs(x[4] - y) <= bt;
+    if (b && b.c === d.code) {
+      // マンション名：同じ町・同じ築年の直近3年の事例。広さが近い事例が10件以上あればそれに絞る
+      byBuilding = true;
+      const di = d.districts.indexOf(b.d);
+      const isOwn = (x: number[]) => x[1] === di && x[4] === b.y;
+      const own = d.deals.filter((x) => isOwn(x) && recent(x));
+      const ownNear = own.filter((x) => Math.abs(x[3] - A) <= A * 0.3);
+      const ownUse = ownNear.length >= MIN_BUILDING ? ownNear : own;
+      if (own.length >= MIN_BUILDING) {
+        comps = ownUse;
+        spread = comps.map(unitOf);
+        center = median(spread);
+        notes.push(`${b.n}とみられる直近3年の事例（${d.name}${b.d}・築${b.y}年）${comps.length}件の集計です${ownUse === ownNear ? `（専有面積${A}㎡前後に絞っています）` : ''}。`);
+      } else {
+        // 事例が足りなければ、近くの築年・広さが近いマンションで補う（同じ町 → 市区町村全体の順に広げる）
+        const others = (x: number[]) => !isOwn(x);
+        let sim = d.deals.filter((x) => others(x) && x[1] === di && like(x, b.y, 0.3, 5));
+        let where = `同じ${b.d}`;
+        if (sim.length < MIN_BUILDING) { sim = d.deals.filter((x) => others(x) && like(x, b.y, 0.3, 5)); where = d.name; }
+        if (sim.length < MIN_BUILDING) { sim = d.deals.filter((x) => others(x) && like(x, b.y, 0.4, 8)); where = d.name; }
+        const simUnits = sim.map(unitOf);
+        const ownUnits = ownUse.map(unitOf);
+        const n = ownUnits.length;
+        comps = [...ownUse, ...sim];
+        spread = simUnits.length ? simUnits : ownUnits;
+        center = simUnits.length ? (n ? (n * median(ownUnits) + K * median(simUnits)) / (n + K) : median(simUnits)) : n ? median(ownUnits) : 0;
+        notes.push(
+          `${b.n}とみられる直近3年の事例が${n}件と少ないため、${where}の築年（${b.y}年前後）と広さが近いマンションの事例${sim.length}件で補っています` +
+            (n ? `（このマンションの${n}件を件数に応じて重みづけ）。` : '。'),
+        );
+      }
+      if (b.s.length) notes.push(`同じ町・同じ年に建った${b.s.join('、')}の事例も含まれます。`);
+      notes.push('個別の取引が特定されないよう、マンション名で調べた場合は事例を一覧に表示しません。');
+    } else {
+      // 直近2年 → 直近3年 → 条件をゆるめる。3年より前の事例は使わない
+      const match = (x: number[], q: number, at: number, bt: number) => x[0] > last - q && Math.abs(x[3] - A) <= A * at && Math.abs(x[4] - built) <= bt;
+      let years = 2;
+      comps = d.deals.filter((x) => match(x, 8, 0.25, 7));
+      if (comps.length < WANT) { years = 3; comps = d.deals.filter((x) => match(x, RECENT, 0.25, 7)); }
+      if (comps.length < WANT) comps = d.deals.filter((x) => match(x, RECENT, 0.35, 12));
+      if (typedName && !b) notes.push(`「${typedName}」は一覧にないため、町名・築年の近い事例で計算しています。`);
+      notes.push(`${d.name}で、専有面積${A}㎡前後・築${built}年前後の事例です。`);
+      if (years === 3) notes.push('直近2年では事例が少ないため、3年分に広げています。');
+      // 町名の事例があれば、件数に応じて町名の中央値に寄せる（件数が少ないほど市区町村全体に近い）
+      const units = comps.map(unitOf);
+      const distUnits = dist >= 0 ? comps.filter((x) => x[1] === dist).map(unitOf) : [];
+      const nd = distUnits.length;
+      center = comps.length ? (nd ? (nd * median(distUnits) + K * median(units)) / (nd + K) : median(units)) : 0;
+      spread = nd >= 8 ? distUnits : units;
+      if (dist >= 0) notes.push(nd ? `町名（${d.districts[dist]}）の事例${nd}件を重みづけしています${nd < 8 ? '（件数が少ないため、市区町村全体の水準も加味）' : ''}。` : `${d.districts[dist]}の事例がないため、${d.name}全体で計算しています。`);
+    }
+
+    $('r-price-block').hidden = false;
+    $('r-next-text').innerHTML = '<strong>この物件の価格を詳しく知りたい方へ</strong><br />レインズの成約事例と現地確認を加えた本格査定を、費用をいただかずに行います。';
+    const enough = comps.length >= MIN_COMPS;
+    $('r-detail').hidden = !enough;
+    if (!enough) {
+      $('r-mid').textContent = '—';
+      $('r-range').textContent = '条件に合う事例が少ないため、目安を出せません。本格査定でお調べします。';
+      for (const id of ['r-unit', 'r-count', 'r-period']) $(id).textContent = '';
+      $('r-note').textContent = '';
+      prefill('mansion', d.name, dist >= 0 ? d.districts[dist] : '', '');
+      return;
+    }
+    // 最近の成約の水準に合わせる補正と、タワーの所在階の補正
+    const tower = byBuilding && (b!.f ?? 0) >= TOWER_FLOORS;
+    const calFactor = calib ? (tower ? calib.tower : byBuilding ? calib.building : calib.general) : 1;
+    const floorNo = tower ? val('satei-floorno') : 0;
+    const floorAdj = calib && tower && floorNo >= 1 ? 1 + calib.floor_slope * (Math.min(floorNo / b!.f!, 1) - 0.5) : 1;
+    center *= calFactor * floorAdj;
+    const pct = (v: number) => `${v >= 1 ? '+' : '−'}${Math.abs(Math.round((v - 1) * 1000) / 10)}%`;
+    if (calib) notes.push(`最近の成約の水準に合わせて、国のデータから出した値を${pct(calFactor)}補正しています（当社が確認している${calib.asof.slice(0, 7).replace('-', '年')}月までの成約事例との比較）。`);
+    if (floorAdj !== 1) notes.push(`所在階（${floorNo}階／${b!.f}階建て）による補正：${pct(floorAdj)}。`);
+    else if (tower) notes.push('所在階を入れると、階数による差（最下階と最上階で約' + Math.round(calib!.floor_slope * 100) + '%）を反映します。');
+    const shift = center / median(spread);
+    const mid = round10(center * A);
+    const lo = round10(quantile(spread, 0.25) * shift * A);
+    const hi = round10(quantile(spread, 0.75) * shift * A);
+    const minQ = Math.min(...comps.map((x) => x[0]));
+
+    $('r-label').textContent = byBuilding ? `${b!.n}の売却価格の目安` : '売却価格の目安';
+    $('r-mid').textContent = fmt(mid);
+    $('r-range').textContent = `${fmt(lo)}万円 〜 ${fmt(hi)}万円`;
+    $('r-unit').textContent = `${center.toFixed(1)}万円/㎡`;
+    $('r-count').textContent = `${comps.length}件`;
+    $('r-period').textContent = `${qLabel(meta.quarters[minQ])} 〜 ${qLabel(meta.quarters[last])}`;
+    $('r-note').textContent = notes.join('');
+
+    $('r-table-block').hidden = byBuilding;
+    if (!byBuilding) {
+      const score = (x: number[]) => (x[1] === dist ? -1 : 0) + Math.abs(x[3] - A) / A + Math.abs(x[4] - built) / 20 + (last - x[0]) / 40;
+      const near = [...comps].sort((p, q) => score(p) - score(q)).slice(0, 8);
+      $('r-rows').innerHTML = near
+        .map((x) => `<tr><td>${qLabel(meta.quarters[x[0]])}</td><td>${d.districts[x[1]] ?? '—'}</td><td>${x[3]}㎡</td><td>${x[4]}年</td><td>${fmt(x[2])}万円</td><td>${unitOf(x).toFixed(1)}万円/㎡</td></tr>`)
+        .join('');
+    }
+    const by: number[][] = meta.quarters.map(() => []);
+    for (const x of d.deals) by[x[0]].push(x[2] / x[3]);
+    drawChart(`${d.name}のマンションの㎡単価の推移（四半期ごとの中央値）`, by.map((a) => (a.length >= 5 ? median(a) : null)).slice(0, last + 1));
+    $('r-source').textContent = `出典：国土交通省 不動産情報ライブラリ（成約価格情報）。最新は${qLabel(meta.quarters[last])}の分で、公表は数か月遅れます。この結果は公的データにもとづく目安で、査定書や不動産鑑定評価ではありません。`;
+    prefill('mansion', d.name, dist >= 0 ? d.districts[dist] : b?.d ?? '', `目安 ${fmt(mid)}万円（${fmt(lo)}〜${fmt(hi)}万円、事例${comps.length}件）`);
+  }
+
+  /** 戸建て・土地：価格は出さず、市区町村の土地1㎡あたりの推移だけ見せる */
+  async function showTrend(k: Kind) {
+    const series = (await cached<Record<string, (number | null)[]>>(`trend_${k}.json`))[muniSel.value] ?? [];
+    const name = meta.munis.find((m) => m.code === muniSel.value)!.name;
+    $('r-price-block').hidden = true;
+    $('r-table-block').hidden = true;
+    $('r-detail').hidden = false;
+    $('r-note').textContent = `${k === 'house' ? '戸建ての成約価格（建物を含む）を土地面積で割った値' : '土地の取引価格の㎡単価'}の、四半期ごとの中央値です。用途地域や接道の違う取引がまざっているため、個別の土地の価格の目安にはなりません。`;
+    drawChart(k === 'house' ? `${name}の戸建ての土地1㎡あたりの価格の推移` : `${name}の土地の㎡単価の推移`, series.slice(0, meta.last[k] + 1));
+    $('r-source').textContent =
+      (k === 'land' ? '出典：国土交通省 不動産情報ライブラリ（取引価格情報。登記をもとにしたアンケート調査）。' : '出典：国土交通省 不動産情報ライブラリ（成約価格情報）。') +
+      `最新は${qLabel(meta.quarters[meta.last[k]])}の分です。`;
+    $('r-next-text').innerHTML = `<strong>${KIND_LABEL[k]}の価格は、本格査定でお出しします</strong><br />用途地域・路線価・接道の状況を当社が調べ、近くの成約事例と比べて価格を出します。費用はかかりません。`;
+    prefill(k, name, '', '');
+  }
+
+  function drawChart(title: string, vals: (number | null)[]) {
+    $('r-chart-title').textContent = title;
+    const ok = vals.filter((v): v is number => v !== null);
+    if (ok.length < 2) { $('r-chart').innerHTML = '<p class="satei-note">四半期ごとの事例が少ないため、推移は表示できません。</p>'; return; }
+    const W = 640, H = 200, P = 40;
+    const hiV = Math.max(...ok);
+    const s = hiV > 200 ? 50 : hiV > 50 ? 10 : 5;
+    const min = Math.floor(Math.min(...ok) / s) * s, max = Math.ceil(hiV / s) * s;
+    const x = (i: number) => P + ((W - P * 1.5) * i) / (meta.quarters.length - 1);
+    const y = (v: number) => H - 24 - ((H - 40) * (v - min)) / (max - min || 1);
+    const pts = vals.map((v, i) => (v === null ? null : `${x(i)},${y(v)}`)).filter(Boolean).join(' ');
+    const years = meta.quarters.map((q, i) => (q.endsWith('Q1') ? `<text x="${x(i)}" y="${H - 6}" text-anchor="middle">${q.slice(0, 4)}</text><line x1="${x(i)}" x2="${x(i)}" y1="${y(max)}" y2="${H - 24}" class="grid"/>` : '')).join('');
+    $('r-chart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${title}">
+      ${years}
+      <text x="${P - 6}" y="${y(max) + 4}" text-anchor="end">${max}</text>
+      <text x="${P - 6}" y="${y(min) + 4}" text-anchor="end">${min}</text>
+      <polyline points="${pts}" class="line"/>
+      <text x="${W - 6}" y="12" text-anchor="end">万円/㎡</text>
+    </svg>`;
+  }
+
+  function prefill(k: Kind, muniName: string, district: string, summary: string) {
+    const form = document.querySelector('.contact-form');
+    if (!form) return;
+    const place = `${muniName}${district}`;
+    const set = (name: string, v: string) => {
+      const el = form.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(`[name="${name}"]`);
+      if (el) el.value = v;
+    };
+    set('property_type', k);
+    set('location', place);
+    const bname = k === 'mansion' ? bldInput.value.trim() : '';
+    if (bname) set('building_name', bname);
+    const floorNo = k === 'mansion' ? val('satei-floorno') : 0;
+    const spec = k === 'mansion' ? `${bname ? `${bname}／` : ''}${floorNo ? `${floorNo}階／` : ''}専有${val('satei-area')}㎡／${val('satei-built')}年築` : '';
+    set('message', `【簡易査定】${KIND_LABEL[k]}／${place}${spec ? `／${spec}` : ''}\n${summary || (k === 'mansion' ? '目安は表示されませんでした' : '戸建て・土地のため本格査定を希望')}\n本格査定を希望します。`);
+  }
+</script>
+
+<style is:global>
+  .preview-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: #b3261e;
+    color: #fff;
+    text-align: center;
+    font-size: 0.8rem;
+    padding: 0.4rem 1rem;
+  }
+  .purpose-hero { padding-top: 9rem; background: var(--ink); color: var(--cream); }
+  .purpose-hero .container { max-width: 860px; }
+  .purpose-hero .section-title { color: var(--cream); font-size: clamp(1.7rem, 3.4vw, 2.5rem); }
+  .purpose-lead { font-size: 1rem; line-height: 2; color: rgba(250, 248, 243, 0.75); max-width: 640px; }
+  .purpose-fees { display: flex; flex-wrap: wrap; gap: 1.2rem 2rem; align-items: baseline; margin: 2rem 0; padding: 1.2rem 1.5rem; border: 1px solid rgba(201, 168, 76, 0.3); }
+  .purpose-fees-label { font-family: var(--font-accent); letter-spacing: 0.2em; color: var(--gold); font-size: 0.85rem; }
+  .purpose-fee { font-weight: 700; color: var(--gold-light); font-size: 0.95rem; }
+  .purpose-fee small { display: block; font-weight: 400; font-size: 0.72rem; letter-spacing: 0.1em; color: rgba(250, 248, 243, 0.55); }
+  .purpose-fee-note { font-size: 0.8rem; line-height: 1.8; color: var(--muted); max-width: 640px; margin: 0 0 1.5rem; }
+  .purpose-cta { display: inline-block; padding: 0.9rem 2rem; background: var(--gold); color: var(--ink); text-decoration: none; font-weight: 700; letter-spacing: 0.08em; border: 0; cursor: pointer; font-family: inherit; font-size: 1rem; transition: background 0.25s; }
+  .purpose-cta:hover { background: var(--gold-light); }
+
+  .satei-tool { background: var(--cream); }
+  .satei-tool .container { max-width: 860px; }
+  .satei-form { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem 1.5rem; margin-top: 1.5rem; align-items: end; }
+  .satei-form label span { display: block; font-size: 0.82rem; font-weight: 700; color: var(--ink); margin-bottom: 0.35rem; }
+  .satei-form select, .satei-form input { width: 100%; padding: 0.75rem 0.8rem; border: 1px solid var(--border); background: #fff; font: inherit; font-size: 1rem; color: var(--ink); }
+  .satei-form button { grid-column: 1 / -1; justify-self: start; }
+  .satei-form [hidden] { display: none; }
+  .satei-wide { grid-column: 1 / -1; }
+  .satei-combo { position: relative; }
+  .satei-combo-list { position: absolute; z-index: 20; left: 0; right: 0; top: 100%; max-height: 18rem; overflow-y: auto; margin: 2px 0 0; padding: 0; list-style: none; background: #fff; border: 1px solid var(--gold); box-shadow: 0 8px 24px rgba(26, 26, 46, 0.12); }
+  .satei-combo-list li { padding: 0.6rem 0.8rem; cursor: pointer; border-bottom: 1px solid rgba(201, 168, 76, 0.15); }
+  .satei-combo-list li span { display: block; font-size: 0.92rem; color: var(--ink); }
+  .satei-combo-list li small { display: block; font-size: 0.72rem; color: var(--muted); }
+  .satei-combo-list li:hover, .satei-combo-list li.active { background: var(--cream); }
+  .satei-combo-list .satei-combo-empty { cursor: default; font-size: 0.82rem; color: var(--muted); }
+  .satei-wide > label span { display: block; font-size: 0.82rem; font-weight: 700; color: var(--ink); margin-bottom: 0.35rem; }
+  .satei-hint { display: block; margin-top: 0.35rem; font-size: 0.75rem; line-height: 1.7; color: var(--muted); }
+  .satei-info { font-size: 0.88rem; line-height: 1.9; color: var(--charcoal); padding: 1rem 1.2rem; background: #fff; border-left: 3px solid var(--gold); }
+  .satei-kinds { grid-column: 1 / -1; border: 0; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .satei-kinds legend { font-size: 0.82rem; font-weight: 700; color: var(--ink); margin-bottom: 0.35rem; }
+  .satei-kinds label { cursor: pointer; position: relative; }
+  .satei-kinds input { position: absolute; inset: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+  .satei-kinds span { display: inline-block; padding: 0.6rem 1.4rem; border: 1px solid var(--border); background: #fff; color: var(--ink); font-weight: 700; }
+  .satei-kinds input:checked + span { background: var(--ink); color: var(--gold-light); border-color: var(--ink); }
+  .satei-kinds input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .satei-result { margin-top: 2.5rem; padding: 2rem; background: #fff; border: 1px solid var(--border); }
+  .satei-label { font-size: 0.85rem; color: var(--muted); }
+  .satei-price { font-size: clamp(2.4rem, 7vw, 3.4rem); font-weight: 700; color: var(--ink); line-height: 1.2; }
+  .satei-price small { font-size: 1rem; margin-left: 0.3rem; }
+  .satei-range { font-size: 0.95rem; color: var(--charcoal); margin: 0.3rem 0 1.2rem; }
+  .satei-meta { display: flex; flex-wrap: wrap; gap: 0.8rem 2rem; padding: 1rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .satei-meta dt { font-size: 0.75rem; color: var(--muted); }
+  .satei-meta dd { font-weight: 700; color: var(--ink); }
+  .satei-note { font-size: 0.85rem; line-height: 1.8; color: var(--charcoal); margin: 1rem 0 1.5rem; }
+  .satei-result h3 { font-size: 0.95rem; color: var(--ink); margin: 1.8rem 0 0.8rem; padding-left: 0.7rem; border-left: 3px solid var(--gold); }
+  .satei-chart svg { width: 100%; height: auto; font-size: 11px; fill: var(--muted); }
+  .satei-chart .line { fill: none; stroke: var(--gold); stroke-width: 2.5; }
+  .satei-chart .grid { stroke: rgba(0, 0, 0, 0.07); }
+  .satei-table-wrap { overflow-x: auto; }
+  .satei-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; white-space: nowrap; }
+  .satei-table th, .satei-table td { padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--border); text-align: left; }
+  .satei-table th { color: var(--muted); font-weight: 400; }
+  .satei-source { font-size: 0.75rem; line-height: 1.8; color: var(--muted); margin-top: 1rem; }
+  .satei-next { margin-top: 2rem; padding: 1.5rem; background: var(--ink); color: var(--cream); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+  .satei-next p { flex: 1 1 100%; font-size: 0.9rem; line-height: 1.9; }
+  .satei-next strong { color: var(--gold-light); }
+
+  .purpose-body { background: var(--warm-white); }
+  .purpose-body .container { max-width: 780px; }
+  .qa + .qa { margin-top: 3.5rem; }
+  .qa h2 { font-size: 1.35rem; font-weight: 700; line-height: 1.5; padding-left: 1rem; border-left: 3px solid var(--gold); margin-bottom: 1rem; color: var(--ink); }
+  .qa p, .qa li { font-size: 0.95rem; line-height: 2; color: var(--charcoal); margin-bottom: 1rem; }
+  .qa-answer strong { color: var(--ink); }
+  .qa ul { margin-left: 1.5rem; }
+  .purpose-flow { background: var(--cream); }
+  .purpose-flow .container { max-width: 780px; }
+  .steps { list-style: none; margin-top: 2rem; }
+  .steps li { display: flex; gap: 1.2rem; padding: 1.2rem 0; border-top: 1px solid var(--border); }
+  .step-num { flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; background: var(--ink); color: var(--gold); border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-family: var(--font-accent); font-size: 1rem; }
+  .steps h3 { font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.3rem; }
+  .steps p { font-size: 0.88rem; line-height: 1.8; color: var(--muted); }
+  .purpose-faq { background: var(--warm-white); }
+  .purpose-faq .container { max-width: 780px; }
+  .purpose-faq .section-title { margin-bottom: 2rem; }
+  .purpose-contact { background: var(--ink); }
+  .purpose-contact .contact-inner { display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: start; }
+  .purpose-contact .section-title { color: var(--cream); }
+  .purpose-contact .section-body { color: rgba(250, 248, 243, 0.6); }
+
+  @media (max-width: 900px) {
+    .purpose-hero { padding-top: 7rem; }
+    .purpose-contact .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+  }
+  @media (max-width: 600px) {
+    .satei-form { grid-template-columns: 1fr; }
+    .satei-result { padding: 1.4rem 1rem; }
+  }
+</style>
