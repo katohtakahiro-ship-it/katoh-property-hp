@@ -11,7 +11,7 @@
 - data/kawasaki_towers.csv、data/yokohama_mansions.csv、data/satei_buildings_extra.csv
 
 出力: public/data/satei/
-- index.json … 四半期の一覧、種類ごとの最新四半期、市区町村の一覧（グループ・種類ごとの件数）
+- index.json … 四半期の一覧、種類ごとの最新四半期、市区町村の一覧（英語表記 data/satei_muni_en.csv・グループ・種類ごとの件数）
 - mansion/<市区町村コード>.json … 町名の一覧、時点修正の指数、事例 [四半期番号, 町名番号, 価格(万円), 専有面積, 築年]
 - trend_house.json / trend_land.json … {市区町村コード: 四半期ごとの土地1㎡あたりの中央値（5件未満は null）}
 - buildings.json … マンション名の一覧 {n: 名前, c: 市区町村コード, d: 町名, y: 竣工年, u: 総戸数, f: 地上階数, k: 5年間の事例数, s: 同じ町・同じ竣工年の別の建物}
@@ -201,10 +201,13 @@ def main():
     with open(os.path.join(OUT, 'buildings.json'), 'w', encoding='utf-8') as f:
         json.dump(buildings, f, ensure_ascii=False, separators=(',', ':'))
 
+    with open(os.path.join(ROOT, 'data', 'satei_muni_en.csv'), encoding='utf-8') as f:
+        names_en = {r['code']: r['name_en'] for r in csv.DictReader(f)}
     meta = {
         'quarters': quarters,
         'last': last,
-        'munis': [{'code': c, 'name': names[c], 'group': group_of(c), 'counts': counts[c]} for c in sorted(names)],
+        'munis': [{'code': c, 'name': names[c], 'en': names_en.get(c, names[c]), 'group': group_of(c), 'counts': counts[c]}
+                  for c in sorted(names)],
     }
     with open(os.path.join(OUT, 'index.json'), 'w', encoding='utf-8') as f:
         json.dump(meta, f, ensure_ascii=False, separators=(',', ':'))
