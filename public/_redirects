@@ -1,0 +1,10 @@
+# Cloudflare Pages のリダイレクト（パスのみ。www → www なしはダッシュボードのリダイレクトルールで行う）
+# 会社情報の独立ページはまだないので、トップの #company へ。/company/ を作るときはこの行を消す
+/company        /#company     301
+/company/       /#company     301
+/about          /#company     301
+/about/         /#company     301
+/en/company     /en/#company  301
+/en/company/    /en/#company  301
+/en/about       /en/#company  301
+/en/about/      /en/#company  301

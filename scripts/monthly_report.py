@@ -112,6 +112,18 @@ def event_filter(name: str):
     )
 
 
+def text_filter(field: str, value: str, match: str = "EXACT"):
+    from google.analytics.data_v1beta.types import Filter, FilterExpression
+
+    return FilterExpression(
+        filter=Filter(field_name=field, string_filter=Filter.StringFilter(value=value, match_type=match))
+    )
+
+
+# src/pages/404.astro のタイトル
+NOT_FOUND_TITLE = "ページが見つかりません"
+
+
 def collect_ga4(ga: GA4, start, end, prev_start, prev_end) -> dict:
     totals_m = ["sessions", "totalUsers", "newUsers", "screenPageViews", "engagementRate", "averageSessionDuration"]
     cur = ga.run([], totals_m, start, end, limit=1)
@@ -143,6 +155,18 @@ def collect_ga4(ga: GA4, start, end, prev_start, prev_end) -> dict:
         "countries": ga.run(["country"], ["sessions"], start, end, limit=10, order_metric="sessions"),
         "devices": ga.run(["deviceCategory"], ["sessions"], start, end, order_metric="sessions"),
     }
+    # 404 の表示。いつ・どのホストで・どこから来たかを見て、今も起きているか（リンク切れか一時的な不具合か）を判断する
+    data["not_found"] = ga.run(
+        ["date", "hostName", "pagePath", "pageReferrer"], ["screenPageViews"], start, end, limit=30,
+        order_metric="screenPageViews", dim_filter=text_filter("pageTitle", NOT_FOUND_TITLE, "BEGINS_WITH"),
+    )
+    # 完了ページの閲覧（日英）。generate_lead の件数と突き合わせる
+    data["thanks_views"] = ga.run(
+        ["pagePath"], ["screenPageViews"], start, end, dim_filter=text_filter("pagePath", "/thanks", "CONTAINS"),
+    )
+    # 閲覧数の多いホスト。www 付きなど正規でないホストの混在を見る
+    data["hosts"] = ga.run(["hostName"], ["screenPageViews"], start, end, limit=10, order_metric="screenPageViews")
+
     # /en/ 配下とそれ以外の閲覧数
     en = sum(p["screenPageViews"] for p in data["pages"] if p["pagePath"].startswith("/en"))
     data["en_share_top_pages"] = en / max(1, sum(p["screenPageViews"] for p in data["pages"]))
@@ -183,7 +207,19 @@ def collect_gsc(creds, site: str, start, end, prev_start, prev_end) -> dict:
         "totals_prev": tot_prev[0] if tot_prev else {},
         "queries": q(start, end, ["query"], 30),
         "pages": q(start, end, ["page"], 15),
+        # 表示は多いのにクリックが少ないページの検索語（タイトル・説明文の見直しに使う）
+        "page_queries": q(start, end, ["page", "query"], 250),
     }
+
+
+def low_ctr_pages(gsc: dict, min_impr: int = 30, max_ctr: float = 0.02) -> list[dict]:
+    out = []
+    for p in gsc.get("pages", []):
+        if p["impressions"] < min_impr or p["ctr"] > max_ctr:
+            continue
+        qs = sorted((r for r in gsc.get("page_queries", []) if r["page"] == p["page"]), key=lambda r: -r["impressions"])
+        out.append({**p, "queries": [{k: r[k] for k in ("query", "clicks", "impressions", "position")} for r in qs[:8]]})
+    return out
 
 
 # ── 記事一覧（その月に公開した記事を所見に渡す） ──────
@@ -213,6 +249,13 @@ SYSTEM = """あなたは、川崎市の小さな不動産仲介会社「合同�
 - サイトの目的は、問い合わせ（フォーム送信 = generate_lead）を増やすこと、ブログ記事の蓄積、GEO（ChatGPT・Perplexity・Gemini・Claude などの AI に引用・推薦されること）
 - 日英2言語。英語ページは /en/ 配下
 - 記事は H2 に質問文、直後に結論、末尾に FAQ という型で書いている
+- 正規の URL は https://katohpm.com/（www なし・末尾スラッシュあり）。/company/ は独立ページがなくトップの #company へ転送している
+
+データの読み方:
+- not_found は「ページが見つかりません」の表示（日付・ホスト・パス・参照元）。日付が月の前半に集中して後半にないなら一時的な不具合で解消済みの可能性が高い。今も続いているか、どのリンクから来ているかを分けて書く
+- leads（generate_lead）と thanks_views（/thanks/ と /en/thanks/ の閲覧）は、再読み込みや広告ブロッカーで少しずれる。差が大きいときだけ指摘する。実際の問い合わせメールの件数との照合を勧めてよい
+- lead_paths の lead_referrer は ChatGPT などのリンクに付く utm_source も含む
+- low_ctr_pages は表示が多いのにクリックが少ないページと、その検索語。タイトル改善を提案するときは検索語を根拠にする
 
 書き方:
 - 日本語。です・ます調。Markdown の見出し（##）と箇条書きを使う
@@ -331,6 +374,12 @@ def build_html(ym: str, ga: dict, gsc: dict | None, posts: list[dict], commentar
         table(ga["sources"][:15], [("sessionSource", "参照元"), ("sessionMedium", "メディア"), ("sessions", "セッション")]),
         "<h2 style='font-size:16px'>よく見られたページ</h2>",
         table(ga["pages"][:20], [("pagePath", "パス"), ("pageTitle", "タイトル"), ("screenPageViews", "PV")]),
+        "<h2 style='font-size:16px'>「ページが見つかりません」の表示</h2>",
+        table(ga.get("not_found", []), [("date", "日付"), ("hostName", "ホスト"), ("pagePath", "パス"), ("pageReferrer", "参照元"), ("screenPageViews", "PV")]),
+        "<h4 style='margin:12px 0 0'>完了ページの閲覧（問い合わせ件数との照合用）</h4>",
+        table(ga.get("thanks_views", []), [("pagePath", "パス"), ("screenPageViews", "PV")]),
+        "<h4 style='margin:12px 0 0'>ホスト別の閲覧</h4>",
+        table(ga.get("hosts", []), [("hostName", "ホスト"), ("screenPageViews", "PV")]),
         "<h2 style='font-size:16px'>入口になったページ</h2>",
         table(ga["landing_pages"], [("landingPage", "ページ"), ("sessions", "セッション"), ("engagementRate", "エンゲージ率")], {"engagementRate": pct_fmt}),
     ]
@@ -341,6 +390,11 @@ def build_html(ym: str, ga: dict, gsc: dict | None, posts: list[dict], commentar
             "<h2 style='font-size:16px'>検索で表示されたページ</h2>",
             table(gsc["pages"], [("page", "ページ"), ("clicks", "クリック"), ("impressions", "表示"), ("position", "平均順位")], {"position": pos_fmt}),
         ]
+        for p in low_ctr_pages(gsc):
+            sections += [
+                f"<h4 style='margin:12px 0 0'>表示 {p['impressions']:,.0f} 回・クリック {p['clicks']:,.0f} の検索語: {html.escape(p['page'])}</h4>",
+                table(p["queries"], [("query", "キーワード"), ("clicks", "クリック"), ("impressions", "表示"), ("position", "平均順位")], {"position": pos_fmt}),
+            ]
     sections += [
         "<h2 style='font-size:16px'>国・端末</h2>",
         table(ga["countries"], [("country", "国"), ("sessions", "セッション")]),
@@ -405,7 +459,9 @@ def main():
         gsc = None
     posts = published_posts(start, end)
 
-    commentary = write_commentary({"month": ym, "ga4": ga, "search_console": gsc, "posts": posts})
+    # 所見には検索語の全件ではなく、クリックが少ないページの分だけ渡す
+    gsc_brief = {**{k: v for k, v in gsc.items() if k != "page_queries"}, "low_ctr_pages": low_ctr_pages(gsc)} if gsc else None
+    commentary = write_commentary({"month": ym, "ga4": ga, "search_console": gsc_brief, "posts": posts})
     report = build_html(ym, ga, gsc, posts, commentary)
 
     if args.dry_run or not os.environ.get("RESEND_API_KEY"):

@@ -21,6 +21,11 @@ const ja = locale === 'ja';
     <script is:inline>
       (function () {
         if (typeof window.gtag !== 'function') return;
+        // 再読み込み・戻る/進むでは送らない（同じ問い合わせを二重に数えないため）
+        try {
+          var nav = performance.getEntriesByType('navigation')[0];
+          if (nav && (nav.type === 'reload' || nav.type === 'back_forward')) return;
+        } catch (e) {}
         var params = { method: 'contact_form' };
         // 分析用：どのページから送信したか、最初に見たページ、最後に読んだ記事（Base.astro の記録から）
         try {
@@ -30,7 +35,8 @@ const ja = locale === 'ja';
             params.form_page = j.pages[j.pages.length - 1];
             params.landing_page = j.landing || '';
             params.last_article = articles.length ? articles[articles.length - 1] : '(none)';
-            params.lead_referrer = j.referrer || '(direct)';
+            // 参照元が空でも ChatGPT などはリンクに utm_source を付けるので、それを使う
+            params.lead_referrer = j.referrer || (j.source ? j.source.split(' / ')[0] : '') || '(direct)';
           }
         } catch (e) {}
         window.gtag('event', 'generate_lead', params);
