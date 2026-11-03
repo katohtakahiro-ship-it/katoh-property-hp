@@ -41,7 +41,7 @@ export const SITE = {
   },
   /** 電話番号はサイトに掲載しない（CLAUDE.md 作業ルール）。以下は未設定なら非表示 */
   /** LINE 公式アカウントの URL */
-  lineUrl: '' as string,
+  lineUrl: 'https://lin.ee/uRSd3Se' as string,
   /** Google Analytics 4 の測定 ID。本番ビルドのときだけタグを出力する（Base.astro） */
   gaMeasurementId: 'G-P4BQ3L3J87',
   /** 代表社員（宅建業免許上の代表者は加藤良枝）。会社概要に併記する */
