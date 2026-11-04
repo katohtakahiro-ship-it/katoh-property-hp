@@ -110,7 +110,7 @@ Solana and Arbitrum have low network fees and settle quickly. Ethereum is suppor
 
 **Send the coin stated on the invoice to the chain and address stated on the invoice.** If you use the wrong chain, the funds may not be recoverable.
 
-- **For Ethereum-style chains, only Ethereum mainnet and Arbitrum (Arbitrum One)**: We do not accept transfers from other chains that use Ethereum-style addresses, such as Base, Optimism or Polygon. JPYC is accepted on Ethereum mainnet only
+- **For Ethereum-style chains, only Ethereum mainnet and Arbitrum (Arbitrum One)**: We do not accept transfers from other chains that use Ethereum-style addresses, such as Base or Optimism. JPYC is accepted on Ethereum mainnet only
 - **Copy the address from the invoice every time**: Avoid copying it from your transaction history. Some scams send small amounts from look-alike addresses so that you copy the wrong one from your history
 - **We give our receiving address only on the invoice**: If an email or social media message gives you a different address, do not send to it
 
