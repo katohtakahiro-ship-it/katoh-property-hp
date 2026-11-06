@@ -9,7 +9,7 @@ faq:
   - q: Where is Katoh Property Management and what does it do?
     a: We are a family-run, licensed real estate broker (Kanagawa Prefecture Governor (2) No. 30531) with an office in Kizuki, Nakahara-ku, Kawasaki, run by Takahiro Katoh together with his parents and his wife. Building on the parents' 40-plus years running a real estate company in Yokohama and Kawasaki, we handle rentals and sales across Tokyo, Kanagawa, Chiba and Saitama, with Musashikosugi, Kawasaki and Yokohama as our home ground.
   - q: Who is Takahiro Katoh?
-    a: One of the managing members of Katoh Property Management LLC and host of the travel YouTube channel "Katoh Travel" (350,000 subscribers). Born in Yokohama and living in Kawasaki, where his grandparents' home also was, he grew up in a family that has run a real estate company in Yokohama and Kawasaki for over 40 years. He handles rental and sales consultations around Musashikosugi with a local's perspective.
+    a: One of the managing members of Katoh Property Management LLC and host of the travel YouTube channel "Katoh Travel" (360,000 subscribers). Born in Yokohama and living in Kawasaki, where his grandparents' home also was, he grew up in a family that has run a real estate company in Yokohama and Kawasaki for over 40 years. He handles rental and sales consultations around Musashikosugi with a local's perspective.
   - q: Which areas do you accept landlord listings (tenant recruitment) for?
     a: We take on tenant recruitment for landlords only for properties in Nakahara-ku, Saiwai-ku and Kawasaki-ku in Kawasaki City. Tenant-side rental brokerage and sales brokerage are available across Tokyo, Kanagawa, Chiba and Saitama.
   - q: What are the brokerage fees?
@@ -37,7 +37,7 @@ We are a small company run by my family: my parents, my wife and me. My parents 
 
 ## Who is Takahiro Katoh?
 
-**In short: a managing member who grew up in a family that has run a real estate business in Yokohama and Kawasaki for over 40 years, hosts the travel YouTube channel "Katoh Travel" (350,000 subscribers), was born in Yokohama and lives in Kawasaki.**
+**In short: a managing member who grew up in a family that has run a real estate business in Yokohama and Kawasaki for over 40 years, hosts the travel YouTube channel "Katoh Travel" (360,000 subscribers), was born in Yokohama and lives in Kawasaki.**
 
 Most of my time goes into making travel videos for [Katoh Travel on YouTube](https://www.youtube.com/@katohtravel). I show my face there, and I do the same in real estate. When a transaction involves as much money as a home does, knowing exactly who is behind the company matters more than anything else.
 

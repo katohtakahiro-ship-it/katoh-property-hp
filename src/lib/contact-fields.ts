@@ -6,7 +6,7 @@
 export type Locale = 'ja' | 'en';
 type L = Record<Locale, string>;
 
-export const INQUIRY_TYPES = ['rent', 'buy', 'sell', 'lease', 'other'] as const;
+export const INQUIRY_TYPES = ['rent', 'buy', 'sell', 'lease', 'tax_agent', 'other'] as const;
 export type InquiryType = (typeof INQUIRY_TYPES)[number];
 
 export const TYPE_LABEL: Record<InquiryType, L> = {
@@ -14,6 +14,7 @@ export const TYPE_LABEL: Record<InquiryType, L> = {
   buy: { ja: '買いたい', en: 'I want to buy' },
   sell: { ja: '売りたい（査定・売却相談）', en: 'I want to sell' },
   lease: { ja: '貸したい（オーナー様の借主募集）', en: 'I am a landlord (tenant recruitment)' },
+  tax_agent: { ja: '納税管理人（海外にお住まいの方）', en: 'Tax agent (living outside Japan)' },
   other: { ja: 'その他', en: 'Other' },
 };
 
@@ -150,7 +151,7 @@ export const FIELDS: readonly FieldDef[] = [
   },
 
   // 売りたい
-  { name: 'location', label: { ja: '物件の所在地', en: 'Property location' }, kind: 'text', for: ['sell', 'lease'], placeholder: { ja: '例：川崎市中原区小杉町（番地は任意）', en: 'e.g. Kosugi-cho, Nakahara-ku, Kawasaki (street number optional)' }, maxLength: 200 },
+  { name: 'location', label: { ja: '物件の所在地', en: 'Property location' }, kind: 'text', for: ['sell', 'lease', 'tax_agent'], placeholder: { ja: '例：川崎市中原区小杉町（番地は任意）', en: 'e.g. Kosugi-cho, Nakahara-ku, Kawasaki (street number optional)' }, maxLength: 200 },
   { name: 'building_name', label: { ja: 'マンション名（任意）', en: 'Building name (optional)' }, kind: 'text', for: ['sell'], maxLength: 100 },
   {
     name: 'sell_timing',
@@ -175,6 +176,28 @@ export const FIELDS: readonly FieldDef[] = [
     kind: 'select',
     for: ['lease'],
     options: [opt('vacant', '空室', 'Vacant'), opt('leaving', '入居中で退去予定', 'Occupied, tenant leaving'), opt('new', '新築・取得予定', 'New or to be acquired')],
+  },
+
+  // 納税管理人
+  {
+    name: 'country',
+    label: { ja: 'お住まいの国（出国予定の方は国と時期）', en: 'Country you live in' },
+    kind: 'text',
+    for: ['tax_agent'],
+    placeholder: { ja: '例：シンガポール、2027年4月に出国予定', en: 'e.g. Singapore' },
+    maxLength: 100,
+  },
+  {
+    name: 'tax_needs',
+    label: { ja: '届いている、または届く予定の税金（任意）', en: 'Taxes you expect to pay (optional)' },
+    kind: 'select',
+    for: ['tax_agent'],
+    options: [
+      opt('property', '固定資産税だけ', 'Fixed asset tax only'),
+      opt('rental', '固定資産税と、家賃収入の所得税', 'Fixed asset tax and income tax on rent'),
+      opt('purchase', '購入予定・購入直後（不動産取得税など）', 'Buying or just bought (acquisition tax etc.)'),
+      opt('unknown', 'よく分からない', 'Not sure'),
+    ],
   },
 
   // 末尾の共通項目

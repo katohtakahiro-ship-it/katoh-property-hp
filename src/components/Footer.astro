@@ -3,6 +3,7 @@ import { siteFor } from '../config/site';
 import Logo from './Logo.astro';
 import { getPurposePages, PURPOSE_KEYS } from '../lib/purpose-pages';
 import { localePath, type Locale } from '../i18n';
+import { TAX_AGENT_PATH } from '../lib/tax-agent';
 
 interface Props {
   locale?: Locale;
@@ -22,6 +23,7 @@ const purposes = getPurposePages(locale);
         <p class="footer-license">{site.license}</p>
         <p class="footer-links">
           {PURPOSE_KEYS.map((k) => <a href={purposes[k].path}>{purposes[k].label}</a>)}
+          <a href={TAX_AGENT_PATH[locale]}>{locale === "ja" ? "納税管理人" : "Tax agent"}</a>
           <a href={localePath(locale, "/blog/")}>{locale === "ja" ? "ブログ" : "Blog"}</a>
           <a href={site.representative.profilePath}>{locale === "ja" ? "代表プロフィール" : "About Takahiro Katoh"}</a>
           <a href={localePath(locale, "/privacy/")}>{locale === "ja" ? "プライバシーポリシー" : "Privacy Policy"}</a>

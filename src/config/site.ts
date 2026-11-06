@@ -51,7 +51,7 @@ export const SITE = {
     name: '加藤隆寛',
     title: '代表社員',
     qualification: '宅地建物取引士',
-    bio: '宅地建物取引士。横浜市生まれ、母の実家がある川崎市と横浜で育ち、いまも川崎市に住んでいます。両親が横浜・川崎で40年以上不動産業を営んできた家族とともに、東京・神奈川を中心にお部屋探し・購入・売却のご相談に対応します。旅行系 YouTube チャンネル「加藤トラベル」（登録者数35万人）も運営しています。',
+    bio: '宅地建物取引士。横浜市生まれ、母の実家がある川崎市と横浜で育ち、いまも川崎市に住んでいます。両親が横浜・川崎で40年以上不動産業を営んできた家族とともに、東京・神奈川を中心にお部屋探し・購入・売却のご相談に対応します。旅行系 YouTube チャンネル「加藤トラベル」（登録者数36万人）も運営しています。',
     /** 詳しいプロフィールページ（ブログ記事の著者欄からもリンクする） */
     profilePath: '/company/takahiro-katoh/',
     /** graduated: false は在籍のみ（JSON-LD の alumniOf には入れない。卒業したように読める書き方をしない） */
@@ -68,7 +68,7 @@ export const SITE = {
     youtube: {
       name: '加藤トラベル',
       url: 'https://www.youtube.com/@katohtravel',
-      subscribers: '35万人',
+      subscribers: '36万人',
     },
   },
   /** ロゴ表記（金色の部分 + 残り） */
@@ -124,7 +124,7 @@ export const SITE_EN: SiteConfig = {
     name: 'Takahiro Katoh',
     title: 'Managing Member',
     qualification: 'Licensed Real Estate Transaction Specialist (Takken-shi)',
-    bio: 'Licensed real estate transaction specialist (takken-shi). Born in Yokohama and raised between Yokohama and Kawasaki, where the family on the mother’s side is from, and still living in Kawasaki. Together with parents who have run a real estate business in Yokohama and Kawasaki for over 40 years, handles rentals, purchases and sales across Tokyo and Kanagawa, in English or Japanese. Also runs the travel YouTube channel "Katoh Travel" (350,000 subscribers).',
+    bio: 'Licensed real estate transaction specialist (takken-shi). Born in Yokohama and raised between Yokohama and Kawasaki, where the family on the mother’s side is from, and still living in Kawasaki. Together with parents who have run a real estate business in Yokohama and Kawasaki for over 40 years, handles rentals, purchases and sales across Tokyo and Kanagawa, in English or Japanese. Also runs the travel YouTube channel "Katoh Travel" (360,000 subscribers).',
     profilePath: '/en/company/takahiro-katoh/',
     education: [
       { school: 'The City College of New York (CUNY)', detail: 'attended before returning to Japan to study at Waseda University', graduated: false },
@@ -133,7 +133,7 @@ export const SITE_EN: SiteConfig = {
     ],
     dojo: { name: 'Aikido Katoh Dojo', url: 'https://katohdojo-en.com/' },
     photoAlt: 'Takahiro Katoh, Managing Member',
-    youtube: { ...SITE.representative.youtube, name: 'Katoh Travel', subscribers: '350,000' },
+    youtube: { ...SITE.representative.youtube, name: 'Katoh Travel', subscribers: '360,000' },
   },
   logo: { accent: 'Katoh', rest: ' Property Management' },
   defaultTitle: 'Katoh Property Management LLC | Half-price brokerage fees in Musashikosugi, Kawasaki & Yokohama',

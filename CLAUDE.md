@@ -12,7 +12,7 @@
 - 加藤隆寛は宅地建物取引士。横浜市生まれ、母の実家がある川崎市と横浜で育ち、川崎市在住（祖父母の実家＝母の実家が川崎市）。学歴：ニューヨーク市立大学シティカレッジ（The City College of New York）に在籍後、帰国して早稲田大学文化構想学部 文芸・ジャーナリズム論系卒、一橋大学大学院経営管理研究科（MBA）修了（シティカレッジは卒業していないので「在籍後、」と書き、JSON-LD の alumniOf には入れない）。合気道と空手を続け、川崎市内で「合気道加藤道場」を開いている（日本語 https://katohdojo.com/ 、英語 https://katohdojo-en.com/ ）。住まいが特定できる情報（最寄り駅・家族構成など）はサイトに出さない
 - 賃貸の元付（オーナーから預かる借主募集）は川崎市中原区・幸区・川崎区の物件に限定。借主側の仲介と売買仲介は一都3県
 - 代表社員：加藤良枝（宅建業免許上の代表者）、加藤隆寛。サイトでは「代表社員 加藤良枝・加藤隆寛」と併記し、紹介欄は加藤隆寛を「代表の一人」として顔出しで掲載する。免許上の代表者名の表示義務は要確認
-- 加藤隆寛：旅行系 YouTube チャンネル「加藤トラベル」（https://www.youtube.com/@katohtravel 、登録者数35万人）を運営。川崎市在住。サイトから YouTube へ導線を置く
+- 加藤隆寛：旅行系 YouTube チャンネル「加藤トラベル」（https://www.youtube.com/@katohtravel 、登録者数36万人）を運営。川崎市在住。サイトから YouTube へ導線を置く
 - 代表写真：public/images/representative.jpg（存在する時のみ表示）
 - 代表プロフィールページ：/company/takahiro-katoh/（英語 /en/company/takahiro-katoh/、2026-10-08 新設。src/components/ProfilePage.astro）。ブログ記事の著者ページを兼ね、記事末尾の著者欄・トップの紹介欄・フッターからリンク。BlogPosting の author は Person（/#representative）。紹介文・資格・学歴・道場は src/config/site.ts の representative。紹介文のエリア表記は「東京・神奈川を中心に」（実務の中心は川崎市）
 
@@ -22,6 +22,7 @@
 - 半額の適用条件（2026-09-27 決定）：当社サイトのフォーム・LINE・ご紹介から新規に相談があった案件（お部屋探し・購入・売却）のみ。当社が売主・貸主から預かりポータル等に広告掲載する物件（元付）への問い合わせは売買・賃貸とも対象外で、各広告・媒介契約書に表示する額（法定上限内）。適用の有無は最初の問い合わせ時点で確定し、媒介契約書（賃貸は重説）に明記する。文言は src/config/site.ts の fees.condition（短文）と fees.conditionDetail（詳細）を使い、「半額」を表示する箇所の近くに必ず短文を置く（景表法の打消し表示の考え方。表示方法は要確認）
 - 売買価格800万円以下（税抜）の物件は半額の対象外（2026-11-03 決定）。国交省告示の低廉な空家等の特例（2024-07-01 改正：800万円以下、上限30万円＋税、売主・買主双方から可、媒介契約前の説明と合意が要件。条文の要件は要確認）の対象となるため、媒介契約前に報酬額を説明して合意した額（法定上限内）とする。文言は fees.condition / fees.conditionDetail に含めてある
 - 「無料」という表現は使わない
+- 納税管理人の受託（2026-11-05 決定）：年 US$200（1年分前払い、Wise・USDC。海外在住の日本人に限り円も可、換算はステーブルコインと同じく請求書発行日のみずほ銀行 TTM、円未満切り捨て）。消費税はかかるものとして扱うが、サイト・記事では触れない。物件は全国対応。行うこと：税務署・市区町村・都道府県への届出、書類の受領と PDF 転送、期限の連絡、預かった資金での納付、解任届。行わないこと：申告書の作成・提出、税額計算、税務相談（税理士法）、立替。提携税理士はいないので紹介しない。英語では "tax agent (nozei kanrinin)" と書き、税理士ではないと添える
 
 ## サイトの目的
 1. 宅建業者としてのコーポレートサイト（会社概要・料金・免許・問い合わせ）
@@ -37,13 +38,13 @@
 - 問い合わせの経路分析（2026-10-05）：訪問中に見たページを sessionStorage（kpm_journey。Cookie なし、タブを閉じると消える）に記録し、フォーム送信時に自動で添える。当社宛ての通知メールにだけ「送信したページ・最初に見たページ・流入元・読んだ記事・見た順」を載せ、受付メールには載せない。GA4 の generate_lead にも form_page / landing_page / last_article / lead_referrer を付ける（GA 側でカスタムディメンション登録が必要）。訪問者の入力項目は増やさない。プライバシーポリシーに記載済み（個人情報保護法上の扱いは要確認）
 - 月次アクセスレポート（2026-10-09）：GitHub Actions（.github/workflows/monthly-report.yml）が毎月3日 9:00 JST に scripts/monthly_report.py を実行。GA4 Data API と Search Console API から前月分を集計（AI アシスタントからの流入、問い合わせ経路を含む）し、Claude（claude-opus-5-5）の所見を付けて Resend で info@katohpm.com に送る。認証は Google Cloud のサービスアカウント（GA4 は閲覧者、Search Console は制限付きユーザーとして追加）。GitHub の Secrets：GOOGLE_SERVICE_ACCOUNT / ANTHROPIC_API_KEY / RESEND_API_KEY、Variables：GA4_PROPERTY_ID。手動実行は Actions の Run workflow（対象月を指定可）
 - ドメイン：katohpm.com（Cloudflare Registrar で取得済み、2026-09-08）
-- Googleビジネスプロフィールは使わない（自宅事務所のため）
+- Googleビジネスプロフィール（2026-11 開設、takahiro.katoh@katohpm.com で管理、オーナー確認済み）：住所非表示のサービス提供地域型（川崎市・横浜市・一都3県）。電話番号は載せない（協会サイト等の固定電話が第三者の編集提案で入ったら削除）。カテゴリ 不動産仲介業。口コミ投稿リンク https://g.page/r/CSgc9LQL43j0EAI/review 。口コミの文言指定・謝礼と引き換えの依頼はしない。オフィスを借りて移転するときは新規作成せず同じプロフィールの住所を書き換える
 - WordPress / AFFINGER は使わない
 
 ## サイト構成方針（2026-09-07 決定）
 - 料金訴求ワンページ型（REDS 型）のトップを土台に、ブログ動線（渋井不動産型）と目的別・エリアページを足す
 - ナビは最小限（渋井不動産型）：ブログ / 仲介手数料 / 会社情報 / お問い合わせ
-- サイトマップ：/ 、/blog/ 、/blog/[slug]/ 、/rent/ /buy/ /sell/（目的別ページ、2026-09-25 公開。内容は src/lib/purpose-pages.ts、日英）、/company/takahiro-katoh/（代表プロフィール、2026-10-08）、/privacy/ 、/thanks/ 。今後：/area/musashikosugi/ 等、/company/（会社情報。当面はトップの #company）
+- サイトマップ：/ 、/blog/ 、/blog/[slug]/ 、/rent/ /buy/ /sell/（目的別ページ、2026-09-25 公開。内容は src/lib/purpose-pages.ts、日英）、/company/takahiro-katoh/（代表プロフィール、2026-10-08）、/nozei-kanrinin/ ・ /en/tax-agent/（納税管理人、2026-11-05。内容は src/lib/tax-agent.ts）、/privacy/ 、/thanks/ 。今後：/area/musashikosugi/ 等、/company/（会社情報。当面はトップの #company）
 - トップに最新記事枠を置く。料金セクションには法定上限との比較・試算を置く
 - 参考：東京R不動産 https://www.realtokyoestate.co.jp/ 、渋井不動産 https://shibui.estate/ 、REDS https://www.reds.co.jp/ 、Blackship Realty / Tokyo Portfolio（英語版の構成・分かりやすさの参考。YouTube 集客型）
 - 英語版：/en/ 配下に日本語と対になるページを置く。ブログは日英で同じスラッグ、hreflang で相互リンク。日本語記事を公開する（draft: false にする）ときは、毎回必ず英語版も同時に作る（src/content/blog/en/ に同名ファイル、page_slug・date も同じ。2026-09-28 決定）。図解画像に日本語が入る場合は英語版の画像（ファイル名末尾 -en.png）も作る。金額は円表記（例：72.02万円 → ¥720,200）に換算し、英語記事末尾に「日本語版が原文」の注記を置く。契約書・重説は日本語が正本で英語は参考訳（要確認事項として明記）
