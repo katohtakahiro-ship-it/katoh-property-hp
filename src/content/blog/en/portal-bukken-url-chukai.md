@@ -24,6 +24,8 @@ faq:
 
 Japanese property portals such as SUUMO, LIFULL HOME'S and at home show an agency to contact for each listing, so it is easy to assume you have to go through that agency. In fact, most second-hand condominiums and houses can be bought on the same terms through another agency.
 
+![Buying a property you found on SUUMO, step by step. 1 Send the link by form or LINE. 2 We check its REINS status and whether we can introduce you. 3 Viewing: we arrange a time and meet you on site. 4 Offer: we negotiate price and terms for you. 5 Contract: from the explanation of important matters through to closing. On a ¥70 million second-hand condominium the brokerage fee is ¥1,188,000 with us against the legal maximum of ¥2,376,000 (both including tax), a difference of ¥1,188,000. Send us the link before you contact the listing agency. As a rule, we cannot take over after a viewing or an offer.](/images/blog/portal-bukken-url-chukai-en.png)
+
 ## Why can another agency submit an offer?
 
 **An agency holding an exclusive mandate (senin or senzoku senin) must register the property on REINS, which shares the listing with other agencies.** REINS is the property database for licensed agencies, run by the real estate information network organizations designated by the Minister of Land, Infrastructure, Transport and Tourism.
