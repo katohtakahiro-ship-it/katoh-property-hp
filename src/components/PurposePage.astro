@@ -61,6 +61,7 @@ const breadcrumb = {
       </div>
       <p class="purpose-fee-note">{site.fees.condition}</p>
       <a class="purpose-cta" href="#contact">{page.ctaTitle} →</a>
+      {purpose === 'buy' && (<a class="purpose-satei-link" href={ja ? '/blog/portal-bukken-url-chukai/' : '/en/blog/portal-bukken-url-chukai/'}>{ja ? 'SUUMOなどで見つけた物件も、URLを送るだけで当社が仲介します →' : 'Found a property on SUUMO? Send us the link →'}</a>)}
       {purpose === 'sell' && (<a class="purpose-satei-link" href={ja ? '/sell/satei/' : '/en/sell/valuation/'}>{ja ? '川崎市のマンションの価格の目安を、その場で調べる（簡易査定）→' : 'Estimate your Kawasaki condo’s price instantly →'}</a>)}
     </div>
   </section>

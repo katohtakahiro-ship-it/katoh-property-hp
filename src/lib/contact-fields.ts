@@ -146,7 +146,7 @@ export const FIELDS: readonly FieldDef[] = [
     kind: 'url',
     for: ['rent', 'buy'],
     placeholder: { ja: 'https://', en: 'https://' },
-    hint: { ja: 'ポータルサイトで見つけた物件も、扱えるかどうか確認します', en: 'We will check whether we can handle a property you found on a portal site.' },
+    hint: { ja: 'SUUMO などのポータルサイトで見つけた物件の URL を貼ってください。当社から申込ができるか確認します', en: 'Paste the link of a property you found on SUUMO or another portal. We will check whether we can apply through us.' },
     maxLength: 500,
   },
 
