@@ -76,7 +76,7 @@ const privacyPath = localePath(locale, '/privacy/');
             <div class="radios">
               {f.options?.map((o, i) => (
                 <label class="check">
-                  <input type="radio" name={f.name} value={o.value} required={f.required} checked={i === 0} />
+                  <input type="radio" name={f.name} value={o.value} required={f.required} checked={i === 0 && !f.noDefault} />
                   <span>{o.label[locale]}</span>
                 </label>
               ))}

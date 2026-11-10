@@ -28,6 +28,10 @@ export interface FieldDef {
   label: L;
   kind: 'text' | 'email' | 'tel' | 'url' | 'select' | 'textarea' | 'radio' | 'checkbox';
   required?: boolean;
+  /** ラジオで最初の選択肢を選択済みにしない（必ず本人に選んでもらう項目） */
+  noDefault?: boolean;
+  /** 通知メールの件名に付ける短い表記（選択肢の value → 表記） */
+  subjectTag?: Record<string, L>;
   /** 指定した相談種類のときだけ表示・必須にする。未指定なら共通 */
   for?: readonly InquiryType[];
   /** 英語フォームだけに出す */
@@ -79,6 +83,18 @@ export const FIELDS: readonly FieldDef[] = [
     placeholder: { ja: '', en: 'e.g. Engineer/Specialist in Humanities, until 2028' },
     hint: { ja: '', en: 'Guarantor companies ask for this on rental applications; knowing it early helps us narrow down properties.' },
     maxLength: 100,
+  },
+
+  // 買いたい：自宅用か投資用かを必ず選んでもらう（目的別ページでは種類が選択済みのため、種類の選択肢を分けずに項目で聞く）
+  {
+    name: 'buy_purpose',
+    label: { ja: '購入の目的', en: 'Purpose of purchase' },
+    kind: 'radio',
+    required: true,
+    noDefault: true,
+    for: ['buy'],
+    options: [opt('home', '自宅用', 'To live in'), opt('invest', '投資・収益用', 'Investment (rental income)'), opt('undecided', '未定・両方検討', 'Not decided / considering both')],
+    subjectTag: { home: { ja: '自宅用', en: 'home' }, invest: { ja: '投資用', en: 'investment' }, undecided: { ja: '目的未定', en: 'purpose undecided' } },
   },
 
   // 借りたい

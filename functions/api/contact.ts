@@ -97,7 +97,11 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     if (f.kind === 'email' && raw && !isEmail(raw)) {
       return json({ ok: false, error: ja ? 'メールアドレスの形式を確認してください。' : 'Please check the email address.' }, 400);
     }
-    if (f.kind === 'select' && raw && !f.options?.some((o) => o.value === raw)) continue;
+    if ((f.kind === 'select' || f.kind === 'radio') && raw && !f.options?.some((o) => o.value === raw)) {
+      // 選択肢にない値は捨てる。必須項目なら入力し直してもらう
+      if (f.required) return json({ ok: false, error: errRequired }, 400);
+      continue;
+    }
     values[f.name] = raw;
   }
 
@@ -126,7 +130,13 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const email = values.email;
   const to = env.CONTACT_TO || COMPANY.from;
   const fromHeader = `${COMPANY.short[locale]} <${COMPANY.from}>`;
-  const typeTag = ja ? `【${TYPE_LABEL[type].ja.replace(/（.*）/, '')}】` : `[${TYPE_LABEL[type].en}]`;
+  // 件名に付ける補足（例：買いたい／投資用）。項目定義の subjectTag から拾う
+  const subTags = FIELDS.filter((f) => f.subjectTag && isVisible(f, type, locale))
+    .map((f) => f.subjectTag?.[values[f.name]]?.[locale])
+    .filter(Boolean);
+  const typeTag = ja
+    ? `【${[TYPE_LABEL[type].ja.replace(/（.*）/, ''), ...subTags].join('／')}】`
+    : `[${[TYPE_LABEL[type].en, ...subTags].join(' / ')}]`;
 
   const meta = [
     `${ja ? '言語' : 'Language'}: ${locale}`,
