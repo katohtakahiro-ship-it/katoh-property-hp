@@ -93,7 +93,7 @@ export const FIELDS: readonly FieldDef[] = [
     required: true,
     noDefault: true,
     for: ['buy'],
-    options: [opt('home', '自宅用', 'To live in'), opt('invest', '投資・収益用', 'Investment (rental income)'), opt('undecided', '未定・両方検討', 'Not decided / considering both')],
+    options: [opt('home', '自宅用', 'To live in'), opt('invest', '投資・収益用', 'Investment'), opt('undecided', '未定・両方検討', 'Not decided / considering both')],
     subjectTag: { home: { ja: '自宅用', en: 'home' }, invest: { ja: '投資用', en: 'investment' }, undecided: { ja: '目的未定', en: 'purpose undecided' } },
   },
 
