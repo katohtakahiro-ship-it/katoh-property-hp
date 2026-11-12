@@ -7,7 +7,8 @@ import type { Locale } from '../i18n';
 import type { InquiryType } from './contact-fields';
 
 export type PurposeKey = Extract<InquiryType, 'rent' | 'buy' | 'sell'>;
-export const PURPOSE_KEYS: readonly PurposeKey[] = ['rent', 'buy', 'sell'];
+/** 表示順。売買（購入・売却）が主力のため先に出す（2026-11-12） */
+export const PURPOSE_KEYS: readonly PurposeKey[] = ['buy', 'sell', 'rent'];
 
 export interface Section {
   /** 質問文の見出し */
@@ -101,15 +102,51 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
         key: 'buy',
         path: p('/buy/'),
         label: '買いたい',
-        title: '住まいを買いたい方へ｜仲介手数料は法定上限の半額',
-        description: `マンション・一戸建て・土地の購入を、仲介手数料${S.fees.sale}で仲介します。東京・神奈川を中心に一都3県に対応。7,000万円の物件なら、法定上限との差は約119万円です。来店不要で、ご相談と契約手続きはオンライン、内見は現地でご案内します。`,
+        title: '川崎・横浜で住まいを買いたい方へ｜仲介手数料は法定上限の半額',
+        description: `川崎市・横浜市を中心に、新築戸建て・中古マンション・中古戸建て・土地の購入を、仲介手数料${S.fees.sale}で仲介します。東京都・千葉県・埼玉県にも対応。7,000万円の物件なら、法定上限との差は約119万円です。来店不要で、ご相談と契約手続きはオンライン、内見は現地でご案内します。`,
         eyebrow: 'For Buyers',
-        lead: `購入の仲介手数料は${S.fees.sale}です。${S.fees.saleNote}ですので、価格が高い物件ほど差が大きくなります。`,
+        lead: `川崎市・横浜市を中心に、新築戸建て・中古マンション・中古戸建ての購入を仲介します。購入の仲介手数料は${S.fees.sale}です。${S.fees.saleNote}ですので、価格が高い物件ほど差が大きくなります。`,
         sections: [
           {
             q: '購入時の仲介手数料はいくらですか？',
             a: `${S.fees.sale}です。7,000万円の物件なら 1,188,000円（税込）で、法定上限（2,376,000円）との差は 1,188,000円になります。`,
             body: ['率は物件によらず同じです。ローン事務代行手数料などの名目の費用はいただきません。費用が発生するのは成約時のみです。'],
+          },
+          {
+            q: '川崎市・横浜市のどのエリアに対応していますか？',
+            a: '川崎市の全7区、横浜市の全18区に対応しています。特に詳しいのは、武蔵小杉のある川崎市中原区と、元住吉・新丸子など東急東横線の沿線です。',
+            body: ['東京都・千葉県・埼玉県の物件のご購入にも対応しています。代表の加藤隆寛は横浜市生まれ、川崎市在住で、両親は横浜・川崎で40年以上不動産業を営んできました。'],
+          },
+          {
+            q: '川崎・横浜の新築戸建ても仲介してもらえますか？',
+            a: `はい。建売住宅などの新築戸建ても仲介します。SUUMO などで見つけた新築戸建ての URL をお送りいただければ、当社から購入の申込ができるかを確認します。仲介手数料は中古と同じく${S.fees.sale}です。`,
+            body: ['分譲会社（売主）が自社だけで販売している物件など、仲介できない場合はその旨をお伝えします。購入前には次の点を確認します。'],
+            list: [
+              '建築確認・完了検査（検査済証）の状況と、住宅性能評価書の有無',
+              '前面道路の幅と私道の負担、隣地との境界',
+              '引渡し後の保証とアフターサービスの内容（新築住宅は、構造の主要な部分と雨水の浸入を防ぐ部分について売主に10年の責任が定められています。詳細は物件ごとに要確認）',
+              '完成前の物件は図面・仕様書、完成後の物件は現地で、日当たりや設備を確認',
+            ],
+          },
+          {
+            q: '中古マンションを買うとき、何を確認しますか？',
+            a: '価格だけでなく、管理の状態を確認します。管理会社が作成する「重要事項調査報告書」などで、修繕積立金の残高と値上げの予定、管理費の滞納、大規模修繕の履歴と予定を確かめます。',
+            list: [
+              '長期修繕計画と修繕積立金の水準（将来の値上げや一時金の可能性）',
+              '管理規約・使用細則（ペット、リフォーム、民泊などの制限）',
+              '耐震基準（1981年6月以降に建築確認を受けた「新耐震」かどうか）',
+              '同じマンション・周辺の成約価格（国土交通省の公的データ）との比較',
+            ],
+          },
+          {
+            q: '中古戸建てを買うとき、何に注意しますか？',
+            a: '建物の状態と、土地の法的な条件の2つを確認します。建物は建物状況調査（インスペクション）の結果や修繕の履歴、土地は接道や境界を見て、将来の建て替えやリフォームの費用まで含めて判断します。',
+            list: [
+              '建物状況調査の実施の有無（実施していない場合は、ご希望に応じて実施をご相談します）',
+              '接道の条件（建て替えができる土地か）と、隣地との境界が確定しているか',
+              '雨漏り・シロアリ・給排水管の状態と、修繕・リフォームの履歴',
+              '耐震性（1981年5月以前の旧耐震基準の建物かどうか）と、リフォーム費用の見込み',
+            ],
           },
           {
             q: '気になる物件があれば、その物件を仲介してもらえますか？',
@@ -141,6 +178,10 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
           { q: '仲介手数料が半額になる条件はありますか？', a: S.fees.conditionDetail.join('。') + '。' },
           { q: '購入時の仲介手数料はいくらですか？', a: `${S.fees.sale}です。7,000万円の物件なら1,188,000円（税込）で、法定上限との差は1,188,000円です。ローン事務代行手数料などの名目の費用はいただきません。` },
           { q: '他社サイトで見つけた物件も仲介してもらえますか？', a: 'はい。物件の URL をお送りください。多くの売買物件は不動産会社どうしで共有されていますので、原則として当社から申込ができます。売主側の会社だけで扱う物件もあり、その場合はお伝えします。' },
+          { q: '川崎市・横浜市のどこに対応していますか？', a: '川崎市の全7区と横浜市の全18区に対応しています。武蔵小杉（川崎市中原区）と東急東横線沿線は特に詳しくご案内できます。東京都・千葉県・埼玉県の物件も対応します。' },
+          { q: '新築戸建ても仲介手数料は半額になりますか？', a: `はい。当社が仲介する新築戸建ての仲介手数料は${S.fees.sale}です。分譲会社が自社だけで販売している物件など、当社から仲介できない物件もあり、その場合はお伝えします。` },
+          { q: '中古マンションは何を確認すればよいですか？', a: '修繕積立金の残高と値上げの予定、管理費の滞納、大規模修繕の履歴、管理規約の制限、耐震基準を確認します。価格は国土交通省の成約価格データと比べてご説明します。' },
+          { q: '中古戸建ての購入で注意することは？', a: '建物状況調査（インスペクション）の結果や修繕履歴などの建物の状態と、接道・境界などの土地の条件を確認します。建て替えやリフォームの費用の見込みも含めて判断します。' },
           { q: '住宅ローンの相談はできますか？', a: 'はい。事前審査のタイミングや必要書類をご案内します。金融機関はお客様のご希望を優先して選びます。' },
           { q: '来店は必要ですか？', a: '不要です。ご相談から契約手続きまでフォーム・LINE・オンラインで進めます。内見は現地でご案内します。' },
           { q: '外国籍でも購入できますか？', a: 'はい。日本では国籍を問わず不動産を購入できます。英語でご説明し、契約書は日本語が正本で英訳を参考資料としてご用意します。住宅ローンの条件は金融機関によって異なりますので、要確認事項として早めにご相談ください。' },
@@ -151,10 +192,10 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
         key: 'sell',
         path: p('/sell/'),
         label: '売りたい',
-        title: '住まいを売りたい方へ｜仲介手数料は法定上限の半額',
-        description: `マンション・一戸建て・土地の売却を、仲介手数料${S.fees.sale}で仲介します。東京・神奈川を中心に一都3県に対応。国土交通省の成約価格データにもとづく査定を、費用をいただかずに行います。来店不要で、ご相談と契約手続きはオンラインで進めます。`,
+        title: '川崎・横浜で住まいを売りたい方へ｜仲介手数料は法定上限の半額',
+        description: `川崎市・横浜市を中心に、マンション・一戸建て・土地の売却を、仲介手数料${S.fees.sale}で仲介します。東京都・千葉県・埼玉県にも対応。国土交通省の成約価格データにもとづく査定を、費用をいただかずに行います。来店不要で、ご相談と契約手続きはオンラインで進めます。`,
         eyebrow: 'For Sellers',
-        lead: `売却の仲介手数料は${S.fees.sale}です。7,000万円で売れた場合、法定上限との差は 1,188,000円になります。`,
+        lead: `川崎市・横浜市を中心に、マンション・一戸建て・土地の売却を仲介します。売却の仲介手数料は${S.fees.sale}です。7,000万円で売れた場合、法定上限との差は 1,188,000円になります。`,
         sections: [
           {
             q: '売却時の仲介手数料はいくらですか？',
@@ -257,15 +298,51 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
       key: 'buy',
       path: p('/buy/'),
       label: 'Buy',
-      title: 'Buying a home | Brokerage fee: half the legal maximum',
-      description: `Buy a condominium, house or land with a brokerage fee of ${S.fees.sale}. Serving Tokyo, Kanagawa, Chiba and Saitama, in English or Japanese. On a ¥70 million property the saving versus the legal maximum is about ¥1.19 million. Consultations and paperwork online, viewings on site.`,
+      title: 'Buying a home in Kawasaki or Yokohama | Brokerage fee: half the legal maximum',
+      description: `Buy a new house, resale condominium, resale house or land in Kawasaki or Yokohama with a brokerage fee of ${S.fees.sale}. Tokyo, Chiba and Saitama also covered, in English or Japanese. On a ¥70 million property the saving versus the legal maximum is about ¥1.19 million. Consultations and paperwork online, viewings on site.`,
       eyebrow: 'For Buyers',
-      lead: `Our fee for purchases is ${S.fees.sale}. Since ${S.fees.saleNote}, the saving grows with the price.`,
+      lead: `We help you buy new houses, resale condominiums and resale houses, mainly in Kawasaki and Yokohama. Our fee for purchases is ${S.fees.sale}. Since ${S.fees.saleNote}, the saving grows with the price.`,
       sections: [
         {
           q: 'How much is the brokerage fee when buying?',
           a: `${S.fees.sale}. On a ¥70 million property that is ¥1,188,000 including tax, ¥1,188,000 less than the legal maximum (¥2,376,000).`,
           body: ['The rate is the same for every property. We do not add loan-processing or similar fees. The fee is charged only when a contract is concluded.'],
+        },
+        {
+          q: 'Which parts of Kawasaki and Yokohama do you cover?',
+          a: 'All 7 wards of Kawasaki and all 18 wards of Yokohama. We know Nakahara Ward (Musashikosugi) and the Tokyu Toyoko line, including Motosumiyoshi and Shinmaruko, particularly well.',
+          body: ['We also handle purchases in Tokyo, Chiba and Saitama. Takahiro Katoh was born in Yokohama and lives in Kawasaki, and his parents have run a real estate business in Yokohama and Kawasaki for over 40 years.'],
+        },
+        {
+          q: 'Can you broker a new house in Kawasaki or Yokohama?',
+          a: `Yes. We also broker newly built houses (tateuri). Send us the link to a new house you found on SUUMO or elsewhere and we will check whether we can submit an offer. The fee is the same as for resale properties: ${S.fees.sale}.`,
+          body: ['If the developer sells a property only by itself and we cannot broker it, we will tell you. Before you buy, we check the following.'],
+          list: [
+            'Building confirmation and completion inspection certificate, and whether there is a housing performance evaluation',
+            'Width of the road in front, any private road share, and the boundaries with neighbors',
+            'Warranty and after-sales service (for new homes, the seller is responsible for the main structure and rainwater protection for 10 years; details to be confirmed for each property)',
+            'Plans and specifications before completion; sunlight and fixtures on site after completion',
+          ],
+        },
+        {
+          q: 'What do you check when buying a resale condominium?',
+          a: 'Not only the price but also how the building is managed. Using the management company’s report on important matters, we check the repair reserve balance and planned increases, any unpaid management fees, and the history and plans of major repairs.',
+          list: [
+            'Long-term repair plan and repair reserve level (possible future increases or lump-sum charges)',
+            'Building rules (restrictions on pets, renovation, short-term rentals and so on)',
+            'Earthquake standard (whether building confirmation was granted in or after June 1981, the "new" standard)',
+            'Comparison with closed prices in the same building and nearby (public data from the Ministry of Land, Infrastructure, Transport and Tourism)',
+          ],
+        },
+        {
+          q: 'What should I watch out for when buying a resale house?',
+          a: 'Two things: the condition of the building and the legal conditions of the land. For the building we look at the inspection result and repair history; for the land, road access and boundaries. We also factor in future rebuilding or renovation costs.',
+          list: [
+            'Whether a building condition survey (inspection) has been done, and arranging one if you wish',
+            'Road access (whether the house can be rebuilt) and whether the boundaries are settled',
+            'Leaks, termites, plumbing, and the history of repairs and renovations',
+            'Earthquake resistance (whether it was built to the pre-June 1981 standard) and expected renovation costs',
+          ],
         },
         {
           q: 'Can you handle a property I found elsewhere?',
@@ -299,6 +376,10 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
         { q: 'How much is the brokerage fee when buying?', a: `${S.fees.sale}. On a ¥70 million property, ¥1,188,000 including tax, ¥1,188,000 less than the legal maximum. No loan-processing fees.` },
         { q: 'Can you handle a listing from another agency’s website?', a: 'Yes. Send the link. Most properties are shared among agencies, so in principle we can submit an offer. Some are exclusive to the seller’s agent; we will tell you if so.' },
         { q: 'Can foreigners buy property in Japan?', a: 'Yes. There is no nationality restriction on owning property in Japan. Mortgage conditions vary by bank and residence status, so please confirm early. We explain everything in English; the Japanese contract is the binding document.' },
+        { q: 'Which areas of Kawasaki and Yokohama do you cover?', a: 'All 7 wards of Kawasaki and all 18 wards of Yokohama, with particular knowledge of Musashikosugi (Nakahara Ward) and the Tokyu Toyoko line. Tokyo, Chiba and Saitama are also covered.' },
+        { q: 'Is the fee also half price for a new house?', a: `Yes. When we broker a new house, the fee is ${S.fees.sale}. Some properties are sold only by the developer and cannot be brokered by us; we will tell you if so.` },
+        { q: 'What should I check on a resale condominium?', a: 'The repair reserve balance and planned increases, unpaid management fees, major repair history, building rules and the earthquake standard. We compare the price with public transaction data.' },
+        { q: 'What should I check on a resale house?', a: 'The building’s condition, such as the inspection result and repair history, and the land’s conditions, such as road access and boundaries, including expected rebuilding or renovation costs.' },
         { q: 'Do I need to visit an office?', a: 'No. Consultations and paperwork are handled via form, LINE and online meetings. Viewings take place on site.' },
         { q: 'Can you help with a mortgage?', a: 'Yes. We guide you on pre-approval timing and documents. Your choice of bank comes first.' },
       ],
@@ -308,10 +389,10 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
       key: 'sell',
       path: p('/sell/'),
       label: 'Sell',
-      title: 'Selling your home | Brokerage fee: half the legal maximum',
-      description: `Sell a condominium, house or land with a brokerage fee of ${S.fees.sale}. Serving Tokyo, Kanagawa, Chiba and Saitama. Valuations are based on public transaction data and cost nothing. Consultations and paperwork online.`,
+      title: 'Selling a home in Kawasaki or Yokohama | Brokerage fee: half the legal maximum',
+      description: `Sell a condominium, house or land in Kawasaki or Yokohama with a brokerage fee of ${S.fees.sale}. Tokyo, Chiba and Saitama also covered. Valuations are based on public transaction data and cost nothing. Consultations and paperwork online.`,
       eyebrow: 'For Sellers',
-      lead: `Our fee for sales is ${S.fees.sale}. If your home sells for ¥70 million, the saving versus the legal maximum is ¥1,188,000.`,
+      lead: `We sell condominiums, houses and land, mainly in Kawasaki and Yokohama. Our fee for sales is ${S.fees.sale}. If your home sells for ¥70 million, the saving versus the legal maximum is ¥1,188,000.`,
       sections: [
         {
           q: 'How much is the brokerage fee when selling?',

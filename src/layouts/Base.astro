@@ -41,6 +41,14 @@ const xDefault = locale === 'ja' ? canonical : alternateUrl;
 
 const ja = locale === 'ja';
 const joinAreas = (list: readonly string[]) => list.join(ja ? '・' : ', ');
+const logoUrl = new URL(SITE.logoImage, siteUrl).href;
+
+/** 対応エリア。主力の市（川崎市・横浜市）を先に、一都3県を後に置く */
+const kanagawa = { '@type': 'State', name: ja ? '神奈川県' : 'Kanagawa' };
+const areaServed = [
+  ...site.areaServedCities.map((name) => ({ '@type': 'City', name, containedInPlace: kanagawa })),
+  ...site.areaServed.map((name) => ({ '@type': 'State', name })),
+];
 
 /** 全ページ共通: Organization / RealEstateAgent（免許番号・住所を含む）。@id は言語で共通 */
 const organizationSchema = {
@@ -60,7 +68,11 @@ const organizationSchema = {
     streetAddress: site.address.street,
     addressCountry: 'JP',
   },
-  areaServed: site.areaServed.map((name) => ({ '@type': 'AdministrativeArea', name })),
+  areaServed,
+  hasMap: SITE.googleBusinessProfileUrl,
+  logo: logoUrl,
+  image: logoUrl,
+  sameAs: [SITE.googleBusinessProfileUrl],
   identifier: {
     '@type': 'PropertyValue',
     name: ja ? '宅地建物取引業免許番号' : 'Real estate brokerage license number',
@@ -73,15 +85,23 @@ const organizationSchema = {
   makesOffer: [
     {
       '@type': 'Offer',
-      name: ja ? '売買仲介' : 'Sales brokerage',
+      name: ja ? '売買仲介（購入・売却）' : 'Sales brokerage (buying and selling)',
       description: `${ja ? '仲介手数料' : 'Brokerage fee'}: ${site.fees.sale}（${site.fees.saleNote}） ${site.fees.condition}`,
-      areaServed: joinAreas(site.areaServed),
+      itemOffered: {
+        '@type': 'Service',
+        serviceType: ja ? '不動産売買仲介' : 'Real estate sales brokerage',
+        description: ja
+          ? `${joinAreas(site.areaServedCities)}を中心とした${joinAreas(site.focusPropertyTypes)}・土地の購入と売却の仲介`
+          : `Brokerage for buying and selling ${site.focusPropertyTypes.join(', ')} and land, mainly in ${site.areaServedCities.join(' and ')}`,
+      },
+      areaServed,
     },
     {
       '@type': 'Offer',
       name: ja ? '賃貸仲介' : 'Rental brokerage',
-      description: `${ja ? '仲介手数料' : 'Brokerage fee'}: ${site.fees.rent} ${site.fees.condition}`,
-      areaServed: joinAreas(site.areaServed),
+      description: `${ja ? '仲介手数料' : 'Brokerage fee'}: ${site.fees.rent} ${site.fees.conditionRent}`,
+      itemOffered: { '@type': 'Service', serviceType: ja ? '賃貸仲介（借主側）' : 'Rental brokerage (for tenants)' },
+      areaServed,
     },
   ],
 };

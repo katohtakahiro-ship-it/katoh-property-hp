@@ -8,7 +8,7 @@ export const SITE = {
   /** 独自ドメイン（astro.config.mjs の site と揃える） */
   url: 'https://katohpm.com',
   description:
-    '武蔵小杉を中心に川崎市・横浜市、一都3県（東京・神奈川・千葉・埼玉）に対応する宅地建物取引業者。仲介手数料は売買・賃貸とも半額。売買は法定上限（成約価格の3%＋6万円）の半額、賃貸は家賃の半額（0.5ヶ月分＋税）。来店不要。ご相談と契約手続きはフォーム・LINE・オンラインで進め、内見は現地でご案内。',
+    '川崎市・横浜市（武蔵小杉が拠点）で、新築戸建て・中古マンション・中古戸建ての購入と売却を仲介する宅地建物取引業者。売買の仲介手数料は法定上限（成約価格の3%＋6万円）の半額、賃貸も家賃の半額（0.5ヶ月分＋税）。東京都・千葉県・埼玉県にも対応。来店不要。ご相談と契約手続きはフォーム・LINE・オンラインで進め、内見は現地でご案内。',
   license: '宅地建物取引業 神奈川県知事（2）第30531号',
   licenseNumber: '神奈川県知事（2）第30531号',
   address: {
@@ -19,13 +19,19 @@ export const SITE = {
     full: '〒211-0025 神奈川県川崎市中原区木月4-51-1',
   },
   areaServed: ['東京都', '神奈川県', '千葉県', '埼玉県'],
+  /** 主力の営業エリア（市）。JSON-LD の areaServed で都県より前に出す */
+  areaServedCities: ['川崎市', '横浜市'],
   primaryArea: '武蔵小杉を中心に川崎市・横浜市',
+  /** 重点の物件種別（売買） */
+  focusPropertyTypes: ['新築戸建て', '中古マンション', '中古戸建て'],
   fees: {
     sale: '法定上限の半額（成約価格の1.5%＋3万円、税別）',
     saleNote: '法定上限は成約価格の3%＋6万円（税別）',
     rent: '家賃の半額（0.5ヶ月分＋税）',
     /** 半額の適用条件（短文）。「半額」の表示のすぐ近くに置く（景表法の打消し表示の考え方。要確認） */
     condition: '※当社サイト・LINE・ご紹介から新規にご相談いただいた場合の料金です。当社が売主様・貸主様からお預かりして広告掲載している物件のご購入・ご入居は、各広告に表示する条件となります。売買価格800万円以下の物件は対象外です（国土交通省告示の特例の対象となるため、媒介契約の前に報酬額をご説明します）。',
+    /** 賃貸だけの適用条件（短文）。売買の条件（800万円以下）を含まない。JSON-LD の賃貸 Offer で使う */
+    conditionRent: '※当社サイト・LINE・ご紹介から新規にご相談いただいた場合の料金です。当社が貸主様からお預かりして広告掲載している物件へのご入居は、各広告に表示する条件となります。',
     /** 半額の適用条件（詳細） */
     conditionDetail: [
       '対象：当社サイトのフォーム・LINE、または当社のお客様・知人からのご紹介を通じて新規にご相談いただいた、お部屋探し（借主側の仲介）、住まいの購入、住まいの売却のご依頼',
@@ -42,6 +48,10 @@ export const SITE = {
   /** 電話番号はサイトに掲載しない（CLAUDE.md 作業ルール）。以下は未設定なら非表示 */
   /** LINE 公式アカウントの URL */
   lineUrl: 'https://lin.ee/uRSd3Se' as string,
+  /** Google ビジネスプロフィール（住所非表示のサービス提供地域型）。JSON-LD の sameAs / hasMap に使う */
+  googleBusinessProfileUrl: 'https://maps.google.com/?cid=17616079581879737384',
+  /** ロゴ画像（JSON-LD の logo / image。brand/mark-navy-1024.png の複製） */
+  logoImage: '/images/logo-mark-1024.png',
   /** Google Analytics 4 の測定 ID。本番ビルドのときだけタグを出力する（Base.astro） */
   gaMeasurementId: 'G-P4BQ3L3J87',
   /** 代表社員（宅建業免許上の代表者は加藤良枝）。会社概要に併記する */
@@ -51,7 +61,7 @@ export const SITE = {
     name: '加藤隆寛',
     title: '代表社員',
     qualification: '宅地建物取引士',
-    bio: '宅地建物取引士。横浜市生まれ、母の実家がある川崎市と横浜で育ち、いまも川崎市に住んでいます。両親が横浜・川崎で40年以上不動産業を営んできた家族とともに、東京・神奈川を中心にお部屋探し・購入・売却のご相談に対応します。旅行系 YouTube チャンネル「加藤トラベル」（登録者数36万人）も運営しています。',
+    bio: '宅地建物取引士。横浜市生まれ、母の実家がある川崎市と横浜で育ち、いまも川崎市に住んでいます。両親が横浜・川崎で40年以上不動産業を営んできた家族とともに、川崎市・横浜市を中心に住まいの購入・売却とお部屋探しのご相談に対応します。旅行系 YouTube チャンネル「加藤トラベル」（登録者数36万人）も運営しています。',
     /** 詳しいプロフィールページ（ブログ記事の著者欄からもリンクする） */
     profilePath: '/company/takahiro-katoh/',
     /** graduated: false は在籍のみ（JSON-LD の alumniOf には入れない。卒業したように読める書き方をしない） */
@@ -74,9 +84,9 @@ export const SITE = {
   /** ロゴ表記（金色の部分 + 残り） */
   logo: { accent: '加藤', rest: 'プロパティマネジメント' },
   /** トップページの <title> */
-  defaultTitle: '合同会社加藤プロパティマネジメント | 仲介手数料 賃貸・売買とも半額｜武蔵小杉・川崎・横浜',
+  defaultTitle: '川崎・横浜の不動産売買仲介｜仲介手数料は法定上限の半額（賃貸も半額）｜合同会社加藤プロパティマネジメント',
   /** JSON-LD knowsAbout */
-  knowsAbout: ['武蔵小杉', '川崎市', '横浜市', '仲介手数料', '不動産売買', '賃貸仲介'],
+  knowsAbout: ['川崎市', '横浜市', '武蔵小杉', '不動産売買仲介', '新築戸建て', '中古マンション', '中古戸建て', '不動産売却', '仲介手数料', '賃貸仲介'],
 };
 
 export type SiteConfig = typeof SITE;
@@ -90,7 +100,7 @@ export const SITE_EN: SiteConfig = {
   name: 'Katoh Property Management LLC',
   shortName: 'Katoh Property Management',
   description:
-    'Licensed real estate brokerage based in Musashikosugi, Kawasaki, serving Kawasaki, Yokohama and the greater Tokyo area (Tokyo, Kanagawa, Chiba and Saitama). Brokerage fees are half the standard rate for both rentals and sales. No office visit needed: consultations and contract paperwork are handled via form, LINE and online meetings, and viewings take place on site. English or Japanese.',
+    'Licensed real estate brokerage based in Musashikosugi, Kawasaki, helping people buy and sell new houses, resale condominiums and resale houses in Kawasaki and Yokohama, and also across Tokyo, Chiba and Saitama. Sales brokerage fees are half the legal maximum, and rentals are half a month’s rent. No office visit needed: consultations and contract paperwork are handled via form, LINE and online meetings, and viewings take place on site. English or Japanese.',
   license: 'Licensed real estate broker: Kanagawa Prefecture Governor (2) No. 30531',
   licenseNumber: 'Kanagawa Prefecture Governor (2) No. 30531',
   address: {
@@ -101,12 +111,15 @@ export const SITE_EN: SiteConfig = {
     full: '4-51-1 Kizuki, Nakahara-ku, Kawasaki, Kanagawa 211-0025, Japan',
   },
   areaServed: ['Tokyo', 'Kanagawa', 'Chiba', 'Saitama'],
+  areaServedCities: ['Kawasaki', 'Yokohama'],
   primaryArea: 'Musashikosugi, Kawasaki and Yokohama',
+  focusPropertyTypes: ['new houses', 'resale condominiums', 'resale houses'],
   fees: {
     sale: 'half the legal maximum (1.5% of the sale price + ¥30,000, plus tax)',
     saleNote: 'the legal maximum is 3% of the sale price + ¥60,000, plus tax',
     rent: 'half a month’s rent (0.5 months + tax)',
     condition: 'These rates apply to new inquiries received through this website, LINE or a personal referral. For properties we list ourselves on behalf of a seller or landlord (including on portal sites), the fee stated in that listing applies. Properties priced at ¥8 million or less are not eligible (a government notice allows a higher fee for this price band, so we explain the fee before the brokerage agreement).',
+    conditionRent: 'This rate applies to new inquiries received through this website, LINE or a personal referral. For properties we list ourselves on behalf of a landlord (including on portal sites), the fee stated in that listing applies.',
     conditionDetail: [
       'Eligible: new rental searches, home purchases and home sales requested through the form on this site, LINE, or a referral from one of our clients or acquaintances',
       'Not eligible: inquiries about properties we list on behalf of a seller or landlord on portal sites or elsewhere, even if you contact us through this site. For those, the fee stated in the listing and in the brokerage agreement applies (within the legal maximum)',
@@ -124,7 +137,7 @@ export const SITE_EN: SiteConfig = {
     name: 'Takahiro Katoh',
     title: 'Managing Member',
     qualification: 'Licensed Real Estate Transaction Specialist (Takken-shi)',
-    bio: 'Licensed real estate transaction specialist (takken-shi). Born in Yokohama and raised between Yokohama and Kawasaki, where the family on the mother’s side is from, and still living in Kawasaki. Together with parents who have run a real estate business in Yokohama and Kawasaki for over 40 years, handles rentals, purchases and sales across Tokyo and Kanagawa, in English or Japanese. Also runs the travel YouTube channel "Katoh Travel" (360,000 subscribers).',
+    bio: 'Licensed real estate transaction specialist (takken-shi). Born in Yokohama and raised between Yokohama and Kawasaki, where the family on the mother’s side is from, and still living in Kawasaki. Together with parents who have run a real estate business in Yokohama and Kawasaki for over 40 years, handles home purchases, sales and rentals centered on Kawasaki and Yokohama, in English or Japanese. Also runs the travel YouTube channel "Katoh Travel" (360,000 subscribers).',
     profilePath: '/en/company/takahiro-katoh/',
     education: [
       { school: 'The City College of New York (CUNY)', detail: 'attended before returning to Japan to study at Waseda University', graduated: false },
@@ -136,8 +149,8 @@ export const SITE_EN: SiteConfig = {
     youtube: { ...SITE.representative.youtube, name: 'Katoh Travel', subscribers: '360,000' },
   },
   logo: { accent: 'Katoh', rest: ' Property Management' },
-  defaultTitle: 'Katoh Property Management LLC | Half-price brokerage fees in Musashikosugi, Kawasaki & Yokohama',
-  knowsAbout: ['Musashikosugi', 'Kawasaki', 'Yokohama', 'brokerage fees', 'buying property in Japan', 'renting in Japan'],
+  defaultTitle: 'Buy & sell homes in Kawasaki and Yokohama | Half-price brokerage fees | Katoh Property Management',
+  knowsAbout: ['Kawasaki', 'Yokohama', 'Musashikosugi', 'real estate sales brokerage', 'new houses', 'resale condominiums', 'resale houses', 'selling property in Japan', 'buying property in Japan', 'brokerage fees', 'renting in Japan'],
 };
 
 export const siteFor = (locale: 'ja' | 'en'): SiteConfig => (locale === 'en' ? SITE_EN : SITE);

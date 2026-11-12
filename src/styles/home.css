@@ -49,6 +49,16 @@
     animation: fadeUp 0.8s 0.5s forwards;
   }
 
+  /* H1 の先頭に置く地域と事業（川崎・横浜の不動産売買）。主役の「半額」より小さく */
+  .hero-title-area {
+    display: block;
+    font-size: 0.42em;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--gold-light);
+    margin-bottom: 0.6em;
+  }
+
   .hero-title em {
     display: block;
     font-style: normal;

@@ -23,7 +23,7 @@ const hasPhoto = existsSync(join(process.cwd(), 'public', S.representative.photo
 const faqItems = [
   {
     q: 'How much are your brokerage fees?',
-    a: `For rentals, ${S.fees.rent}. For sales, ${S.fees.sale}. A typical rental agency charges one month’s rent plus tax, and for sales ${S.fees.saleNote}, so both are substantially lower.`,
+    a: `For purchases and sales, ${S.fees.sale}. For rentals, ${S.fees.rent}. For sales ${S.fees.saleNote}, and a typical rental agency charges one month’s rent plus tax, so both are substantially lower.`,
   },
   {
     q: 'Are there conditions for the half-price fee?',
@@ -32,7 +32,7 @@ const faqItems = [
   S.fees.rentOtherCostsFaq,
   {
     q: 'Which areas do you cover?',
-    a: `Our home ground is ${S.primaryArea}. We cover the whole greater Tokyo area: Tokyo, Kanagawa, Chiba and Saitama. Ask us about any specific neighborhood.`,
+    a: `Our home ground is ${S.primaryArea}, where we mainly help people buy and sell new houses, resale condominiums and resale houses. We also cover Tokyo, Chiba and Saitama. Ask us about any specific neighborhood.`,
   },
   {
     q: 'Do you speak English, and do I need to visit your office?',
@@ -64,7 +64,7 @@ const steps = [
   { title: 'Tell us what you need', body: 'Area, budget, move-in timing and conditions, discussed online.' },
   { title: 'Property proposals', body: 'We shortlist several properties that match your conditions.' },
   { title: 'Viewings', body: 'We meet you on site and visit the properties together.' },
-  { title: 'Contract and handover', body: 'Half-price brokerage fee for rentals and sales. We handle the paperwork.' },
+  { title: 'Contract and handover', body: 'Half-price brokerage fee for sales and rentals. We handle the paperwork.' },
 ];
 ---
 
@@ -74,16 +74,16 @@ const steps = [
     <div class="hero-left">
       <span class="hero-eyebrow">Clear &amp; Honest Real Estate Brokerage</span>
       <h1 class="hero-title">
-        Half-price<em>brokerage fees</em><em>Rentals &amp; sales</em>
+        <span class="hero-title-area">Kawasaki &amp; Yokohama real estate</span>Half-price<em>brokerage fees</em><em>Sales &amp; rentals</em>
       </h1>
       <p class="hero-sub">
-        Based in {S.primaryArea}, serving Tokyo, Kanagawa, Chiba and Saitama. Rental brokerage fee: {S.fees.rent}. Sales: {S.fees.sale}. No office visit needed: consultations and contract paperwork are handled via form, LINE and online meetings, and viewings take place on site. English or Japanese.
+        Based in {S.primaryArea}, helping you buy and sell new houses, resale condominiums and resale houses, and also serving Tokyo, Chiba and Saitama. Sales brokerage fee: {S.fees.sale}. Rentals: {S.fees.rent}. No office visit needed: consultations and contract paperwork are handled via form, LINE and online meetings, and viewings take place on site. English or Japanese.
       </p>
       <p class="hero-note">{S.fees.condition}</p>
       <div class="hero-badges">
-        <span class="badge">Rentals: half fee</span>
         <span class="badge">Sales: half fee</span>
-        <span class="badge">Greater Tokyo area</span>
+        <span class="badge">Rentals: half fee</span>
+        <span class="badge">Kawasaki &amp; Yokohama</span>
         <span class="badge">Licensed broker</span>
       </div>
     </div>
@@ -95,7 +95,7 @@ const steps = [
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
             </div>
-            <p><strong>Clear, published fees</strong>Rentals: {S.fees.rent}. Sales: {S.fees.sale}. The same numbers everywhere on this site.</p>
+            <p><strong>Clear, published fees</strong>Sales: {S.fees.sale}. Rentals: {S.fees.rent}. The same numbers everywhere on this site.</p>
           </div>
           <div class="card-feature">
             <div class="card-icon" aria-hidden="true">
@@ -144,12 +144,12 @@ const steps = [
       <div class="fee-inner">
         <div class="fee-left reveal">
           <span class="section-label">Commission</span>
-          <h2 class="section-title">Half-price brokerage fees<br />for rentals and sales</h2>
+          <h2 class="section-title">Half-price brokerage fees<br />for sales and rentals</h2>
           <div class="fee-highlights">
-            <div class="fee-highlight"><small>Rentals &amp; sales</small>1/2</div>
+            <div class="fee-highlight"><small>Sales &amp; rentals</small>1/2</div>
           </div>
           <p class="section-body">
-            Rental agencies in Japan usually charge one month’s rent plus consumption tax as the brokerage fee. Ours is {S.fees.rent}. For sales, {S.fees.saleNote}; ours is {S.fees.sale}. The same numbers apply everywhere on this site.
+            For sales, {S.fees.saleNote}; ours is {S.fees.sale}. Rental agencies in Japan usually charge one month’s rent plus consumption tax as the brokerage fee; ours is {S.fees.rent}. The same numbers apply everywhere on this site.
           </p>
           <p class="fee-condition">{S.fees.condition}</p>
           <details class="fee-conditions">
@@ -162,15 +162,15 @@ const steps = [
         <div class="fee-right reveal">
           <div class="fee-item">
             <span class="fee-item-num">01</span>
-            <h3>Rental brokerage</h3>
-            <p class="fee-value">{S.fees.rent}</p>
-            <p>From the search and viewings to the lease contract. Half of the usual one month plus tax.</p>
+            <h3>Sales brokerage</h3>
+            <p class="fee-value">{S.fees.sale}</p>
+            <p>Buying or selling new houses, resale condominiums, resale houses and land. Note: {S.fees.saleNote}.</p>
           </div>
           <div class="fee-item">
             <span class="fee-item-num">02</span>
-            <h3>Sales brokerage</h3>
-            <p class="fee-value">{S.fees.sale}</p>
-            <p>Buying or selling land, condominiums and houses. Note: {S.fees.saleNote}.</p>
+            <h3>Rental brokerage</h3>
+            <p class="fee-value">{S.fees.rent}</p>
+            <p>From the search and viewings to the lease contract. Half of the usual one month plus tax.</p>
           </div>
           <div class="fee-item">
             <span class="fee-item-num">03</span>
@@ -187,8 +187,8 @@ const steps = [
     <div class="container">
       <div class="reveal">
         <span class="section-label">Service Area</span>
-        <h2 class="section-title">Musashikosugi first, greater Tokyo throughout</h2>
-        <p class="section-body">Our home ground is Musashikosugi and the cities of Kawasaki and Yokohama. We handle rentals and sales across Tokyo, Kanagawa, Chiba and Saitama.</p>
+        <h2 class="section-title">Kawasaki and Yokohama first, greater Tokyo throughout</h2>
+        <p class="section-body">Our home ground is Musashikosugi and the cities of Kawasaki and Yokohama. We handle purchases, sales and rentals across Tokyo, Kanagawa, Chiba and Saitama.</p>
       </div>
       <div class="areas-grid reveal">
         {areas.map((area) => (
