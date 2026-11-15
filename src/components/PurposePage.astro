@@ -78,6 +78,11 @@ const breadcrumb = {
               {s.list.map((li) => <li>{li}</li>)}
             </ul>
           )}
+          {s.links && (
+            <ul class="qa-links">
+              {s.links.map((l) => <li><a href={l.href}>{l.label} →</a></li>)}
+            </ul>
+          )}
         </article>
       ))}
     </div>

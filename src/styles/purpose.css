@@ -112,6 +112,17 @@
   .qa ul {
     margin-left: 1.5rem;
   }
+  .qa ul.qa-links {
+    list-style: none;
+    margin-left: 0;
+  }
+  .qa-links a {
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--gold);
+    text-underline-offset: 3px;
+  }
 
   .purpose-flow {
     background: var(--cream);

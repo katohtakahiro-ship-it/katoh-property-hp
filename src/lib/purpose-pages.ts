@@ -19,6 +19,8 @@ export interface Section {
   body?: string[];
   /** 箇条書き（任意） */
   list?: string[];
+  /** 本文の下に置く内部リンク（任意） */
+  links?: { label: string; href: string }[];
 }
 
 export interface PurposeContent {
@@ -137,6 +139,7 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
               '耐震基準（1981年6月以降に建築確認を受けた「新耐震」かどうか）',
               '同じマンション・周辺の成約価格（国土交通省の公的データ）との比較',
             ],
+            links: [{ label: '川崎・横浜の中古マンション購入（区別の相場・管理の確認）', href: '/buy/chuko-mansion/' }],
           },
           {
             q: '中古戸建てを買うとき、何に注意しますか？',
@@ -333,6 +336,7 @@ export function getPurposePages(locale: Locale): Record<PurposeKey, PurposeConte
             'Earthquake standard (whether building confirmation was granted in or after June 1981, the "new" standard)',
             'Comparison with closed prices in the same building and nearby (public data from the Ministry of Land, Infrastructure, Transport and Tourism)',
           ],
+          links: [{ label: 'Buying a resale condominium in Kawasaki or Yokohama (prices by ward, management checks)', href: '/en/buy/resale-condo/' }],
         },
         {
           q: 'What should I watch out for when buying a resale house?',
